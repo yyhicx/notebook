@@ -10,7 +10,7 @@ node_modules
 
 # LaTeX
 /programming/documentation/subject/fundamentals_of_electronic_technology/latex/*
-!/programming/documentation/subject/fundamentals_of_electronic_technology/image/*
+!/programming/documentation/subject/fundamentals_of_electronic_technology/latex/image/
 !/programming/documentation/subject/fundamentals_of_electronic_technology/latex/template.tex
 
 # VS Code
