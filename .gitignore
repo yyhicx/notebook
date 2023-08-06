@@ -12,6 +12,8 @@ node_modules
 /programming/documentation/subject/fundamentals_of_electronic_technology/latex/*
 !/programming/documentation/subject/fundamentals_of_electronic_technology/latex/image/
 !/programming/documentation/subject/fundamentals_of_electronic_technology/latex/template.tex
+/non-programming/math/discrete_mathematics/latex/*
+!/non-programming/math/discrete_mathematics/latex/template.tex
 
 # VS Code
 .vscode
