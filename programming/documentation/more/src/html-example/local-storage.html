@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>LocalStorage</title>
+</head>
+<body>
+  <p><button onclick="clickCounter()" type="button">点我！</button></p>
+  <div id="result"></div>
+  <script>
+    function clickCounter () {
+      if(typeof(Storage) !== 'undefined') {
+        if (localStorage.clickcount) {
+          localStorage.clickcount = Number(localStorage.clickcount) + 1;
+        } else {
+          localStorage.clickcount = 1;
+        }
+        document.getElementById('result').innerHTML = '你已经点击了按钮' + localStorage.clickcount + '次';
+      } else {
+        document.getElementById('result').innerHTML = '对不起，您的浏览器不支持 web 存储';
+      }
+    }
+  </script>
+</body>
+</html>

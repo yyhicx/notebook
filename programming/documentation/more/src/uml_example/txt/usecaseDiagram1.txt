@@ -1,0 +1,19 @@
+@startuml
+' brew install graphviz
+left to right direction
+actor Guest as g
+package Professional {
+  actor Chef as c
+  actor "Food Critic" as fc
+}
+package Restaurant {
+  usecase "Eat Food" as UC1
+  usecase "Pay for Food" as UC2
+  usecase "Drink" as UC3
+  usecase "Review" as UC4
+}
+fc --> (UC4) : normal
+g --> (UC1) #line:red;line.bold;text:red  : red bold
+g --> (UC2) #green;line.dashed;text:green : green dashed 
+g --> (UC3) #blue;line.dotted;text:blue   : blue dotted
+@enduml

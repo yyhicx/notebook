@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>CSS Transition</title>
+  <style>
+    #div1 {
+      width: 60px;
+      height: 40px;
+      background: #92b901;
+      color: #ffffff;
+      position: absolute;
+      font-weight: bold;
+      font-size: 15px;
+      padding: 10px;
+      float: left;
+      margin: 5px;
+      transition: transform 1s, opacity 1s, background 1s, width 1s, height 1s, font-size 1s;
+      -webkit-transition: -webkit-transform 1s, opacity 1s, background 1s, width 1s, height 1s, font-size 1s;
+      border-radius: 5px;
+      opacity: 0.4;
+    }
+    #div1:hover {
+      -moz-transform: rotate(360deg);
+      -webkit-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
+      opacity: 1;
+      background: #1ec7e6;
+      width: 90px;
+      height: 60px;
+      font-size: 25px;
+    }
+  </style>
+</head>
+<body>
+  <div id="div1">
+    CSS3
+    <br>
+    <span style="font-size: 50%;">过渡</span>
+  </div>
+</body>
+</html>

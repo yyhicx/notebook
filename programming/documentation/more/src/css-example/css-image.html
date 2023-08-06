@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>CSS Image</title>
+  <style>
+    .card {
+      margin: auto;
+      width: 500px;
+      height: 300px;
+      padding: 30px;
+      border: 1px solid #ccc;
+      margin-bottom: 5px;
+    }
+    /* example1 */
+    #div1 img {
+      width: 15%;
+      height: auto;
+      float: left;
+      max-width: 235px;
+    }
+    #div1 .blur { -webkit-filter: blur(4px); filter: blur(4px); }
+    #div1 .brightness { -webkit-filter: brightness(250%); filter: brightness(250%); }
+    #div1 .contrast { -webkit-filter: contrast(180%); filter: contrast(180%); }
+    #div1 .grayscale { -webkit-filter: grayscale(100%); filter: grayscale(100%); }
+    #div1 .huerotate { -webkit-filter: hue-rotate(180deg); filter: hue-rotate(180deg); }
+    #div1 .invert { -webkit-filter: invert(100%); filter: invert(100%); }
+    #div1 .opacity { -webkit-filter: opacity(50%); filter: opacity(50%); }
+    #div1 .saturate { -webkit-filter: saturate(7); filter: saturate(7); }
+    #div1 .sepia { -webkit-filter: sepia(100%); filter: sepia(100%); }
+    #div1 .shadow { -webkit-filter: drop-shadow(8px 8px 10px green); filter: drop-shadow(8px 8px 10px green); }
+    /* example2 */
+    #myImg {
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    #myImg:hover {
+      opacity: 0.7;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      padding-top: 100px;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgb(0, 0, 0);
+      background-color: rgba(0, 0, 0, 0.9);
+    }
+    .modal-content {
+      margin: auto;
+      display: block;
+      width: 80%;
+      max-width: 700px;
+    }
+    #caption {
+      margin: auto;
+      display: block;
+      width: 80%;
+      max-width: 700px;
+      text-align: center;
+      color: #ccc;
+      padding: 10px 0;
+      height: 150px;
+    }
+    .modal-content, #caption {
+      -webkit-animation-name: zoom;
+      -webkit-animation-duration: 0.6s;
+      animation-name: zoom;
+      animation-duration: 0.6s;
+    }
+    @-webkit-keyframes zoom {
+      from {-webkit-transform: scale(0)}
+      to {-webkit-transform: scale(1)}
+    }
+    @keyframes zoom {
+      from {transform: scale(0.1)}
+      to {transform: scale(1)}
+    }
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 35px;
+      color: #f1f1f1;
+      font-size: 40px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    .close:hover,
+    .close:focus {
+        color: #bbb;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    @media only screen and (max-width: 700px){
+      .modal-content {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <p>图片滤镜</p>
+    <div id="div1">
+      <img src="../../resources/pineapple.jpg" alt="Pineapple" width="300" height="300">
+      <img class="blur" src="../../resources/pineapple.jpg" alt="Pineapple" width="300" height="300">
+      <img class="brightness" src="../../resources/pineapple.jpg" alt="Pineapple" width="300" height="300">
+      <img class="contrast" src="../../resources/pineapple.jpg" alt="Pineapple" width="300" height="300">
+      <img class="grayscale" src="../../resources/pineapple.jpg" alt="Pineapple" width="300" height="300">
+      <img class="huerotate" src="../../resources/pineapple.jpg" alt="Pineapple" width="300" height="300">
+      <img class="invert" src="../../resources/pineapple.jpg" alt="Pineapple" width="300" height="300">
+      <img class="opacity" src="../../resources/pineapple.jpg" alt="Pineapple" width="300" height="300">
+      <img class="saturate" src="../../resources/pineapple.jpg" alt="Pineapple" width="300" height="300">
+      <img class="sepia" src="../../resources/pineapple.jpg" alt="Pineapple" width="300" height="300">
+      <img class="shadow" src="../../resources/pineapple.jpg" alt="Pineapple" width="300" height="300">
+    </div>
+  </div>
+  <div class="card">
+    <p>图片模态框</p>
+    <img id="myImg" src="../../resources/img_lights.jpg" alt="Northern Lights, Norway" width="300" height="200">
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+      <span class="close">×</span>
+      <img class="modal-content" id="img01">
+      <div id="caption"></div>
+    </div>
+  </div>
+  <script>
+    let modal = document.getElementById('myModal');
+    let img = document.getElementById('myImg');
+    let modalImg = document.getElementById('img01');
+    let captionText = document.getElementById('caption');
+    img.onclick = function () {
+      modal.style.display = 'block';
+      modalImg.src = this.src;
+      modalImg.alt = this.alt;
+      captionText.innerHTML = this.alt;
+    };
+    let span = document.getElementsByClassName('close')[0];
+    span.onclick = function () {
+      modal.style.display = 'none';
+    };
+  </script>
+</body>
+</html>

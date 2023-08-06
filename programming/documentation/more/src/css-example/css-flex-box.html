@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>CSS Flex Box</title>
+  <style>
+    .card {
+      margin: auto;
+      width: 600px;
+      text-align: center;
+    }
+    .flex-container {
+      display: -webkit-flex;
+      display: flex;
+      margin: auto;
+      width: 600px;
+      height: 250px;
+      background-color: lightgray;
+      border: 2px solid black;
+      border-top: none;
+    }
+    .has-border-top {
+      border-top: 2px solid black;
+    }
+    .flex-item {
+      width: 100px;
+      height: 100px;
+      margin: 10px;
+      background-color: cornflowerblue;
+    }
+    /* RTL */
+    .rtl {
+      direction: rtl;
+    }
+    /* flex-direction */
+    .row {
+      -webkit-flex-direction: row;
+      flex-direction: row;
+    }
+    .row-reverse {
+      -webkit-flex-direction: row-reverse;
+      flex-direction: row-reverse;
+    }
+    .column {
+      -webkit-flex-direction: column;
+      flex-direction: column;
+    }
+    .column-reverse {
+      -webkit-flex-direction: column-reverse;
+      flex-direction: column-reverse;
+    }
+    /* justify-content */
+    .justify-content-flex-start {
+      -webkit-justify-content: flex-start;
+      justify-content: flex-start;
+    }
+    .justify-content-flex-end {
+      -webkit-justify-content: flex-end;
+      justify-content: flex-end;
+    }
+    .justify-content-center {
+      -webkit-justify-content: center;
+      justify-content: center;
+    }
+    .justify-content-space-between {
+      -webkit-justify-content: space-between;
+      justify-content: space-between;
+    }
+    .justify-content-space-around {
+      -webkit-justify-content: space-around;
+      justify-content: space-around;
+    }
+    /* align-items  */
+    .align-items-flex-start {
+      -webkit-align-items: flex-start;
+      align-items: flex-start;
+    }
+    .align-items-flex-end {
+      -webkit-align-items: flex-end;
+      align-items: flex-end;
+    }
+    .align-items-center {
+      -webkit-align-items: center;
+      align-items: center;
+    }
+    .align-items-baseline {
+      -webkit-align-items: baseline;
+      align-items: baseline;
+    }
+    .align-items-stretch {
+      -webkit-align-items: stretch;
+      align-items: stretch;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>base</h2>
+    <div class="flex-container has-border-top">
+      <div class="flex-item">Flex Item 1</div>
+      <div class="flex-item">Flex Item 2</div>
+      <div class="flex-item">Flex Item 3</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>RTL</h2>
+    <div class="flex-container rtl has-border-top">
+      <div class="flex-item">Flex Item 1</div>
+      <div class="flex-item">Flex Item 2</div>
+      <div class="flex-item">Flex Item 3</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>flex-direction</h2>
+    <div class="flex-container row has-border-top">
+      <div class="flex-item">Flex Item 1</div>
+      <div class="flex-item">Flex Item 2</div>
+      <div class="flex-item">Flex Item 3</div>
+    </div>
+    <div class="flex-container row-reverse">
+      <div class="flex-item">Flex Item 1</div>
+      <div class="flex-item">Flex Item 2</div>
+      <div class="flex-item">Flex Item 3</div>
+    </div>
+    <div class="flex-container column">
+      <div class="flex-item">Flex Item 1</div>
+      <div class="flex-item">Flex Item 2</div>
+      <div class="flex-item">Flex Item 3</div>
+    </div>
+    <div class="flex-container column-reverse">
+      <div class="flex-item" style="background-color: green;">Flex Item 1</div>
+      <div class="flex-item" style="background-color: green;">Flex Item 2</div>
+      <div class="flex-item" style="background-color: green;">Flex Item 3</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>justify-content</h2>
+    <div class="flex-container justify-content-flex-start has-border-top">
+      <div class="flex-item">Flex Item 1</div>
+      <div class="flex-item">Flex Item 2</div>
+      <div class="flex-item">Flex Item 3</div>
+    </div>
+    <div class="flex-container justify-content-flex-end">
+      <div class="flex-item">Flex Item 1</div>
+      <div class="flex-item">Flex Item 2</div>
+      <div class="flex-item">Flex Item 3</div>
+    </div>
+    <div class="flex-container justify-content-center">
+      <div class="flex-item">Flex Item 1</div>
+      <div class="flex-item">Flex Item 2</div>
+      <div class="flex-item">Flex Item 3</div>
+    </div>
+    <div class="flex-container justify-content-space-between">
+      <div class="flex-item">Flex Item 1</div>
+      <div class="flex-item">Flex Item 2</div>
+      <div class="flex-item">Flex Item 3</div>
+    </div>
+    <div class="flex-container justify-content-space-around">
+      <div class="flex-item">Flex Item 1</div>
+      <div class="flex-item">Flex Item 2</div>
+      <div class="flex-item">Flex Item 3</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>align-items</h2>
+    <div class="flex-container align-items-flex-start has-border-top">
+      <div class="flex-item">Flex Item 1</div>
+      <div class="flex-item">Flex Item 2</div>
+      <div class="flex-item">Flex Item 3</div>
+    </div>
+    <div class="flex-container align-items-flex-end">
+      <div class="flex-item">Flex Item 1</div>
+      <div class="flex-item">Flex Item 2</div>
+      <div class="flex-item">Flex Item 3</div>
+    </div>
+    <div class="flex-container align-items-center">
+      <div class="flex-item">Flex Item 1</div>
+      <div class="flex-item">Flex Item 2</div>
+      <div class="flex-item">Flex Item 3</div>
+    </div>
+    <div class="flex-container align-items-baseline">
+      <div class="flex-item">Flex Item 1</div>
+      <div class="flex-item">Flex Item 2</div>
+      <div class="flex-item">Flex Item 3</div>
+    </div>
+    <div class="flex-container align-items-stretch">
+      <div class="flex-item">Flex Item 1</div>
+      <div class="flex-item">Flex Item 2</div>
+      <div class="flex-item">Flex Item 3</div>
+    </div>
+  </div>
+</body>
+</html>

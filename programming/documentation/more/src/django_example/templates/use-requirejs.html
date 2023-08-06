@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Use RequireJS</title>
+    <!--
+      data-main 属性告诉 requirejs，当 requirejs 加载完成后加载 main.js。
+      async 属性和 defer 属性表明这个文件需要异步加载，IE 只支持 defer 属性，
+      而不支持 async 属性。
+    -->
+    <script
+      data-main="{% static '/js/app' %}"
+      src="{% static '/js/lib/require.js' %}"
+      defer
+      async="true"
+    ></script>
+  </head>
+  <body>
+    <h1>Hello World</h1>
+  </body>
+</html>

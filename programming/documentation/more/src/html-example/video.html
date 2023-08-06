@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Video</title>
+</head>
+<body>
+  <div style="text-align:center">
+    <button onclick="playPause()">播放/暂停</button>
+    <button onclick="makeBig()">放大</button>
+    <button onclick="makeSmall()">缩小</button>
+    <button onclick="makeNormal()">普通</button>
+    <br>
+    <video controls id="video1" width="420" src="../../resources/friday.mp4" >
+      <!-- 本地访问字幕文件，会报错 unsafe -->
+      <track default kind="subtitles" srclang="en" src="../../resources/friday.vtt">
+      您的浏览器不支持 HTML5 video 标签
+    </video>
+  </div>
+  <script>
+    let myVideo = document.getElementById('video1');
+    function playPause() {
+      if (myVideo.paused)
+        myVideo.play();
+      else
+        myVideo.pause();
+    }
+    function makeBig() {
+      myVideo.width = 560;
+    }
+    function makeSmall() {
+      myVideo.width = 320;
+    }
+    function makeNormal() {
+      myVideo.width = 420;
+    }
+  </script>
+</body>
+</html>

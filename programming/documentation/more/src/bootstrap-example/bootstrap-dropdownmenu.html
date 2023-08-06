@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap DropdownMenu</title>
+  <link href="https://cdn.staticfile.org/twitter-bootstrap/5.1.2/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.staticfile.org/bootstrap/5.1.2/js/bootstrap.bundle.min.js"></script>
+  <style>
+    .card {
+      border: 2px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-3">
+    <div class="card mb-3 p-4">
+      <h2>下拉菜单</h2>
+      <div class="dropdown m-auto">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+          下拉菜单按钮
+        </button>
+        <ul class="dropdown-menu">
+          <li><h5 class="dropdown-header">标题 1</h5></li>
+          <li><a class="dropdown-item" href="#">链接 1</a></li>
+          <li><a class="dropdown-item" href="#">链接 2</a></li>
+          <li><a class="dropdown-item" href="#">链接 3</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><h5 class="dropdown-header">标题 2</h5></li>
+          <li><a class="dropdown-item" href="#">链接 4</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><h5 class="dropdown-header">标题 3</h5></li>
+          <li><a class="dropdown-item" href="#">常规项</a></li>
+          <li><a class="dropdown-item active" href="#">激活项</a></li>
+          <li><a class="dropdown-item disabled" href="#">禁用项</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><h5 class="dropdown-header">标题 4</h5></li>
+          <li><a class="dropdown-item-text" href="#">文本链接</a></li>
+          <li><span class="dropdown-item-text">仅仅是文本</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="card mb-3 p-4">
+      <h2>下拉菜单的定位</h2>
+      <div class="dropdown dropend">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+          右边显示菜单
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">常规项</a></li>
+          <li><a class="dropdown-item active" href="#">激活项</a></li>
+          <li><a class="dropdown-item disabled" href="#">禁用项</a></li>
+        </ul>
+      </div>
+      <div class="dropdown dropstart text-end">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+          左边显示菜单
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">常规项</a></li>
+          <li><a class="dropdown-item active" href="#">激活项</a></li>
+          <li><a class="dropdown-item disabled" href="#">禁用项</a></li>
+        </ul>
+      </div>
+      <div class="dropdown dropdown-menu-end mb-5">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+          下拉菜单右下方弹出
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">常规项</a></li>
+          <li><a class="dropdown-item active" href="#">激活项</a></li>
+          <li><a class="dropdown-item disabled" href="#">禁用项</a></li>
+        </ul>
+      </div>
+      <div class="dropup">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+          上拉菜单
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">常规项</a></li>
+          <li><a class="dropdown-item active" href="#">激活项</a></li>
+          <li><a class="dropdown-item disabled" href="#">禁用项</a></li>
+        </ul>
+      </div>
+      <div class="dropstart">
+        添加一些内容，用于测试向左边弹出效果。
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+          左拉菜单
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">常规项</a></li>
+          <li><a class="dropdown-item active" href="#">激活项</a></li>
+          <li><a class="dropdown-item disabled" href="#">禁用项</a></li>
+        </ul>
+      </div>
+      <div class="dropend">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+          右拉菜单
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">常规项</a></li>
+          <li><a class="dropdown-item active" href="#">激活项</a></li>
+          <li><a class="dropdown-item disabled" href="#">禁用项</a></li>
+        </ul>
+        添加一些内容，用于测试向右边弹出效果。
+      </div>
+    </div>
+  </div>
+</body>
+</html>

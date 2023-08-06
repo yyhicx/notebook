@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Horizontal Navigation Bar</title>
+  <style>
+    ul {
+      list-style-type: none;
+      margin: 5px;
+      padding: 0;
+      overflow: hidden;
+      background-color: #333;
+    }
+    ul.has-border li {
+      border-right: 1px solid #bbb;
+    }
+    ul.has-border li:last-child {
+      border-right: none;
+    }
+    li {
+      float: left;
+    }
+    li a {
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+    li a.active {
+      background-color: #4caf50;
+    }
+    li a:hover:not(.active) {
+      background-color: #111;
+    }
+  </style>
+</head>
+<body>
+  <ul>
+    <li><a class="active" href="#home">主页</a></li>
+    <li><a href="#news">新闻</a></li>
+    <li><a href="#contact">联系</a></li>
+    <li><a href="#about">关于</a></li>
+  </ul>
+  <ul class="has-border">
+    <li><a class="active" href="#home">主页</a></li>
+    <li><a href="#news">新闻</a></li>
+    <li><a href="#contact">联系</a></li>
+    <li style="float: right;"><a href="#about">关于</a></li>
+  </ul>
+  <ul>
+    <li><a href="#home">主页</a></li>
+    <li><a href="#news">新闻</a></li>
+    <li><a href="#contact">联系</a></li>
+    <li style="float: right;"><a class="active" href="#about">关于</a></li>
+  </ul>
+</body>
+</html>

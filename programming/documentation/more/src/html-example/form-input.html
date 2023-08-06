@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>From Input</title>
+</head>
+<body>
+  <div>
+    <form action="">
+      First name: <input type="text" name="firstname"><br>
+      Last name: <input type="text" name="lastname">
+    </form>
+  </div>
+  <p><b>注意：</b> 表单本身是不可见的。并且注意一个文本字段的默认宽度是20个字符。</p>
+  <div>
+    <form action="">
+      Password: <input type="password" name="pwd">
+    </form>
+  </div>
+  <div>
+    <form action="">
+      <input type="radio" name="sex" value="male">Male<br>
+      <input type="radio" name="sex" value="female">Female
+    </form>
+  </div>
+  <div>
+    <form action="">
+      <input type="checkbox" name="vehicle" value="bike">I have a bike<br>
+      <input type="checkbox" name="vehicle" value="car">I have a car
+    </form>
+  </div>
+  <div>
+    <form name="input" action="html_from_action.py" method="get">
+      Username: <input type="text" name="user">
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+</body>
+</html>

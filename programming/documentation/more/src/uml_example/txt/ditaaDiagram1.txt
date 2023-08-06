@@ -1,0 +1,10 @@
+@startuml
+ditaa(--no-shadows, scale=0.7)
++---------+  /--------\   +-------+
+| cBLU    +--+cAAA    +---+Version|
+|         |  |  Data  |   |   V3  |
+|    +----+  |  Base  |   |cRED{d}|
+|    |cPNK|  |     {s}|   +-------+
+|    |    |  \---+----/
++----+----+
+@enduml

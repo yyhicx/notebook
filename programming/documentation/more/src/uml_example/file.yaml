@@ -1,0 +1,50 @@
+- sequence diagram:
+  - sequenceDiagram1.txt: 8ef70474e703b53144fcdfcf88645236
+  - sequenceDiagram2.txt: f75c6b006e3ebaf863e1a87110aaa326
+  - sequenceDiagram3.txt: 0bf797eb2edf82565ad67e848601876e
+- usecase diagram:
+  - usecaseDiagram1.txt: 7e56feb224996801e6762948ca6719d0
+- class diagram:
+  - classDiagram1.txt: c5ae178170a6d56ba1cf063ae3e551e1
+  - classDiagram2.txt: 93256289260816e8b0095eeca3c3bbc8
+  - classDiagram3.txt: 168d989688875294f89cce4a55cfdbb2
+- object diagram:
+  - objectDiagram1.txt: 4eecb46e2341f9ae07dae4ddc8036873
+- activity diagram:
+  - activityDiagram1.txt: 2b666edb69cfb131dd61976ad3f710c7
+  - activityDiagram2.txt: 74d2bee24ab3f9f5fa6f7b1943b60615
+- component diagram:
+  - componentDiagram1.txt: 747baaa0c450e43855f68867787acff4
+- deployment diagram:
+  - deploymentDiagram1.txt: c94eec969ea66aebe17320d233608b3f
+  - deploymentDiagram2.txt: e690cd6b2361a7d83e7901cc72708fec
+- state diagram:
+  - stateDiagram1.txt: 548051a08f87dc680760d531470ec1ca
+- timing diagram:
+  - timingDiagram1.txt: b378533729b9e1ba26b8335bad2c0690
+- json data:
+  - jsonData1.txt: 08f47b0d311e70111a183b988891f89c
+- yaml data:
+  - yamlData1.txt: 93a818ea9e4c121ce1e20b2e9c0e73c2
+- network diagram:
+  - networkDiagram1.txt: 5b6c501c86e63a8026a0af29e880190d
+- wireframe graphical interface:
+  - wireframeGraphicalInterface1.txt: ad39f74c1f9017581d32b4b9a8bb77e3
+  - wireframeGraphicalInterface2.txt: cad4ed9164b0f9b61a359a265a29e3af
+- archimate diagram:
+  - archimateDiagram1.txt: 80515b7bd06c800e05554411a45a8177
+  - archimateDiagram2.txt: 926dd7786c0a02546e4633980acb9129
+- specification and description language:
+  - specificationAndDescriptionLanguage1.txt: ''
+- ditaa diagram:
+  - ditaaDiagram1.txt: 7576931bc0bc5ac0def989605e3832e8
+- gantt diagram:
+  - ganttDiagram1.txt: dec51418060f763de392bf91a5e5eba9
+- mindmap diagram:
+  - mindmapDiagram1.txt: c6f062d2075cbbfed64930a2cc9246e8
+- wbs diagram:
+  - wbsDiagram1.txt: e7a2ea03c84ffa57a34f5d38f4ef3ac5
+- asciimath or jlatexmath notation:
+  - asciimathOrJlatexmathNotation1.txt: 4d94a815c2cf8a70a61a9b2c47d0b5a5
+- entity relationship diagram:
+  - entityRelationshipDiagram1.txt: c3309b39a98e2d530f6fcb5a6806eac8

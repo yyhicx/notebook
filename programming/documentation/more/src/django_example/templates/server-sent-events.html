@@ -1,0 +1,48 @@
+{% load static %}
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Server-Sent Events</title>
+    <script src="{% static 'django_eventstream/json2.js' %}"></script>
+    <script src="{% static 'django_eventstream/eventsource.min.js' %}"></script>
+    <script src="{% static 'django_eventstream/reconnecting-eventsource.js' %}"></script>
+    <script>
+            let logMessage = function (s) {
+              let resultDiv = document.getElementById('result');
+              resultDiv.innerHTML = resultDiv.innerHTML + s + '<br />';
+            };
+            let start = function () {
+              logMessage('connecting...');
+      {% if last_id %}
+              let es = new ReconnectingEventSource('{{ url|safe }}', {
+                lastEventId: '{{ last_id }}'
+              });
+      {% else %}
+              let es = new ReconnectingEventSource('{{ url|safe }}');
+      {% endif %}
+              es.onopen = function () {
+                logMessage('connected');
+              };
+              es.onerror = function () {
+                logMessage('connection error');
+              };
+              es.addEventListener('stream-reset', function (e) {
+                e = JSON.parse(e.data);
+                logMessage('stream reset: ' + JSON.stringify(e.channels));
+              }, false);
+              es.addEventListener('stream-error', function (e) {
+                // hard stop
+                es.close();
+                e = JSON.parse(e.data);
+                logMessage('stream error: ' + e.condition + ': ' + e.text);
+              }, false);
+              es.addEventListener('message', function (e) {
+                logMessage('message: ' + e.data);
+              }, false);
+            };
+    </script>
+  </head>
+  <body onload="start();">
+    <div id="result"></div>
+  </body>
+</html>

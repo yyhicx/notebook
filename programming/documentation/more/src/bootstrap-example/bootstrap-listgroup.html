@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap ListGroup</title>
+  <link href="https://cdn.staticfile.org/twitter-bootstrap/5.1.2/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.staticfile.org/bootstrap/5.1.2/js/bootstrap.bundle.min.js"></script>
+  <style>
+    #main > .container {
+      border: 2px solid #ccc;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div id="main" class="container mt-3">
+    <!-- 此处 div 使用 .card 类会让 .list-group 多出顶部边框 -->
+    <div class="container mb-3 p-4">
+      <h2>列表组</h2>
+      <ul class="list-group">
+        <li class="list-group-item">第一项</li>
+        <li class="list-group-item">第二项</li>
+        <li class="list-group-item">第三项</li>
+        <li class="list-group-item active">激活列表项</li>
+        <li class="list-group-item disabled">禁用列表项</li>
+      </ul>
+    </div>
+    <div class="container mb-3 p-4">
+      <h2>链接列表组</h2>
+      <div class="list-group">
+        <!-- list-group-item-action 当鼠标悬停，显示灰色背景 -->
+        <a class="list-group-item list-group-item-action" href="#">第一项</a>
+        <a class="list-group-item list-group-item-action" href="#">第二项</a>
+        <a class="list-group-item list-group-item-action" href="#">第三项</a>
+      </div>
+    </div>
+    <div class="container mb-3 p-4">
+      <h2>列表组移除边框</h2>
+      <p>通过设置 .list-group-flush 类来删除列表的边框和圆角：</p>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">第一项</li>
+        <li class="list-group-item">第二项</li>
+        <li class="list-group-item">第三项</li>
+      </ul>
+    </div>
+    <div class="container mb-3 p-4">
+      <h2>水平列表组</h2>
+      <p>通过设置 .list-group-horizontal 类来设置水平：</p>
+      <ul class="list-group list-group-horizontal">
+        <li class="list-group-item">第一项</li>
+        <li class="list-group-item">第二项</li>
+        <li class="list-group-item">第三项</li>
+      </ul>
+    </div>
+    <div class="container mb-3 p-4">
+      <h2>多种颜色列表组</h2>
+      <ul class="list-group">
+        <li class="list-group-item list-group-item-primary">主要列表项</li>
+        <li class="list-group-item list-group-item-secondary">次要列表项</li>
+        <li class="list-group-item list-group-item-light">浅列表项</li>
+        <li class="list-group-item list-group-item-dark">深色列表项</li>
+        <li class="list-group-item list-group-item-success">成功列表项</li>
+        <li class="list-group-item list-group-item-info">信息列表项</li>
+        <li class="list-group-item list-group-item-warning">警告列表项</li>
+        <li class="list-group-item list-group-item-danger">危险列表项</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>
