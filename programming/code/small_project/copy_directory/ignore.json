@@ -1,0 +1,22 @@
+{
+  "directories": [
+    "a",
+    ".git",
+    ".vscode",
+    ".idea",
+    "build",
+    "__pycache__",
+    "node_modules",
+    ".dart_tool",
+    ".gradle"
+  ],
+  "files": [
+    ".DS_Store",
+    "api_key.json",
+    "flutter_example.iml",
+    "template.aux",
+    "template.log",
+    "template.pdf",
+    "template.synctex.gz"
+  ]
+}
