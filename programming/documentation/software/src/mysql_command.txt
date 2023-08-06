@@ -1,0 +1,96 @@
+打开数据库 show databases
+创建数据库 create database+数据库名
+删除数据库 drop database+数据库名
+进入数据库 use+数据库名
+
+对数据表增删改查
+查看数据表 show tables
+创建数据表 create table (字段1 类型, 字段2 类型)
+删除数据表 drop table
+修改表名   alter table 表名 rename 新表名
+
+对数据表里的字段进行操作
+字段定义：字段名+字段类型
+desc+表名 查看表的定义
+添加字段 alter table 表名 add 字段定义
+删除字段 alter table 表名 drop 字段名
+修改字段 alter table 表名 change 旧的字段名 字段定义
+修改字段类型 alter table 表名 modify 字段名 新的字段类型
+
+给字段添加数据（记录）
+添加一条记录 insert into 表名 (字段名, 字段名) value (值, 值)
+添加多条记录 insert into 表名 values(值1, 值2)(值1, 值2)(值1, 值2)
+添加不指定字段名的语法 insert into 表名 values (值1, 值2)
+
+查看记录
+查看所有的字段记录 select * from 表名
+查看单个的字段记录 select id from 表名
+查看多个字段的记录 select id,age from 表名
+
+查询记录
+按条件查询 select * from 表名 where 条件
+条件表达式 > < >= <= != 且and 或or
+
+排序查询
+select * from 表名 order by 字段名 asc/desc
+asc 由低到高 desc 由高到低
+
+限制查询
+select * from 表名 limit 2,5 从第二个开始向后查五个（不包括第二个）
+select * from 表名 limit 5 查询五个
+
+删除记录
+删除所有 delete from 表名
+按条件删 delete from 表名 where id=3 删除id为3的记录
+
+修改记录
+update 表名 set 字段名=值 如果不带条件，会更改字段的所有记录
+update 表名 set 字段名=值 where 字段名=值
+
+数据类型
+char int smallint single double money date
+创建表
+create table table_name(字段1 类型, 字段2 类型, ..., primary key(字段), foreign key(字段) references  another_table_name(字段))
+添加新的字段
+alter table table_name add 字段 类型
+修改字段的类型
+alter table table_name modify column 字段 新类型
+删除字段
+alter table table_name drop column 字段
+删除表
+drop table table_name
+
+创建索引
+create index index_name on table_name(字段)
+唯一性索引
+create unique index index_name on table_name(字段)
+
+插入数据
+insert into table_name(字段1, 字段2, ...) value (value1, value2, ...)
+insert into table_name values(value1, value2, ...)
+更新数据
+update table_name set 字段1=value1, 字段2=value2, ... where 字段1=value2 ...
+删除数据
+delete from table_name where 字段1=value, ...
+
+查询数据
+select 字段1, 字段2, ... from table_name where 字段1, 字段2, ...
+select * from table_name where 字段1, 字段2, ...
+select 字段1, 字段2 as 新字段, ... from table_name where 字段1, 字段2, ...
+用于条件判断
+like, not like, between ... and ..., in, not in
+
+排序
+select 字段1, 字段2, ... from table_name where 字段1, 字段2, ... order by 字段 [desc] [asc]
+并
+select ... union select ...
+聚集函数
+avg sum min max count count(distinct())
+group by, having
+空值
+is null, is not null
+联接
+from table_name1 xxx join table_nam2 on (条件)
+inner join, natural join, left outer join, right outer join, 自联接
+嵌套查询
+select 字段 from table_name where 字段 [not] in(select 字段 from table_name where 字段)

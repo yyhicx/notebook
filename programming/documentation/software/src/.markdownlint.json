@@ -1,0 +1,9 @@
+{
+  "default": true,
+  "MD013": { "line_length": 80 },
+  "MD024": { "siblings_only": true },
+  "MD029": { "style": "ordered" },
+  "MD030": { "ul_multi": 3, "ol_multi": 2 },
+  "MD033": false,
+  "MD046": { "style": "fenced" }
+}
