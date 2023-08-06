@@ -1,0 +1,20 @@
+toolbox:
+  stack:
+    languages: dart
+    frameworks and libraries: flutter
+xish:
+  stack:
+    languages: javascript
+    frameworks and libraries: react + nextjs + tailwind
+fish:
+  stack:
+    languages: dart + python
+    frameworks and libraries: flutter + django
+guge:
+  stack:
+    languages: python
+    frameworks and libraries: pytorch
+xin:
+  stack:
+    languages: python
+    frameworks and libraries: pytorch
