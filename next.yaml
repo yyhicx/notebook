@@ -6,6 +6,10 @@ xish:
   stack:
     languages: javascript
     frameworks and libraries: react + nextjs + tailwind
+backbone:
+  stack:
+    languages: python
+    frameworks and libraries: django
 fish:
   stack:
     languages: dart + python
