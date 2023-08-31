@@ -15,8 +15,9 @@ This folder contains my small personal open source projects.
     3.  file_type_classification
     4.  json2spreadsheet
     5.  latex2png
-    6.  ocr
-    7.  pinout
-    8.  sort_css_property
-    9.  split_string
-    10.  translator
+    6.  naming_convention
+    7.  ocr
+    8.  pinout
+    9.  sort_css_property
+    10.  split_string
+    11.  translator
