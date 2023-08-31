@@ -11,8 +11,6 @@ if __name__ == '__main__':
   # filter out empty strings
   substrings = [substring for substring in substrings if substring]
 
-  print(substrings)
-
   option = sys.argv[1]
   if option == '-c':
     substrings[0] = substrings[0].lower()
