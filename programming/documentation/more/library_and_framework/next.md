@@ -54,3 +54,53 @@ yarn create next-app --typescript
         *   服务器渲染：在每次页面请求时重新生成HTML。
 
 ## API参考
+
+## 部署
+
+将项目源文件上传至云服务器并执行如下命令：
+
+```bash
+yarn install
+yarn build
+```
+
+编辑`/etc/nginx/sites-available/default`文件：
+
+```txt
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    root /var/www/html;
+
+    server_name domain_name;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+
+        # First attempt to serve request as file, then
+        # as directory, then fall back to displaying a 404.
+        # try_files $uri $uri/ =404;
+    }
+}
+```
+
+重启nginx服务器：
+
+```bash
+sudo nginx -t # check syntax errors
+sudo systemctl restart nginx
+```
+
+安装并使用pm2：
+
+```bash
+yarn global add pm2
+
+pm2 start --name frontend_name yarn --watch -- start
+```
