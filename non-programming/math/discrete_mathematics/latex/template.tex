@@ -1,0 +1,104 @@
+\documentclass{ctexart}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{subfigure}
+\usepackage[graphicx]{realboxes}
+\counterwithin{figure}{section}
+
+\begin{document}
+
+\section{归谬法}
+\flushleft{设要证明$H_1 \land H_2 \land ... \land H_n \Rightarrow C$，其中$H_1$、$H_2$、...、$H_n$和C是命题公式。}
+\begin{align*}
+&\text{令：} &S &\Leftrightarrow H_1 \land H_2 \land ... \land H_n \\
+&\text{则上式可以简化为：} &S &\Rightarrow C \\
+&\text{由蕴涵的定义有：} &1 &\Leftrightarrow S \rightarrow C \Leftrightarrow \lnot S \lor C \\
+&\text{两边否定：} &0 &\Leftrightarrow S \land \lnot C \Leftrightarrow H_1 \land H_2 \land ... \land H_n \land \lnot C
+\end{align*}
+\flushleft{上式等价下面两式：}
+\begin{align*}
+&0 \Rightarrow H_1 \land H_2 \land ... \land H_n \land \lnot C &\text{（显然成立）} \\
+&H_1 \land H_2 \land ... \land H_n \land \lnot C \Rightarrow 0
+\end{align*}
+\flushleft{所以要证明：$H_1 \land H_2 \land ... \land H_n \Rightarrow C$，只需要证明：}
+\begin{align*}
+H_1 \land H_2 \land ... \land H_n \land \lnot C \Rightarrow 0
+\end{align*}
+\flushleft{其中，$\lnot C$叫做附加前提。这种间接推理方法称为归谬法，也称为反证法。}
+
+\newpage
+
+\section{CP规则}
+\flushleft{有时要证明的有效结论是一个条件命题，即要证明：}
+\begin{align*}
+H_1 \land H_2 \land ... \land H_n \Rightarrow (A \rightarrow B)
+\end{align*}
+\begin{align*}
+&\text{令：} &S & \Leftrightarrow H_1 \land H_2 \land ... \land H_n \\
+&\text{则上式可以简化为：} &S & \Rightarrow (A \rightarrow B) \\
+&\text{由蕴涵的定义有：} &1 &\Leftrightarrow S \rightarrow (A \rightarrow B) \Leftrightarrow \lnot S \lor (\lnot A \lor B) \\
+& & &\Leftrightarrow (\lnot S \lor \lnot A) \lor B \Leftrightarrow \lnot (S \land A) \lor B \\
+& & &\Leftrightarrow (S \land A) \rightarrow B \\
+& & &\Leftrightarrow H_1 \land H_2 \land ... \land H_n \land A \rightarrow B
+\end{align*}
+\flushleft{即 $\quad H_1 \land H_2 \land ... \land H_n \land A \Rightarrow B$}
+\flushleft{所以，要证明$H_1 \land H_2 \land ... \land H_n \Rightarrow (A \rightarrow B)$，只需要证明：}
+\begin{align*}
+H_1 \land H_2 \land ... \land H_n \land A \Rightarrow B
+\end{align*}
+\flushleft{其中A叫做附加前提。这种间接推理方法称为CP规则。}
+
+\newpage
+
+\section{命题表示的例题}
+\flushleft{第一题，用谓词表示命题：}
+\begin{align*}
+\text{对任意整数x，}x^2 - 1 = (x+1)(x-1)\text{是恒等式}
+\end{align*}
+\flushleft{令$I(x): x$是整数，$f(x)=x^2-1$，$g(x)=(x+1)(x-1)$，$E(x, y): x = y$，则该命题可表示为：}
+\begin{align*}
+(\forall x)(I(x)\rightarrow E(f(x), g(x)))
+\end{align*}
+\flushleft{第二题，将命题“没有最大的自然数”符号化。}
+\flushleft{解析：命题中“没有最大的”显然是对所有的自然数而言，所以可理解为“对所有x，如果x是自然数，则一定还有比x大的自然数”，再具体点，即“对所有的x如果x是自然数，则一定存在y，y也是自然数，且y比x大”。}
+\flushleft{令$N(x): x$是自然数，$G(x, y): $x大于y，则原命题表示为：}
+\begin{align*}
+(\forall x)(N(x)\rightarrow (\exists y)(N(y) \land G(y, x)))
+\end{align*}
+
+\newpage
+
+\section{谓词演算的等价式和蕴涵式}
+\flushleft{1.量词否定等价式：}
+\begin{align*}
+\lnot(\forall x)A \Leftrightarrow (\exists x)\lnot A \\
+\lnot(\exists x)A \Leftrightarrow (\forall x)\lnot A
+\end{align*}
+\flushleft{2.量词辖域缩小或扩大等价式：}
+\flushleft{设B是不含x自由出现，A(x)为有x自由出现的任意公式，则有：}
+\begin{align*}
+(\forall x)(A(x) \land B) \Leftrightarrow (\forall x)A(x) \land B \\
+(\forall x)(A(x) \lor B) \Leftrightarrow (\forall x)A(x) \lor B \\
+(\forall x)(A(x) \rightarrow B) \Leftrightarrow (\exists x)A(x) \rightarrow B \\
+(\forall x)(B \rightarrow A(x)) \Leftrightarrow B \rightarrow (\forall x)A(x) \\
+(\exists x)(A(x) \land B) \Leftrightarrow (\exists x)A(x) \land B \\
+(\exists x)(A(x) \lor B) \Leftrightarrow (\exists x)A(x) \lor B \\
+(\exists x)(A(x) \rightarrow B) \Leftrightarrow (\forall x)A(x) \rightarrow B \\
+(\exists x)(B \rightarrow A(x)) \Leftrightarrow B \rightarrow (\exists x)A(x)
+\end{align*}
+\flushleft{3.量词分配律等价式：}
+\flushleft{设A(x)，B(x)为有x自由出现的任何公式：}
+\begin{align*}
+(\forall x)(A(x) \land B(x)) \Leftrightarrow (\forall x)A(x) \land (\forall x)B(x) \\
+(\exists x)(A(x) \lor B(x)) \Leftrightarrow (\exists x)A(x) \lor (\exists x)B(x)
+\end{align*}
+\flushleft{4.蕴涵式：}
+\begin{align*}
+&(\forall x)P(x) \Rightarrow (\forall x)P(x) \lor (\exists y)Q(y) &\text{附加规则} \\
+&((\forall x)P(x) \rightarrow Q(x, y)) \land (\forall x)P(x) \Rightarrow Q(x, y) &\text{假言推理} \\
+&(\forall x)A(x) \lor (\forall x)B(x) \Rightarrow(\forall x)(A(x)\lor B(x)) \\
+&(\exists x)(A(x) \land B(x)) \Rightarrow (\exists x)A(x) \land (\exists x)B(x)
+\end{align*}
+
+\end{document}
