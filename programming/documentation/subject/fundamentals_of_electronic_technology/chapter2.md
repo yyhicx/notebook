@@ -292,3 +292,5 @@
             *   ![分压式偏置共发射极放大电路的交流分析](resources/ac_analysis_of_voltage_divider_bias_common_emitter_amplifier_circuit.png)
 
 固定偏置共集放大电路基本电路特性：
+
+![固定偏置共集电极放大电路](resources/fixed_bias_common_collector_amplifier_circuit.png)
