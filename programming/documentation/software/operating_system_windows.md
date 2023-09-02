@@ -11,4 +11,5 @@ Software:
 *   visual studio code
 *   clion
 *   android studio
+*   master go
 *   v2rayn

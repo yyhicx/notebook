@@ -10,7 +10,7 @@
 Folders:
 
 *   /workspace
-*   /site
+*   /frontend
 *   /backend
 *   /download
 
@@ -37,6 +37,8 @@ Python3:
 *   apt install python3-dev
 *   pip
 
+NodeJS And NPM
+
 Apache:
 
 *   apt install apache2
@@ -49,7 +51,56 @@ MySQL
 
 Git: apt install git
 
-NodeJS And NPM
+V2ray:
+
+*   配置除config.json外所有的文件：
+
+    ```bash
+    # 下载，解压，打开文件夹
+    wget https://github.com/v2fly/v2ray-core/releases/download/v4.31.0/v2ray-linux-64.zip
+
+    unzip v2ray-linux-64.zip -d v2ray-linux-64
+
+    cd v2ray-linux-64
+
+    # 添加权限
+    chmod 755 v2ray
+    chmod 755 v2ctl
+    chmod 755 systemd/system/v2ray.service
+    chmod 755 systemd/system/v2ray@.service
+
+    # 复制文件
+    cp v2ray /usr/local/bin/
+    cp v2ctl /usr/local/bin/
+    cp systemd/system/v2ray.service /etc/systemd/system/
+    cp systemd/system/v2ray@.service /etc/systemd/system/
+
+    mkdir /usr/local/share/v2ray/
+    cp geoip.dat /usr/local/share/v2ray/
+    cp geosite.dat /usr/local/share/v2ray/
+    ```
+
+*   配置config.json文件：
+    *   从Windows下的v2rayN客户端下找到需要的服务器，`右键`->`导出所选服务器为客户端配置`，保存为config.json。
+    *   将编写好的文件写入：
+
+        ```bash
+        mkdir /usr/local/etc/v2ray/
+        vim /usr/local/etc/v2ray/config.json
+        ```
+
+*   启动：
+
+```bash
+# 启动 v2ray
+sudo systemctl start v2ray
+
+# 检查 v2ray 状态
+sudo systemctl status v2ray
+
+# 设置 v2ray 开机自启动
+sudo systemctl enable v2ray
+```
 
 Vmess:
 
@@ -160,6 +211,6 @@ server {
   listen 80 default_server;
   listen [::]:80 default_server;
 
-  root /site/frontend/build
+  root /var/www/html;
 }
 ```
