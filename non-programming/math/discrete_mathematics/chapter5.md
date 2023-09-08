@@ -1,5 +1,10 @@
 # 关系与函数
 
+1.  [关系及其性质](#关系及其性质)
+2.  [关系的运算](#关系的运算)
+3.  [等价关系与序关系](#等价关系与序关系)
+4.  [函数](#函数)
+
 ## 关系及其性质
 
 关系及其表示：
@@ -89,12 +94,153 @@
 
 复合运算：设R是从A到B的二元关系，S是从B到C的二元关系，定义`R○S={<x, z> | ∃y(<x, y>∈R∧<y, z>∈S)}`，称`R○S为R和S的复合关系`。
 
-重要提示：
+*   重要提示：
+    *   上述定义的关系复合属于右复合，本课程如无特殊说明，均指右复合。
+    *   可以类似的定义左复合。
+    *   本课程中，函数的复合也定义为右复合。
+*   设F、G、H是任意的关系，则：
+    *   <code>(F○G)○H = F○(G○H)</code>。
+    *   <code>(F○G)<sup>-1</sup> = G<sup>-1</sup>○F<sup>-1</sup></code>。
+*   设集合A，B，C均为有限集，<code>A={a<sub>1</sub>, a<sub>2</sub>, ..., a<sub>m</sub>}</code>，<code>B={b<sub>1</sub>, b<sub>2</sub>, ..., b<sub>n</sub>}</code>，<code>C={c<sub>1</sub>, c<sub>2</sub>, ..., c<sub>p</sub>}</code>，R是A到B的二元关系，S是B到C的二元关系，则<code>M<sub>R○S</sub>=M<sub>R</sub>⊙M<sub>S</sub></code>。
+*   设R是A上的关系，n为自然数，则R的`n次幂`定义为：
+    *   <code>R<sup>0</sup>={<x, x> | x∈A}=I<sub>A</sub></code>。
+    *   <code>R<sup>n+1</sup>=R<sup>n</sup>○R</code>。
+    *   注意：
+        *   对于A上的任何关系R<sub>1</sub>和R<sub>2</sub>都有R<sub>1</sub><sup>0</sup>=R<sub>2</sub><sup>0</sup>=I<sub>A</sub>。
+        *   对于A上的任何关系R都有R<sup>1</sup>=R。
+        *   对于集合表示的关系R，计算R<sup>n</sup>就是n个R右复合。
+*   设A为n元集（|A|=n），R是A上的关系，则存在自然数s和t（s≠t），使得<code>R<sup>s</sup>=R<sup>t</sup></code>。
+    *   证明R<sup>s</sup>=R<sup>t</sup>：R为A上的关系，由于|A|=n，A上的不同关系只有2<sup>n<sup>2</sup></sup>个，所以一定存在s和t使得R<sup>s</sup>=R<sup>t</sup>（抽屉原理）。
+*   设R是A上的关系，<code>m, n∈N</code>，则：
+    *   <code>R<sup>m</sup>○R<sup>n</sup>=R<sup>m+n</sup></code>。
+    *   <code>(R<sup>m</sup>)<sup>n</sup>=R<sup>mn</sup></code>。
 
-*   上述定义的关系复合属于右复合，本课程如无特殊说明，均指右复合。
-*   可以类似的定义左复合。
-*   本课程中，函数的复合也定义为右复合。
+关系闭包：
+
+*   设R是非空集合A上的关系，R的`自反`（`对称`或`传递`）闭包是A上的关系R'，使得R'满足以下条件：
+    *   R'是自反的（对称的或传递的）。
+    *   R⊆R'（R'比R只大不小）。
+    *   对A上任何包含R的自反（对称或传递）关系R''有R'⊆R''（R'要添加最少的元素以满足自反、对称或传递性质）。
+*   简述上面的三个条件：自反（对称、传递）闭包就是包含R的最小的自反（对称、传递）闭包
+*   一般将R的自反闭包记作r(R)，对称闭包记作s(R)，传递闭包记作t(R)。
+*   求闭包：设R为有穷集合A（|A|=n）上的关系，则有：
+    1.  <code>r(R) = R∪I<sub>A</sub></code>。
+    2.  <code>s(R) = R∪R<sup>-1</sup></code>。
+    3.  <code>t(R) = R∪R<sup>2</sup>∪R<sup>3</sup>∪...∪R<sup>n</sup></code>。
+    *   如果A为无穷集合，<code>t(R) = R∪R<sup>2</sup>∪R<sup>3</sup>∪...∪R<sup>n</sup>∪...</code>。
+
+关系性质与关系运算的总结：
+
+1.  判断关系性质的充要条件（设R为A上的关系）：
+    1.  R在A上`自反`当且仅当<code>I<sub>A</sub>⊆R</code>。
+    2.  R在A上`反自反`当且仅当<code>R∩I<sub>A</sub>=Ø</code>。
+    3.  R在A上`对称`当且仅当<code>R=R<sup>-1</sup></code>。
+    4.  R在A上`反对称`当且仅当<code>R∩R<sup>-1</sup>⊆I<sub>A</sub></code>。
+    5.  R在A上`传递`当且仅当<code>R○R⊆R</code>。
+2.  运算与性质的关系：
+3.  闭包运算：
+    1.  设R<sub>1</sub>和R<sub>2</sub>为A上的关系，且R<sub>1</sub>⊆R<sub>2</sub>，则：
+        1.  <code>r(R<sub>1</sub>)⊆r(R<sub>2</sub>)</code>。
+        2.  <code>s(R<sub>1</sub>)⊆s(R<sub>2</sub>)</code>。
+        3.  <code>t(R<sub>1</sub>)⊆t(R<sub>2</sub>)</code>。
+    2.  设R和S都是A上的关系，则：
+        1.  <code>r(R∪S)=r(R)∪r(S)</code>。
+        2.  <code>s(R∪S)=r(R)∪r(S)</code>。
+        3.  <code>t(R)∪t(S)⊆t(R∪S)</code>。
+    3.  设R是集合A上的关系，则：
+        1.  如果R是自反的，那么s(R)和t(R)也是自反的。
+        2.  如果R是对称的，那么r(R)和t(R)也是对称的。
+        3.  如果R是传递的，那么r(R)也是传递的。
+    4.  设R是集合上的关系：则：
+        1.  <code>rs(R)=sr(R)</code>。
+        2.  <code>rt(R)=tr(R)</code>。
+        3.  <code>st(R)⊆ts(R)</code>。
 
 ## 等价关系与序关系
 
+特殊的二元关系：
+
+![特殊的二元关系](resources/special_binary_relations.png)
+
+划分：
+
+*   设A为非空集合，<code>π={S<sub>1</sub>, S<sub>2</sub>, ..., S<sub>m</sub>}, S<sub>i</sub>≠Ø, i=1, ..., m</code>，且满足：
+    1.  <code>∀S<sub>i</sub>∈π，S<sub>i</sub>⊆A</code>。
+    2.  <code>S<sub>1</sub>∪S<sub>2</sub>∪...∪S<sub>m</sub>=A</code>。
+    3.  <code>S<sub>i</sub>∩S<sub>j</sub>=Ø，i≠j</code>。
+*   则称π是A的一个`划分`。称<code>S<sub>i</sub>, i=1, ..., m</code>，是A的`划分块`。
+*   定义中<code>S<sub>i</sub>∩S<sub>j</sub>=Ø，i≠j</code>是指π中元素两两互不相交。
+
+等价关系：
+
+*   设R为非空集合A上的关系。如果R是自反的、对称的和传递的，则称R为A上的`等价关系`。设R是一个等价关系，若`<x, y>∈R`，则记作`x~y`，读作x等价于y。
+*   实例：设A={1, 2, ..., 8}，如下定义A上的关系R：<code>R={<x, y> | x,y∈A ∧ x≡y(mod 3)}</code>，其中x≡y(mod 3)叫做x与y模3相等，即x除以3的余数与y除以3的余数相等。
+*   设R为非空集合A上的关系，`∀x∈A`，令<code>[x]<sub>R</sub>={y | y∈A ∧ xRy}</code>，称<code>[x]<sub>R</sub></code>为x关于R的`等价类`（也是一种划分块），简称为x的等价类，简记为`[x]`。
+*   上述实例中的等价类：
+    1.  [1] = [4] = [7] = {1, 4, 7}。
+    2.  [2] = [5] = [8] = {2, 5, 8}。
+    3.  [3] = [6] = {3, 6}。
+*   设R为非空集合A上的等价关系，则：
+    1.  ∀x∈A，[x]是A的非空子集。
+    2.  ∀x,y∈A，如果xRy，则[x]=[y]。
+    3.  ∀x,y∈A，如果x$R\mkern-10.5mu/$y，则[x]与[y]不交。
+    4.  ∪{[x] | x∈A}=A，即所有等价类的并集就是A。
+*   设R为非空集合A上的等价关系，以R的所有等价类作为元素的集合称为A关于R的商集，记作`A/R`，<code>A/R={[x]<sub>R</sub>|x∈A}</code>。
+*   上述实例中的商集：A/R={[1], [2], [3]}。
+*   等价关系与集合划分的一一对应：
+    *   商集A/R就是A的一个划分。
+    *   任给A的一个划分π，如下定义A上的关系R：`R={<x, y> | x,y∈A ∧ x与y在π的同一划分块中}`，则R为A上的等价关系，且该等价关系确定的商集就是π。
+
+序关系：
+
+*   非空集合A上的自反、反对称和传递的关系，称为A上的`偏序关系`，记作`≤`。设≤为偏序关系，若`<x, y>∈≤`，则记作x≤y，读作x“小于或等于”y。
+*   集合A和A上的偏序关系≤一起叫做偏序集，记作<A, ≤>。
+*   典型的偏序关系：整除关系、包含关系。
+*   `x与y可比`：设R为非空集合A上的偏序关系，<code>x,y∈A，x与y可比 ⇔ x≤y ∨ y≤x</code>。
+*   R为非空集合A上的偏序，`∀x,y∈A`，x与y都是可比的，则称R为`全序`（或`线序`）。
+*   典型的全序关系：数集上的小于或等于关系。
+*   覆盖关系：
+    *   设R为非空集合A上的偏序关系，x,y∈A，如果x < y，且不存在z∈A使得x < z < y，则称y`覆盖`x。
+    *   <code>COV A = {<a, b> | a∈A ∧ b∈A ∧ b覆盖a}</code>。
+*   哈斯图：
+    *   利用偏序自反、反对称、传递性简化的关系图。
+    *   特点：每个结点没有环，两个连通的结点之间的序关系通过结点位置的高低表示，位置低的元素的顺序在前，具有覆盖关系的两个结点之间连边。
+    *   <P({a, b, c}), R<sub>⊆</sub>>的哈斯图：
+
+        ![哈斯图的示例](resources/example_of_hasse.png)
+
+*   偏序集中的特殊元素：
+    *   设<A, ≤>为偏序集，B⊆A，`y∈B`：
+        1.  若∀x(x∈B→y≤x)成立，则称y为B的`最小元`。
+        2.  若∀x(x∈B→x≤y)成立，则称y为B的`最大元`。
+        3.  若¬∃x(x∈B∧x < y)成立，则称y为B的`极小元`。
+        4.  若¬∃x(x∈B∧y < x)成立，则称y为B的`极大元`。
+    *   最大元、最小元、极大元、极小元都是在子集B的范围内定义。都不一定存在；如果存在，最大（小）元是唯一的，极大（小）元不唯一。
+    *   设<A, ≤>为偏序集，B⊆A，`y∈A`：
+        1.  若∀x(x∈B→x≤y)成立，则称y为B的`上界`。
+        2.  若∀x(x∈B→y≤x)成立，则称y为B的`下界`。
+        3.  令C={y | y为B的上界}，则称C的最小元为B的`最小上界`（或`上确界`）。
+        4.  令D={y | y为B的下界}，则称D的最大元为B的`最大下界`（或`下确界`）。
+
 ## 函数
+
+函数的概念：
+
+*   设F为二元关系，若`∀x∈domF`都存在`唯一的y∈ranF`使`xFy成立`，则称F为`函数`。
+*   对于函数F，如果有xFy，则记作y=F(x)，并称y为F在x的值。
+*   设A，B为集合，如果f为函数，domf=A，ranf⊆B，则称f为`从A到B的函数`，记作`f: A→B`。
+*   设F、G为函数，则：
+    *   `F=G ⇔ F⊆G∧G⊆F`。
+    *   如果两个函数F和G相等，一定满足下面两个条件：
+        1.  `domF = domG`。
+        2.  `∀x∈domF=domG都有F(x)=G(x)`。
+*   所有从A到B的函数的集合记作B<sup>A</sup>，读作“B上A”，符号化表示为：<code>B<sup>A</sup>={f | f:A→B}</code>。如果|A|=m，|B|=n，且m>0，n>0，|B<sup>A</sup>|=n<sup>m</sup>。
+*   设函数f是A到B的关系，如果A<sub>1</sub>⊆A，A<sub>1</sub>在f下的`像`：<code>f(A<sub>1</sub>)={f(x) | x∈A<sub>1</sub>}</code>。
+*   设`f: A→B`：
+    1.  若ranf=B，则称f是`满射`的。
+    2.  若∀y∈ranf都存在唯一的x∈A使得f(x)=y，则称f是`单射`的。
+    3.  如果f即是满射又是单射，则称f是`双射`的。
+*   设F，G是函数，则`F○G也是函数`，且满足：
+    1.  `dom(F○G)={x | x∈domF ∧ F(x)∈domG}`。
+    2.  `∀x∈dom(F○G)有F○G(x)=G(F(x))`。
+*   反函数：对于双射函数`f: A→B`，称<code>f<sup>-1</sup>: B→A</code>是它的`反函数`。
