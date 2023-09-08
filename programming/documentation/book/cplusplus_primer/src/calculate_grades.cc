@@ -11,14 +11,14 @@ int main(int argc, char* argv[]) {
     if (m <= 100)
       ++scores[m/10];
 
-  // A+ 100 – 90
-  // A  89 – 80
-  // B+ 79 – 70
-  // B  69 – 60
-  // C  59 – 50
-  // D  49 – 40
-  // E  39 – 30
-  // F  29 – 0
+  // A+: 100 ~ 90
+  // A:  89 ~ 80
+  // B+: 79 ~ 70
+  // B:  69 ~ 60
+  // C:  59 ~ 50
+  // D:  49 ~ 40
+  // E:  39 ~ 30
+  // F:  29 ~ 0
   std::cout << "There are " << scores[9] + scores[10] << " students with grade A+" << '\n'
             << "There are " << scores[8] << " students with grade A" << '\n'
             << "There are " << scores[7] << " students with grade B+" << '\n'
