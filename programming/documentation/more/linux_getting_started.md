@@ -145,7 +145,7 @@ cat /etc/issue
     | Ctrl + S          | 阻止屏幕输出                                               |
     | Ctrl + Q          | 允许屏幕输出                                               |
     | Ctrl + C          | 终止命令                                                   |
-    | Ctrl + Z          | 挂起命令（使用‘fg’命令恢复）                               |
+    | Ctrl + Z          | 挂起命令（使用'fg'命令恢复）                               |
 
 *   Bang（!）命令：
 
@@ -243,7 +243,7 @@ GCC、gcc和g++：
         #define __private_extern__ extern
         ```
 
-    *   在用gcc编译c++文件时，为了能够使用STL，需要加参数–lstdc++，但这并不代表gcc –lstdc++和g++等价，它们的区别不仅仅是这个。
+    *   在用gcc编译c++文件时，为了能够使用STL，需要加参数-lstdc++，但这并不代表gcc -lstdc++和g++等价，它们的区别不仅仅是这个。
 
 ```bash
 # 预处理
