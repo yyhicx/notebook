@@ -801,7 +801,7 @@ HTML DOM：
     // g - 修饰符用于执行全文搜索
     let str = 'Is this all there is?';
     let patt = /is/g;
-    str.match(patt);                     // return  ['is', 'is']
+    str.match(patt);                     // return ['is', 'is']
     // test 函数：搜索字符串指定的值，根据结果返回真假
     let patt = new RegExp('e');
     patt.test('The best things in life are free');  // return true
