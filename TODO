@@ -40,8 +40,6 @@ notebook:
   non-programming:
     chinese:
       college_chinese: chapter1
-    design:
-      grid_systems_in_graphic_design: chapter1
     english:
       new_concept_english: chapter1
       pets3: chapter1

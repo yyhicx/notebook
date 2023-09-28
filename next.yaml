@@ -1,7 +1,7 @@
 toolbox:
   stack:
-    languages: dart
-    frameworks and libraries: flutter
+    languages: dart + python
+    frameworks and libraries: flutter + django
 xish:
   stack:
     languages: javascript
