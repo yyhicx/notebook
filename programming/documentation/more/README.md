@@ -11,6 +11,21 @@ Common Issue:
 *   javascript
 *   python
 
+Compile:
+
+*   makefile
+*   cmake
+*   bazel
+
+Design:
+
+*   blender
+*   illustrator
+*   mastergo
+*   photoshop
+*   premiere pro
+*   web design
+
 Language:
 
 *   css
@@ -53,11 +68,9 @@ Else:
 *   job title abbreviations
 *   latex getting started
 *   linux getting started
-*   makefile cmake bazel
 *   open source license agreement and open source community
-*   photoshop illustrator mastergo
 *   qt5 class inheritance diagram
 *   regex getting started
 *   step
+*   symbol
 *   the syntax format of command line parameters
-*   web design
