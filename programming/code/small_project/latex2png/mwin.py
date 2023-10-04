@@ -107,7 +107,7 @@ class UiMWin():
     self.retranslate_ui(mwin)
 
   def retranslate_ui(self, mwin):
-    translate = QtCore.QCoreApplication.translate  #
+    translate = QtCore.QCoreApplication.translate
     mwin.setWindowTitle(translate('mwin', 'Latex2Png'))
     self.latex_label.setText(translate('mwin', 'Latex: '))
     self.latex_text.setPlaceholderText(translate('mwin', 'Please enter '
