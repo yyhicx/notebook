@@ -1,11 +1,12 @@
 # Python中常见问题
 
 1.  [Python中下划线的五种含义](#python中下划线的五种含义)
-2.  [推导式和生成器](#推导式和生成器)
-3.  [装饰器](#装饰器)
-4.  [类型注解](#类型注解)
-5.  [并发编程](#并发编程)
-6.  [Python中加密的方法](#python中加密的方法)
+2.  [Python面向对象编程](#python面向对象编程)
+3.  [推导式和生成器](#推导式和生成器)
+4.  [装饰器](#装饰器)
+5.  [类型注解](#类型注解)
+6.  [并发编程](#并发编程)
+7.  [Python中加密的方法](#python中加密的方法)
 
 ## Python中下划线的五种含义
 
@@ -60,6 +61,100 @@
 >>> _.append(3)
 >>> _
 [1, 2, 3]
+```
+
+## Python面向对象编程
+
+类（Class）：用来描述具有相同属性（Attribute）和方法（Method）对象的集合。
+
+对象（Object）：类（Class）的具体实例。
+
+类变量（Class Variables）与实例变量（Instance Variables）的区别很大，访问方式也不一样。
+
+*   类变量：类变量在整个实例化的对象中是公用的。类变量定义在类中且在函数体之外。访问或调用类变量的正确方式是`类名.变量名`或者`self.__class__.变量名`。
+*   实例变量：定义在方法中的变量，属于某个具体的对象。访问或调用实例变量的正确方式是`对象名.变量名`或者`self.变量名`。
+
+类方法（Class Method）：属于类的方法，而不具体属于某个对象。属于类的方法不使用`self`参数，而使用参数`cls`，代表类本身。另外习惯上对类方法加上`@classmethod`的修饰符做说明。
+
+私有属性（Private Attribute）和私有方法（Private Method）：以双下划线开头，不能被类的外部使用或直接使用。
+
+`@property`：该装饰器把函数伪装成属性。
+
+静态变量（Static Variable）和静态方法（Static Method）：通常用于在类的上下文中执行一些操作，但不需要访问类或实例的属性。另外习惯上对静态方法加上`@staticmethod`的修饰符做说明。
+
+```python
+# Student 类
+class Student:
+  number = 0 # 类变量
+
+  # 初始化方法，name 和 score 是实例变量，其中 score 属于私有变量
+  def __init__(self, name, score):
+    self.name = name
+    self.__score = score
+    Student.number = Student.number + 1
+
+  def __str__(self):
+    return 'Name: {}: Score: {}'.format(self.name, self.__score)
+
+  # 利用 property
+  @property
+  def score(self):
+    return self.__score
+
+  # 定义类方法
+  @classmethod
+  def total(cls):
+    return cls.number
+
+  # 定义静态方法
+  @staticmethod
+  def func():
+    return 'This is Static Function!'
+
+student = Student('John', 100) # 实例化，创建 Student 对象
+print(student)
+print(student.score)
+print('Total: {}'.format(Student.total()))
+print(Student.func())
+```
+
+类的继承（Inheritance）：定义一个基类（Base Class）或父类（Parent Class），再按通过`class child_class(parent_class)`来创建子类（Child Class）。
+
+*   在创建子类的过程中，需要手动调用父类的构造函数`__init__`来完成子类的构造。
+*   在子类中调用父类的方法时，需要加上父类的类名前缀，且需要带上self参数变量。可以通过`super`关键字简化代码。
+
+```python
+class SchoolMember:
+  def __init__(self, name, age):
+    self.name = name
+    self.age = age
+
+  def tell(self):
+    print('Name: {} Age: {}'.format(self.name, self.age), end='')
+
+class Teacher(SchoolMember):
+  def __init__(self, name, age, salary):
+    SchoolMember.__init__(self, name, age)
+    self.salary = salary
+
+  def tell(self):
+    SchoolMember.tell(self)
+    print('Salary: {}'.format(self.salary))
+
+class Student(SchoolMember):
+  def __init__(self, name, age, score):
+    super().__init__(name, age) # SchoolMember.__init__(self, name, age)
+    self.score = score
+
+  def tell(self):
+    super().tell() # SchoolMember.tell(self)
+    print('Score: {}'.format(self.score))
+
+teacher = Teacher('John', 44, '$6000')
+student = Student('Mary', 12, 99)
+
+teacher.tell()
+student.tell()
 ```
 
 ## 推导式和生成器
