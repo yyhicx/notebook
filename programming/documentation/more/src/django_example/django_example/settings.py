@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django_eventstream',
     'html_example',
     'jquery_example',
+    'polls',
 ]
 
 MIDDLEWARE = [

@@ -15,7 +15,7 @@
         if (typeof Worker !== 'undefined') {
           if (typeof w == 'undefined') {
             // Chrome 不允许通过本地文件访问使用 Web Worker
-            w = new Worker('{% static "js/demo_workers.js" %}');
+            w = new Worker('{% static "js/demo-workers.js" %}');
           }
           w.onmessage = function (event) {
             document.getElementById('result').innerHTML = event.data;
