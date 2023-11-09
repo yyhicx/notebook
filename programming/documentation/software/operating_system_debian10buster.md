@@ -115,7 +115,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)
 ufw allow 5000
 
 # 使用 warp，为 IPv4 only 添加 WARP 双栈网络接口
-wget -N https://raw.githubusercontent.com/fscarmen/warp/main/menu.sh && bash menu.sh
+wget -N https://gitlab.com/fscarmen/warp/-/raw/main/menu.sh && bash menu.sh
 ```
 
 ## Configuration Of Apache Server
