@@ -62,6 +62,7 @@ Style Guide:
 Else:
 
 *   alphabet
+*   docker getting started
 *   encoding format
 *   environment
 *   git usage specification and emoji list

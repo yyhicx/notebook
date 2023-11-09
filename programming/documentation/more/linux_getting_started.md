@@ -58,13 +58,81 @@ usr（unix shared resources）：用于存放共享的系统资源。
 command -options parameters
 ```
 
-![avatar](resources/linux_common_commands.png)
-
-查看操作系统：
-
-```bash
-cat /etc/issue
-```
+| Command  | Option      | Example                        | Description                                                                                                         |
+| -------- | ----------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| clear    |             | clear                          | 清屏                                                                                                                |
+| cd       |             | cd /home                       | 进入/home目录                                                                                                       |
+|          |             | cd -                           | 返回上次所在的目录                                                                                                  |
+| pwd      |             | pwd                            | 显示当前工作目录                                                                                                    |
+| touch    |             | touch newfile.txt              | 创建空文件                                                                                                          |
+| echo     |             | echo string > newfile.txt      | 创建带有内容的文件                                                                                                  |
+| mkdir    |             | mkdir newdir                   | 创建一个新目录                                                                                                      |
+|          | p           | mkdir -p dir1/dir2/dir3        | 创建多级目录，父目录不存在情况下先生成父目录                                                                        |
+| cp       |             | cp oldfile.txt newfile.txt     | 复制文件                                                                                                            |
+|          | r           | cp -r olddir/ newdir/          | 递归处理，将目录下的文件与子目录一并拷贝                                                                            |
+| mv       |             | mv olddir/ newdir/             | 移动文件或目录和文件或目录改名                                                                                      |
+| rm       |             | rm file.txt                    | 删除文件                                                                                                            |
+|          | r，f        | rm -rf dir/                    | r：删除该目录下的所有文件；f：强制删除文件或目录                                                                    |
+| rmdir    |             | rmdir emptydir                 | 删除空目录                                                                                                          |
+| ls       |             | ls                             | 显示目录中的文件                                                                                                    |
+|          | l           | ls -l                          | 显示文件和目录的详细情况                                                                                            |
+|          | a           | ls -a                          | 显示隐藏文件                                                                                                        |
+| cat      |             | cat file.txt                   | 显示文本文件内容                                                                                                    |
+|          |             | cat /etc/issue                 | 显示操作系统信息                                                                                                    |
+| more     |             | more file.txt                  | 分页显示文本文件内容，可前后翻页，空格向后，b向前                                                                   |
+| less     |             | less file.txt                  | 分页显示文本文件内容，可前后翻页，空格向后，b向前，支持底行模式                                                     |
+| head     |             | head file.txt                  | 查看文本开头部分，默认十行                                                                                          |
+|          | [num]       | head -20 file.txt              | 查看文本开头部分并指定行数                                                                                          |
+| tail     |             | tail file.txt                  | 查看文本结尾部分，默认十行                                                                                          |
+|          | [num]       | tail -20 file.txt              | 查看文本结尾部分并指定行数                                                                                          |
+|          | f           | tail -f file.txt               | 循环滚动读取文件并动态显示在屏幕上，根据文件属性追踪                                                                |
+|          | F           | tail -F file.txt               | 循环滚动读取文件并动态显示在屏幕上，根据文件名追踪                                                                  |
+| wc       |             | wc file.txt                    | 统计文本的行数、字数、字符数                                                                                        |
+|          | m           | wc -m file.txt                 | 文本字符数                                                                                                          |
+|          | w           | wc -w file.txt                 | 文本字数                                                                                                            |
+|          | l           | wc -l file.txt                 | 文本行数                                                                                                            |
+| find     | name        | find / -name file.txt          | 在指定目录下查找指定的文件                                                                                          |
+|          | user        | find / -user username          | 在指定目录下查找指定用户的文件                                                                                      |
+| grep     |             | grep string file.txt           | 在指定文件中查找包含指定字符串的行                                                                                  |
+| whereis  |             | whereis bash                   | 显示一个二进制文件、源码或man的位置（例如bash命令）                                                                 |
+| which    |             | which bash                     | 显示一个二进制文件或可执行文件的完整路径（例如bash命令）                                                            |
+| ln       |             | ln source.txt link.txt         | 建立链接文件                                                                                                        |
+|          | s           | ln -s source.txt link.txt      | 对源文件建立软链接，而非硬链接                                                                                      |
+| top      |             | top                            | 显示当前系统中耗费资源最多的进程                                                                                    |
+| date     |             | date                           | 显示系统当前时间                                                                                                    |
+| nohup    |             | nohup command > out.txt 2>&1 & | nohup是非挂断状态，&是后台运行                                                                                      |
+| ps       | e           | ps -e                          | 显示所有进程，环境变量                                                                                              |
+|          | f           | ps -ef                         | 全格式显示                                                                                                          |
+|          | a           | ps -a                          | 显示所有用户的进程                                                                                                  |
+|          | u           | ps -au                         | 按用户名和启动时间的顺序来显示进程                                                                                  |
+|          | x           | ps -aux                        | 显示无控制终端的进程                                                                                                |
+| kill     | 9           | kill -9 pid                    | 强制杀死一个进程                                                                                                    |
+| df       |             | df                             | 显示文件系统磁盘空间的使用情况                                                                                      |
+|          | h           | df -h                          | 以人类刻度方式显示，kb，mb，gb等                                                                                    |
+| du       |             | du dir/                        | 显示指定目录及其子目录使用的磁盘空间的总和                                                                          |
+|          | s           | du -s dir/                     | 显示指定目录的总和                                                                                                  |
+|          | h           | du -sh dir/                    | 以人类刻度方式显示，kb，mb，gb等                                                                                    |
+| free     |             | free                           | 显示当前内存和交换空间的使用情况                                                                                    |
+| ifconfig |             | ifconfig                       | 网卡网络配置，常用于查看当前IP地址                                                                                  |
+|          |             | ifconfig eth0 192.168.12.22    | 临时修改系统IP（重启后失效）                                                                                        |
+| ping     |             | ping baidu.com                 | 检测网络的连通性                                                                                                    |
+| who      |             | who                            | 显示在线登录用户                                                                                                    |
+| whoami   |             | whoami                         | 显示当前操作用户                                                                                                    |
+| hostname |             | hostname                       | 显示主机名                                                                                                          |
+| shutdown | r           | shutdown -r                    | 先关机再重启                                                                                                        |
+|          | h           | shutdown -h                    | 关机后不重启                                                                                                        |
+| halt     |             | halt                           | 关机后关闭电源，相当于shutdown -h                                                                                   |
+| reboot   |             | reboot                         | 重新启动，相当于shutdown -r                                                                                         |
+| gzip     |             | gzip file.txt                  | 压缩文件或文件夹                                                                                                    |
+|          | d           | gzip -d file.txt.gz            | 解压文件或文件夹                                                                                                    |
+|          | [num]       | gzip -9 file.txt               | 用指定数字num调整压缩的速度，-1或--fast表示最快压缩方法，-9或--best表示最慢压缩方法，系统缺省值为6                  |
+| tar      | c，v，f     | tar -cvf compress.tar file.txt | 压缩文件或文件夹                                                                                                    |
+|          | x，v，f     | tar -xvf compress.tar          | 解压文件或文件夹                                                                                                    |
+| chmod    |             | chmod u+r file.txt             | 修改文件或目录的权限，u表示当前用户，g表示同组用户，o表示其他用户，a表示所有用户，r表示可读，w表示可写，x表示可执行 |
+|          | R           | chmod -R u+r dir/              | 修改指定目录及其子目录的所有文件的权限                                                                              |
+|          | [three num] | chmod 764 file.sh              | 直接指定文件的权限                                                                                                  |
+| chown    |             | chown user:group file.txt      | 修改文件的所属用户和组                                                                                              |
+|          | R           | chown -R user:group file.txt   | 修改目录下所有文件及其子目录的所属用户和组                                                                          |
 
 ## Linux系统常用快捷键及符号命令
 
