@@ -4,23 +4,21 @@ notebook:
       book:
         cplusplus_primer: chapter3
         data_structures_and_algorithm_analysis_in_cplusplus: chapter1
-        beginning_linux_programming: chapter2
-        advanced_programming_in_the_unix_environment: chapter1
-        unix_network_programming: chapter1
-        css_the_definitive_guide: chapter1
-        professional_javascript_for_web_developers: chapter1
-        data_structures_and_algorithm_in_python: chapter1
-        python_cookbook: chapter2
-        python_for_data_analysis: chapter1
       more:
         - algorithm:
             - algorithm_getting_started
         - artificial_intelligence:
             - ai_getting_started
-            - learn_ai_with_andrew_ng
-            - learn_ai_with_hungyi_lee
+        - compile:
+            - makefile
+            - cmake
+        - design:
+            - photoshop
+            - illustrator
+            - mastergo
+            - c4d
+            - pr
         - language:
-            - advanced_cpp
             - dart
         - library_and_framework:
             - next
@@ -31,15 +29,11 @@ notebook:
             - typescript
             - dart
             - react
-        - makefile_cmake_bazel
-        - photoshop_illustrator_mastergo
       subject:
         fundamentals_of_electronic_technolog: chapter1
         software_engineering: chapter3
         principles_of_computer_composition: chapter1
   non-programming:
-    chinese:
-      college_chinese: chapter1
     english:
       new_concept_english: chapter1
       pets3: chapter1
@@ -49,16 +43,12 @@ notebook:
       discrete_mathematics: chapter1
       linear_algebar: chapter1
       probability_and_mathematical_statistics: chapter1
-      optimization_method: chapter1
     physics:
       college_physics: chapter1
     politics:
       basic_principles_of_marxism: chapter1
 
-merge into notebook:
-  - (15-16-PCPP-LW, knowledge) to notebook
-
-Modify errors in the document:
-  - structure error
-  - content error
-  - code error
+Attention:
+  - structure
+  - content
+  - code
