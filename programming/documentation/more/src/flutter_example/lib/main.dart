@@ -9,8 +9,8 @@ import 'package:fluro/fluro.dart';
 import 'src/theme/app.dart';
 
 // route
-import 'src/config/application.dart';
-import 'src/config/routes.dart';
+import 'src/routes/application.dart';
+import 'src/routes/routes.dart';
 
 void main() {
   // for test

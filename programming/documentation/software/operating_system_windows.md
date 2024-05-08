@@ -10,5 +10,11 @@ Software:
 *   chrome
 *   visual studio code
 *   clion
+*   pycharm
+*   typora
+*   postman
+*   navicat
 *   master go
+*   photoshop
+*   illustrator
 *   v2rayn

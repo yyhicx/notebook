@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'channels',
     'django_eventstream',
+    'rest_framework',
+    'blog',
     'html_example',
     'jquery_example',
     'polls',

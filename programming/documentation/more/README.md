@@ -1,25 +1,30 @@
 # More
 
+Algorithm
+
+*   algorithm getting started
+
 Artificial Intelligence:
 
-*   learn ai with andrew ng
-*   learn ai with hungyi lee
+*   ai getting started
 
 Common Issue:
 
 *   cpp
+*   css
+*   flutter
 *   javascript
 *   python
+*   react
 
 Compile:
 
 *   makefile
 *   cmake
-*   bazel
 
 Design:
 
-*   blender
+*   c4d
 *   illustrator
 *   mastergo
 *   photoshop

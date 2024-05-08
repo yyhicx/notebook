@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../config/application.dart';
+import '../routes/application.dart';
 
 final Map<String, Map<String, List<String>>> data = {
   'User Interface': {

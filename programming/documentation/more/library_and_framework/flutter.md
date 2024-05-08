@@ -35,10 +35,18 @@ src: open flutter_example project and run it
 
 ## 常用库
 
-Provider
+fluro
 
-Fluro
+dio
 
-SQFlite
+http
 
-Mdi
+file_picker
+
+bloc
+
+shared_preferences
+
+sqflite
+
+mdi

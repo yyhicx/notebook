@@ -9,6 +9,7 @@ Search Files: ctrl + p
 Extensions:
 
 *   Auto Rename Tag
+*   Black Formatter
 *   Chinese (Simplified) Language Pack for Visual Studio Code
     *   ctrl + shift + p
     *   display
@@ -47,7 +48,7 @@ Extensions:
     *   add new
     *   ssh://root:password@ip_address:22
 *   Remote - WSL
-*   VS Color Picker
+*   Tailwind CSS IntelliSense
 
 Unrecognized file type:
 

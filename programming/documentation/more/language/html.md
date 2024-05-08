@@ -51,6 +51,7 @@ HTML属性：
 *   属性可以在元素中添加附加信息。
 *   属性一般描述于开始标签。
 *   属性总是以名称/值对的形式出现，比如`name="value"`。
+*   如果属性名和属性值完全一样，可以简写为一个单词，比如`controls`。
 *   适用于大多数HTML元素的属性：
 
     | Attribute | Description                                        |
@@ -166,11 +167,11 @@ CSS (Cascading Style Sheets) 用于渲染HTML元素标签的样式。
 | 定义脚本           | script     |
 | 缺失脚本           | noscript   |
 | style              |            |
+| 强调，加粗         | strong     |
+| 强调，斜体         | em         |
 | 粗体               | b          |
-| 着重               | em         |
 | 斜体               | i          |
 | 小号字             | small      |
-| 加重语气           | strong     |
 | 下标字             | sub        |
 | 上标字             | sup        |
 | 插入字             | ins        |
@@ -221,13 +222,14 @@ document.write("Hello World!")
 <p>这个<br>段落<br>演示了分行的效果</p>
 <a href="https://www.runoob.com">这是一个链接</a>
 <a href="https://www.runoob.com/" target="_blank">访问菜鸟教程!</a>
+<a href="#">空链接</a>
 <img loading="lazy" src="/images/logo.png" width="258" height="39" alt="logo">
 <p>这是一个普通的文本- <b>这是一个加粗文本</b>。</p>
 <em>强调文本</em><br>
 <p>He named his car <i>The lightning</i>, because it was very fast.</p>
 <p><small> Copyright 1999-2050 by Refsnes Data.</small></p>
 <strong>加粗文本</strong><br>
-<p>这个文本包含 <sub>下标</sub>文本。</p>
+<p>这个文本包含 <sub>下标</sub> 文本。</p>
 <p>这个文本包含 <sup>上标</sup> 文本。</p>
 <p>My favorite color is <del>blue</del> <ins>red</ins>!</p>
 <div style="color:#0000FF">
@@ -236,23 +238,40 @@ document.write("Hello World!")
 </div>
 <p>我的母亲有 <span style="color:blue;font-weight:bold">蓝色</span> 的眼睛，我的父亲有 <span style="color:darkolivegreen;font-weight:bold">碧绿色</span> 的眼睛。</p>
 <label for="sitename">Website Name: </label>
-<!-- 带有边框的表格 -->
+<!-- 带有边框的表格，rowspan和colspan属性分别实现行列合并 -->
 <table border="1">
-  <tr>
-    <th>Header 1</th>
-    <th>Header 2</th>
-  </tr>
-  <tr>
-    <td>row 1, cell 1</td>
-    <td>row 2, cell 2</td>
-  </tr>
-  <tr>
-    <td>row 2, cell 1</td>
-    <td>row 2, cell 2</td>
-  </tr>
+  <thead>
+    <tr>
+      <th>Head 1</th>
+      <th>Head 2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>row 1, cell 1</td>
+      <td>row 2, cell 2</td>
+    </tr>
+    <tr>
+      <td>row 2, cell 1</td>
+      <td>row 2, cell 2</td>
+    </tr>
+    <tr>
+      <td>row 3, cell 1</td>
+      <td>row 3, cell 2</td>
+    </tr>
+    <tr>
+      <td>row 4, cell 1</td>
+      <td>row 4, cell 2</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td>Foot 1</td>
+      <td>Foot 2</td>
+    </tr>
+  </tfoot>
 </table>
 <!-- 无序列表 -->
-<h4>无序列表:</h4>
 <ul>
   <li>Coffee</li>
   <li>Tea</li>
@@ -264,12 +283,12 @@ document.write("Hello World!")
   <li>Tea</li>
   <li>Milk</li>
 </ol>
-<!-- 自定义列表，更像名词与其注释 -->
+<!-- 定义列表 -->
 <dl>
-<dt>Coffee</dt>
-<dd>- black hot drink</dd>
-<dt>Milk</dt>
-<dd>- white cold drink</dd>
+  <dt>Coffee</dt>
+  <dd>- black hot drink</dd>
+  <dt>Milk</dt>
+  <dd>- white cold drink</dd>
 </dl>
 <!-- 表单 -->
 <form>
@@ -280,7 +299,7 @@ document.write("Hello World!")
 <iframe loading="lazy" src="demo_iframe.html" width="200" height="200"></iframe>
 <!-- 画布 -->
 <p>Image to use:</p>
-<img id="scream" src="resources/canvas_example.jpg" alt="The Scream" width="220" height="277">
+<img id="scream" src="resources/canvas_example.jpg" alt="The Scream" title="The Scream" width="220" height="277">
 <p>Canvas:</p>
 <canvas id="myCanvas" width="250" height="500" style="border: 1px solid #c3c3c3;">
   您的浏览器不支持 HTML5 canvas 标签
