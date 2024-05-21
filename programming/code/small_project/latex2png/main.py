@@ -14,6 +14,7 @@ warnings.filterwarnings("ignore")
 # pylint: disable=wrong-import-position
 from PIL import ImageQt
 from PyQt5 import QtWidgets
+
 import latex2png as lp
 import mwin
 

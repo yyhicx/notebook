@@ -1,0 +1,5 @@
+| English           | Chinese        |
+| ----------------- | -------------- |
+| Hello             | 你好           |
+| How are you?      | 你好吗？       |
+| What's your name? | 你叫什么名字？ |
