@@ -10,6 +10,6 @@ const DraggableListPage = () => {
       <DraggableList />
     </Layout>
   );
-}
+};
 
 export default DraggableListPage;

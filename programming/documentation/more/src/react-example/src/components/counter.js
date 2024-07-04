@@ -21,7 +21,7 @@ const useStyles = makeStyles({
     },
     '&:not(:last-child)': {
       marginBottom: '16px',
-    }
+    },
   },
   value: {
     fontSize: '78px',
@@ -137,6 +137,6 @@ const Counter = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Counter;

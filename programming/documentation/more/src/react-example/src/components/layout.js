@@ -21,28 +21,39 @@ import { Link } from 'react-router-dom';
 const drawerWidth = 240;
 
 const pages = {
-  'React': ['FilterableProductTable', 'ContextExample', 'PortalExample',
-            'ProfilerExample', 'RenderPropsExample'],
-  'Redux': ['Counter', 'Todos'],
-  'Axios': ['Test2'],
-  'React-Spring': ['ReactSpringExample', 'AnimatedCard', 'AnimatedTree', 'DraggableList', 'Masonry'],
+  React: [
+    'FilterableProductTable',
+    'ContextExample',
+    'PortalExample',
+    'ProfilerExample',
+    'RenderPropsExample',
+  ],
+  Redux: ['Counter', 'Todos'],
+  Axios: ['Test2'],
+  'React-Spring': [
+    'ReactSpringExample',
+    'AnimatedCard',
+    'AnimatedTree',
+    'DraggableList',
+    'Masonry',
+  ],
 };
 
 const pageLinks = {
-  'FilterableProductTable': '/filterable-product-table',
-  'ContextExample': '/context-example',
-  'PortalExample': '/portal-example',
-  'ProfilerExample': '/profiler-example',
-  'RenderPropsExample': '/render-props-example',
-  'Counter': '/counter',
-  'Todos': '/todos',
-  'Test2': 'test2',
-  'ReactSpringExample': '/react-spring-example',
-  'AnimatedCard': '/animated-card',
-  'AnimatedTree': '/animated-tree',
-  'DraggableList': '/draggable-list',
-  'Masonry': '/masonry',
-}
+  FilterableProductTable: '/filterable-product-table',
+  ContextExample: '/context-example',
+  PortalExample: '/portal-example',
+  ProfilerExample: '/profiler-example',
+  RenderPropsExample: '/render-props-example',
+  Counter: '/counter',
+  Todos: '/todos',
+  Test2: 'test2',
+  ReactSpringExample: '/react-spring-example',
+  AnimatedCard: '/animated-card',
+  AnimatedTree: '/animated-tree',
+  DraggableList: '/draggable-list',
+  Masonry: '/masonry',
+};
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
@@ -63,22 +74,22 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   })
 );
 
-const AppBar = styled(MuiAppBar, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
+const AppBar = styled(MuiAppBar, {
+  shouldForwardProp: (prop) => prop !== 'open',
+})(({ theme, open }) => ({
+  transition: theme.transitions.create(['margin', 'width'], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    width: `calc(100% - ${drawerWidth}px`,
+    marginLeft: `${drawerWidth}px`,
     transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    ...(open && {
-      width: `calc(100% - ${drawerWidth}px`,
-      marginLeft: `${drawerWidth}px`,
-      transition: theme.transitions.create(['margin', 'width'], {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
     }),
   }),
-);
+}));
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -102,7 +113,7 @@ const Layout = (props) => {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar>
@@ -112,19 +123,19 @@ const Layout = (props) => {
             onClick={handleDrawerOpen}
             color="inherit"
             edge="start"
-            sx={{ mr: 2, ...(open && { display: 'none' })}}
+            sx={{ mr: 2, ...(open && { display: 'none' }) }}
           >
             <MenuIcon />
           </IconButton>
           <Typography
-              color="inherit"
-              variant="h6"
-              noWrap
-              component={Link}
-              to="/"
-              sx={{ textDecoration: "none", boxShadow: "none" }}
-            >
-              {props.name}
+            color="inherit"
+            variant="h6"
+            noWrap
+            component={Link}
+            to="/"
+            sx={{ textDecoration: 'none', boxShadow: 'none' }}
+          >
+            {props.name}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -143,7 +154,11 @@ const Layout = (props) => {
       >
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+            {theme.direction === 'ltr' ? (
+              <ChevronLeftIcon />
+            ) : (
+              <ChevronRightIcon />
+            )}
           </IconButton>
         </DrawerHeader>
         {/* <Divider />
@@ -178,19 +193,19 @@ const Layout = (props) => {
                   variant="h6"
                   noWrap
                   component="div"
-                  sx={{ textDecoration: "none", boxShadow: "none" }}
+                  sx={{ textDecoration: 'none', boxShadow: 'none' }}
                 >
                   {k}
                 </Typography>
               </Box>
               <List>
-              {pages[k].map(function (p, index) {
-                return (
-                  <ListItem button key={p} component={Link} to={pageLinks[p]}>
-                    <ListItemText primary={p} />
-                  </ListItem>
-                );
-              })}
+                {pages[k].map(function (p, index) {
+                  return (
+                    <ListItem button key={p} component={Link} to={pageLinks[p]}>
+                      <ListItemText primary={p} />
+                    </ListItem>
+                  );
+                })}
               </List>
             </React.Fragment>
           );
@@ -202,6 +217,6 @@ const Layout = (props) => {
       </Main>
     </Box>
   );
-}
+};
 
 export default Layout;

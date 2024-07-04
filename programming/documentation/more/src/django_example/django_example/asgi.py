@@ -16,24 +16,19 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 import html_example.routing
 import django_eventstream
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_example.settings")
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_example.settings')
 
-application = ProtocolTypeRouter(
-    {
-        "http": URLRouter(
-            [
-                path(
-                    "html_example/events/",
-                    AuthMiddlewareStack(
-                        URLRouter(django_eventstream.routing.urlpatterns)
-                    ),
-                    {"channels": ["time"]},
-                ),
-                re_path(r"", get_asgi_application()),
-            ]
+application = ProtocolTypeRouter({
+    'http':
+    URLRouter([
+        path(
+            'html_example/events/',
+            AuthMiddlewareStack(
+                URLRouter(django_eventstream.routing.urlpatterns)),
+            {'channels': ['time']},
         ),
-        "websocket": AuthMiddlewareStack(
-            URLRouter(html_example.routing.websocket_urlpatterns)
-        ),
-    }
-)
+        re_path(r'', get_asgi_application()),
+    ]),
+    'websocket':
+    AuthMiddlewareStack(URLRouter(html_example.routing.websocket_urlpatterns)),
+})

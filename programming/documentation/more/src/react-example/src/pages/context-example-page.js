@@ -10,6 +10,6 @@ const ContextExamplePage = () => {
       <ContextExample />
     </Layout>
   );
-}
+};
 
 export default ContextExamplePage;

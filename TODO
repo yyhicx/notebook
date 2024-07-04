@@ -8,7 +8,8 @@ notebook:
         - algorithm:
             - algorithm_getting_started
         - artificial_intelligence:
-            - ai_getting_started
+            - mathematical_foundations
+            - artificial_intelligence_by_hung_yi_lee
         - compile:
             - makefile
             - cmake
@@ -19,6 +20,8 @@ notebook:
             - c4d
             - pr
         - language:
+            - cpp
+            - java
             - dart
         - library_and_framework:
             - next

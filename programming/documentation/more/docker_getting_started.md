@@ -23,7 +23,7 @@ Windows下Docker镜像加速：
 
 2.  打开Docker的Settings，并在Docker Engine中配置如下内容：
 
-    ```js
+    ```javascript
     {
       // Other configuration information
       "registry-mirrors": [

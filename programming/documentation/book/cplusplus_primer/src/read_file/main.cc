@@ -6,7 +6,7 @@
 int main(int argc, char* argv[]) {
   std::string filename = "content.txt";
   std::ifstream input(filename);
-  
+
   if (!input.is_open()) {
     std::cout << "failed to open " << filename << '\n';
     exit(1);

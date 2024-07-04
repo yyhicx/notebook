@@ -10,6 +10,6 @@ const MasonryPage = () => {
       <Masonry />
     </Layout>
   );
-}
+};
 
 export default MasonryPage;

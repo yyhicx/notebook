@@ -1,230 +1,261 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>JQuery Manipulation Methods</title>
-  <link href="https://cdn.staticfile.org/twitter-bootstrap/5.1.2/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.staticfile.org/bootstrap/5.1.2/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.staticfile.org/jquery/1.10.0/jquery.min.js"></script>
-  <style>
-    .card {
-      border: 2px solid #ccc;
-    }
-    .col-2, .col-3, .col-4, .col-5, .col-8 {
-      background-color: #e5eecc;
-    }
-    .display-content {
-      height: 60px;
-    }
-    .display-content > div {
-      padding: 15px 0;
-    }
-    #get-tbl #text, #get-tbl #html, #get-tbl #val, #get-tbl #attr,
-    #set-tbl #text, #set-tbl #html, #set-tbl #val, #set-tbl #attr,
-    #append-tbl #append, #append-tbl #prepend, #append-tbl #append-more,
-    #append-tbl #after, #append-tbl #before, #append-tbl #clear,
-    #remove-tbl #remove, #remove-tbl #empty, #remove-tbl #remove-tmp,
-    #set-css-tbl #add-class, #set-css-tbl #remove-class, #set-css-tbl #toggle-class,
-    #set-css-tbl #css-func {
-      cursor: pointer;
-    }
-    .important {
-      font-weight: bold;
-      font-size: x-large;
-    }
-  </style>
-  <script>
-    $(function () {
-      $('#get-tbl #text').click(function () {
-        $('#get-tbl #text-content').text($('#get-tbl #content1').text());
-      });
-      $('#get-tbl #html').click(function () {
-        $('#get-tbl #html-content').text($('#get-tbl #content1').html());
-      });
-      $('#get-tbl #val').click(function () {
-        $('#get-tbl #val-content').text('输入框中的值为：' + $('#get-tbl #content2').val());
-      });
-      $('#get-tbl #attr').click(function () {
-        $('#get-tbl #attr-content').text('输入框的value属性为：' + $('#get-tbl #content2').attr('value'));
-      });
-      $('#set-tbl #text').click(function () {
-        $('#set-tbl #text-content').text('Hello World');
-      });
-      $('#set-tbl #html').click(function () {
-        $('#set-tbl #html-content').html('<b>Hello World</b>');
-      });
-      $('#set-tbl #val').click(function () {
-        $('#set-tbl #val-content #content1').val('Runoob');
-      });
-      $('#set-tbl #attr').click(function () {
-        $('#set-tbl #attr-content #content2 a').attr({
-          'href': 'https://www.runoob.com/jquery',
-          'title': 'jQuery 教程'
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JQuery Manipulation Methods</title>
+    <link
+      href="https://cdn.staticfile.org/twitter-bootstrap/5.1.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.staticfile.org/bootstrap/5.1.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.0/jquery.min.js"></script>
+    <style>
+      .card {
+        border: 2px solid #ccc;
+      }
+      .col-2,
+      .col-3,
+      .col-4,
+      .col-5,
+      .col-8 {
+        background-color: #e5eecc;
+      }
+      .display-content {
+        height: 60px;
+      }
+      .display-content > div {
+        padding: 15px 0;
+      }
+      #get-tbl #text,
+      #get-tbl #html,
+      #get-tbl #val,
+      #get-tbl #attr,
+      #set-tbl #text,
+      #set-tbl #html,
+      #set-tbl #val,
+      #set-tbl #attr,
+      #append-tbl #append,
+      #append-tbl #prepend,
+      #append-tbl #append-more,
+      #append-tbl #after,
+      #append-tbl #before,
+      #append-tbl #clear,
+      #remove-tbl #remove,
+      #remove-tbl #empty,
+      #remove-tbl #remove-tmp,
+      #set-css-tbl #add-class,
+      #set-css-tbl #remove-class,
+      #set-css-tbl #toggle-class,
+      #set-css-tbl #css-func {
+        cursor: pointer;
+      }
+      .important {
+        font-weight: bold;
+        font-size: x-large;
+      }
+    </style>
+    <script>
+      $(function () {
+        $('#get-tbl #text').click(function () {
+          $('#get-tbl #text-content').text($('#get-tbl #content1').text());
         });
-        let title = $('#set-tbl #attr-content #content2 a').attr('title');
-        $('#set-tbl #attr-content #content2 a').html(title);
-      });
-      $('#append-tbl #append').click(function () {
-        $('#append-tbl #content').append(' Append');
-      });
-      $('#append-tbl #prepend').click(function () {
-        $('#append-tbl #content').prepend('Prepend ');
-      });
-      $('#append-tbl #append-more').click(function () {
-        let txt1 = '<b> I</b>';
-        let txt2 = $('<b></b>').text(' love');
-        let txt3 = document.createElement('b');
-        txt3.innerHTML = ' jQuery';
-        $('#append-tbl #content').append(txt1, txt2, txt3);
-      });
-      $('#append-tbl #after').click(function () {
-        $('#append-tbl #content').after('<span> After</span>');
-      });
-      $('#append-tbl #before').click(function () {
-        $('#append-tbl #content').before('<span>Before </span>');
-      });
-      $('#append-tbl #clear').click(function () {
-        $('#append-tbl #content').text('Content');
-      });
-      $('#remove-tbl #remove').click(function () {
-        $('#remove-tbl #remove-content').remove();
-      });
-      $('#remove-tbl #empty').click(function () {
-        $('#remove-tbl #empty-content').empty();
-      });
-      $('#remove-tbl #remove-tmp').click(function () {
-        $('#remove-tbl #remove-tmp-content span').remove('#tmp');
-      });
-      $('#set-css-tbl #add-class').click(function () {
-        $('#set-css-tbl #content1').addClass('important');
-      });
-      $('#set-css-tbl #remove-class').click(function () {
-        $('#set-css-tbl #content1').removeClass('important');
-      });
-      $('#set-css-tbl #toggle-class').click(function () {
-        $('#set-css-tbl #content1').toggleClass('important');
-      });
-      $('#set-css-tbl #css-func').click(function () {
-        $('#set-css-tbl #content1').css({
-          'font-weight': 'bold',
-          'font-size': 'x-large'
+        $('#get-tbl #html').click(function () {
+          $('#get-tbl #html-content').text($('#get-tbl #content1').html());
+        });
+        $('#get-tbl #val').click(function () {
+          $('#get-tbl #val-content').text(
+            '输入框中的值为：' + $('#get-tbl #content2').val()
+          );
+        });
+        $('#get-tbl #attr').click(function () {
+          $('#get-tbl #attr-content').text(
+            '输入框的value属性为：' + $('#get-tbl #content2').attr('value')
+          );
+        });
+        $('#set-tbl #text').click(function () {
+          $('#set-tbl #text-content').text('Hello World');
+        });
+        $('#set-tbl #html').click(function () {
+          $('#set-tbl #html-content').html('<b>Hello World</b>');
+        });
+        $('#set-tbl #val').click(function () {
+          $('#set-tbl #val-content #content1').val('Runoob');
+        });
+        $('#set-tbl #attr').click(function () {
+          $('#set-tbl #attr-content #content2 a').attr({
+            href: 'https://www.runoob.com/jquery',
+            title: 'jQuery 教程',
+          });
+          let title = $('#set-tbl #attr-content #content2 a').attr('title');
+          $('#set-tbl #attr-content #content2 a').html(title);
+        });
+        $('#append-tbl #append').click(function () {
+          $('#append-tbl #content').append(' Append');
+        });
+        $('#append-tbl #prepend').click(function () {
+          $('#append-tbl #content').prepend('Prepend ');
+        });
+        $('#append-tbl #append-more').click(function () {
+          let txt1 = '<b> I</b>';
+          let txt2 = $('<b></b>').text(' love');
+          let txt3 = document.createElement('b');
+          txt3.innerHTML = ' jQuery';
+          $('#append-tbl #content').append(txt1, txt2, txt3);
+        });
+        $('#append-tbl #after').click(function () {
+          $('#append-tbl #content').after('<span> After</span>');
+        });
+        $('#append-tbl #before').click(function () {
+          $('#append-tbl #content').before('<span>Before </span>');
+        });
+        $('#append-tbl #clear').click(function () {
+          $('#append-tbl #content').text('Content');
+        });
+        $('#remove-tbl #remove').click(function () {
+          $('#remove-tbl #remove-content').remove();
+        });
+        $('#remove-tbl #empty').click(function () {
+          $('#remove-tbl #empty-content').empty();
+        });
+        $('#remove-tbl #remove-tmp').click(function () {
+          $('#remove-tbl #remove-tmp-content span').remove('#tmp');
+        });
+        $('#set-css-tbl #add-class').click(function () {
+          $('#set-css-tbl #content1').addClass('important');
+        });
+        $('#set-css-tbl #remove-class').click(function () {
+          $('#set-css-tbl #content1').removeClass('important');
+        });
+        $('#set-css-tbl #toggle-class').click(function () {
+          $('#set-css-tbl #content1').toggleClass('important');
+        });
+        $('#set-css-tbl #css-func').click(function () {
+          $('#set-css-tbl #content1').css({
+            'font-weight': 'bold',
+            'font-size': 'x-large',
+          });
         });
       });
-    });
-  </script>
-</head>
-<body>
-  <div class="container mt-3 text-center">
-    <div id="get-tbl" class="card mb-3 p-2">
-      <h3>捕获</h3>
-      <div class="row display-content">
-        <div class="col-10 offset-1 bg-light border">
-          <p id="content1">这是一个链接：<a href="https://www.runoob.com">菜鸟教程</a></p>
+    </script>
+  </head>
+  <body>
+    <div class="container mt-3 text-center">
+      <div id="get-tbl" class="card mb-3 p-2">
+        <h3>捕获</h3>
+        <div class="row display-content">
+          <div class="col-10 offset-1 bg-light border">
+            <p id="content1">
+              这是一个链接：<a href="https://www.runoob.com">菜鸟教程</a>
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div id="text" class="col-2 offset-1 border">text</div>
+          <div id="text-content" class="col-8 border"></div>
+        </div>
+        <div class="row">
+          <div id="html" class="col-2 offset-1 border">html</div>
+          <div id="html-content" class="col-8 border"></div>
+        </div>
+        <div class="row display-content">
+          <div class="col-10 offset-1 bg-light border">
+            <label for="content2">这是一个输入框：</label>
+            <input id="content2" type="text" value="菜鸟教程" />
+          </div>
+        </div>
+        <div class="row">
+          <div id="val" class="col-2 offset-1 border">val</div>
+          <div id="val-content" class="col-8 border"></div>
+        </div>
+        <div class="row">
+          <div id="attr" class="col-2 offset-1 border">attr</div>
+          <div id="attr-content" class="col-8 border"></div>
         </div>
       </div>
-      <div class="row">
-        <div id="text" class="col-2 offset-1 border">text</div>
-        <div id="text-content" class="col-8 border"></div>
-      </div>
-      <div class="row">
-        <div id="html" class="col-2 offset-1 border">html</div>
-        <div id="html-content" class="col-8 border"></div>
-      </div>
-      <div class="row display-content">
-        <div class="col-10 offset-1 bg-light border">
-          <label for="content2">这是一个输入框：</label>
-          <input id="content2" type="text" value="菜鸟教程">
+      <div id="set-tbl" class="card mb-3 p-4">
+        <h3>设置</h3>
+        <div class="row">
+          <div id="text" class="col-2 offset-1 border">text</div>
+          <div id="text-content" class="col-8 bg-light border"></div>
+        </div>
+        <div class="row">
+          <div id="html" class="col-2 offset-1 border">html</div>
+          <div id="html-content" class="col-8 bg-light border"></div>
+        </div>
+        <div class="row">
+          <div id="val" class="col-2 offset-1 border">val</div>
+          <div id="val-content" class="col-8 bg-light border">
+            <label for="content1">这是一个输入框：</label>
+            <input id="content1" type="text" value="菜鸟教程" />
+          </div>
+        </div>
+        <div class="row">
+          <div id="attr" class="col-2 offset-1 border">attr</div>
+          <div id="attr-content" class="col-8 bg-light border">
+            <p id="content2">
+              这是一个链接：<a href="https://www.runoob.com">菜鸟教程</a>
+            </p>
+          </div>
         </div>
       </div>
-      <div class="row">
-        <div id="val" class="col-2 offset-1 border">val</div>
-        <div id="val-content" class="col-8 border"></div>
+      <div id="append-tbl" class="card mb-3 p-4">
+        <h3>添加</h3>
+        <div class="row display-content">
+          <div class="col-10 offset-1 bg-light border">
+            <span id="content">Content</span>
+          </div>
+        </div>
+        <div class="row">
+          <div id="append" class="col-3 offset-1 border">append</div>
+          <div id="prepend" class="col-3 border">prepend</div>
+          <div id="append-more" class="col-4 border">append more</div>
+        </div>
+        <div class="row">
+          <div id="after" class="col-3 offset-1 border">after</div>
+          <div id="before" class="col-3 border">before</div>
+          <div id="clear" class="col-4 border">清理 span 元素中内容</div>
+        </div>
       </div>
-      <div class="row">
-        <div id="attr" class="col-2 offset-1 border">attr</div>
-        <div id="attr-content" class="col-8 border"></div>
+      <div id="remove-tbl" class="card mb-3 p-4">
+        <h3>删除</h3>
+        <div class="row">
+          <div id="remove" class="col-2 offset-1 border">remove</div>
+          <div id="remove-content" class="col-8 bg-light border">
+            <span>Content</span>
+          </div>
+        </div>
+        <div class="row">
+          <div id="empty" class="col-2 offset-1 border">empty</div>
+          <div id="empty-content" class="col-8 bg-light border">
+            <span>Content</span>
+          </div>
+        </div>
+        <div class="row">
+          <div id="remove-tmp" class="col-2 offset-1 border">
+            remove 特定元素
+          </div>
+          <div id="remove-tmp-content" class="col-8 bg-light border">
+            <span>Content</span><span id="tmp"> Tmp</span>
+          </div>
+        </div>
+      </div>
+      <div id="set-css-tbl" class="card mb-3 p-2">
+        <h3>捕获</h3>
+        <div class="row display-content">
+          <div class="col-10 offset-1 bg-light border">
+            <p id="content1">菜鸟教程</p>
+          </div>
+        </div>
+        <div class="row">
+          <div id="add-class" class="col-5 offset-1 border">addClass</div>
+          <div id="remove-class" class="col-5 border">removeClass</div>
+        </div>
+        <div class="row">
+          <div id="toggle-class" class="col-5 offset-1 border">toggleClass</div>
+          <div id="css-func" class="col-5 border">css</div>
+        </div>
       </div>
     </div>
-    <div id="set-tbl" class="card mb-3 p-4">
-      <h3>设置</h3>
-      <div class="row">
-        <div id="text" class="col-2 offset-1 border">text</div>
-        <div id="text-content" class="col-8 bg-light border"></div>
-      </div>
-      <div class="row">
-        <div id="html" class="col-2 offset-1 border">html</div>
-        <div id="html-content" class="col-8 bg-light border"></div>
-      </div>
-      <div class="row">
-        <div id="val" class="col-2 offset-1 border">val</div>
-        <div id="val-content" class="col-8 bg-light border">
-          <label for="content1">这是一个输入框：</label>
-          <input id="content1" type="text" value="菜鸟教程">
-        </div>
-      </div>
-      <div class="row">
-        <div id="attr" class="col-2 offset-1 border">attr</div>
-        <div id="attr-content" class="col-8 bg-light border">
-          <p id="content2">这是一个链接：<a href="https://www.runoob.com">菜鸟教程</a></p>
-        </div>
-      </div>
-    </div>
-    <div id="append-tbl" class="card mb-3 p-4">
-      <h3>添加</h3>
-      <div class="row display-content">
-        <div class="col-10 offset-1 bg-light border">
-          <span id="content">Content</span>
-        </div>
-      </div>
-      <div class="row">
-        <div id="append" class="col-3 offset-1 border">append</div>
-        <div id="prepend" class="col-3 border">prepend</div>
-        <div id="append-more" class="col-4 border">append more</div>
-      </div>
-      <div class="row">
-        <div id="after" class="col-3 offset-1 border">after</div>
-        <div id="before" class="col-3 border">before</div>
-        <div id="clear" class="col-4 border">清理 span 元素中内容</div>
-      </div>
-    </div>
-    <div id="remove-tbl" class="card mb-3 p-4">
-      <h3>删除</h3>
-      <div class="row">
-        <div id="remove" class="col-2 offset-1 border">remove</div>
-        <div id="remove-content" class="col-8 bg-light border">
-          <span>Content</span>
-        </div>
-      </div>
-      <div class="row">
-        <div id="empty" class="col-2 offset-1 border">empty</div>
-        <div id="empty-content" class="col-8 bg-light border">
-          <span>Content</span>
-        </div>
-      </div>
-      <div class="row">
-        <div id="remove-tmp" class="col-2 offset-1 border">remove 特定元素</div>
-        <div id="remove-tmp-content" class="col-8 bg-light border">
-          <span>Content</span><span id="tmp"> Tmp</span>
-        </div>
-      </div>
-    </div>
-    <div id="set-css-tbl" class="card mb-3 p-2">
-      <h3>捕获</h3>
-      <div class="row display-content">
-        <div class="col-10 offset-1 bg-light border">
-          <p id="content1">菜鸟教程</p>
-        </div>
-      </div>
-      <div class="row">
-        <div id="add-class" class="col-5 offset-1 border">addClass</div>
-        <div id="remove-class" class="col-5 border">removeClass</div>
-      </div>
-      <div class="row">
-        <div id="toggle-class" class="col-5 offset-1 border">toggleClass</div>
-        <div id="css-func" class="col-5 border">css</div>
-      </div>
-    </div>
-  </div>
-</body>
+  </body>
 </html>

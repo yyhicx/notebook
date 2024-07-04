@@ -11,7 +11,7 @@ import { makeStyles } from '@mui/styles';
 
 import { useSpring, animated, config, easings } from 'react-spring';
 
-import useMeasure from 'react-use-measure';  // 测量您引用的视图的边界（例如宽度、高度、顶部、左侧）
+import useMeasure from 'react-use-measure'; // 测量您引用的视图的边界（例如宽度、高度、顶部、左侧）
 
 const AnimatedTypography = animated(Typography);
 
@@ -29,12 +29,12 @@ const Text = () => {
     <AnimatedTypography
       variant="h1"
       component="div"
-      style={{ ...props, textAlign: "center", fontWeight: "bold" }}
+      style={{ ...props, textAlign: 'center', fontWeight: 'bold' }}
     >
       hello
     </AnimatedTypography>
   );
-}
+};
 
 const SVG = () => {
   const { x } = useSpring({
@@ -56,12 +56,12 @@ const SVG = () => {
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeDasharray={156}
-      strokeDashoffset={x.to(x => (1 - x) * 156)}
+      strokeDashoffset={x.to((x) => (1 - x) * 156)}
     >
       <polygon points="22.5 35.25 8.68704657 42.5118994 11.3250859 27.1309497 0.150171867 16.2381006 15.5935233 13.9940503 22.5 0 29.4064767 13.9940503 44.8498281 16.2381006 33.6749141 27.1309497 36.3129534 42.5118994" />
     </animated.svg>
   );
-}
+};
 
 const Number = () => {
   const { number } = useSpring({
@@ -77,12 +77,12 @@ const Number = () => {
     <AnimatedTypography
       variant="h1"
       component="div"
-      style={{ textAlign: "center" }}
+      style={{ textAlign: 'center' }}
     >
-      {number.to(n => n.toFixed(2))}
+      {number.to((n) => n.toFixed(2))}
     </AnimatedTypography>
   );
-}
+};
 
 const Scrolling = () => {
   const words = ['We', 'came.', 'We', 'saw.', 'We', 'kicked', 'its', 'ass.'];
@@ -99,26 +99,27 @@ const Scrolling = () => {
   return (
     <animated.div
       style={{
-        position: "relative",
-        width: "30%",
+        position: 'relative',
+        width: '30%',
         height: 60,
-        marginLeft: "100px",
-        marginTop: "50px",
-        overflow: "auto",
-        fontSize: "0.5em",
+        marginLeft: '100px',
+        marginTop: '50px',
+        overflow: 'auto',
+        fontSize: '0.5em',
       }}
       scrollTop={scroll}
     >
       {words.map((word, i) => (
         <div
           key={`${word}_${i}`}
-          style={{ width: "100%", height: 50, textAlign: "center" }}>
+          style={{ width: '100%', height: 50, textAlign: 'center' }}
+        >
           {word}
         </div>
       ))}
     </animated.div>
   );
-}
+};
 
 const LoopTrue = () => {
   const styles = useSpring({
@@ -138,7 +139,7 @@ const LoopTrue = () => {
       }}
     />
   );
-}
+};
 
 const LoopObject = () => {
   const styles = useSpring({
@@ -159,7 +160,7 @@ const LoopObject = () => {
       }}
     />
   );
-}
+};
 
 const EasingComponent = () => {
   const { background, rotateZ } = useSpring({
@@ -183,7 +184,7 @@ const EasingComponent = () => {
       style={{ background, width: 120, height: 120, borderRadius: 16, rotateZ }}
     />
   );
-}
+};
 
 const BackwardsCompatability = () => {
   const { x, opacity } = useSpring({ x: -50, opacity: 1 });
@@ -204,9 +205,10 @@ const BackwardsCompatability = () => {
       }}
     />
   );
-}
+};
 
-const aaStyles = makeStyles({  // Animating Auto Styles
+const aaStyles = makeStyles({
+  // Animating Auto Styles
   main: {
     position: 'relative',
     width: '200px',
@@ -246,10 +248,12 @@ const AnimatingAuto = () => {
   return (
     <Container ref={ref} className={classes.main} onClick={() => toggle(!open)}>
       <animated.div className={classes.fill} style={props} />
-      <animated.div className={classes.content}>{props.width.to(x => x.toFixed(0))}</animated.div>
+      <animated.div className={classes.content}>
+        {props.width.to((x) => x.toFixed(0))}
+      </animated.div>
     </Container>
   );
-}
+};
 
 const ReactSpringExample = () => {
   return (
@@ -259,33 +263,69 @@ const ReactSpringExample = () => {
       {/* Basic */}
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Typography variant="h2" component="div" sx={{ textAlign: "center", fontWeight: "bold" }}>
+          <Typography
+            variant="h2"
+            component="div"
+            sx={{ textAlign: 'center', fontWeight: 'bold' }}
+          >
             Basic
           </Typography>
         </Grid>
         <Grid item xs={6} sx={{ minWidth: 350 }}>
-          <Card sx={{ mb: 2, width: 300, height: 200, mx: "auto", bgcolor: "#eeffee" }}>
-            <CardContent sx={{ paddingTop: "40px" }}>
+          <Card
+            sx={{
+              mb: 2,
+              width: 300,
+              height: 200,
+              mx: 'auto',
+              bgcolor: '#eeffee',
+            }}
+          >
+            <CardContent sx={{ paddingTop: '40px' }}>
               <Text />
             </CardContent>
           </Card>
         </Grid>
         <Grid item xs={6} sx={{ minWidth: 350 }}>
-          <Card sx={{ mb: 2, width: 300, height: 200, mx: "auto", bgcolor: "#eeffee" }}>
-            <CardContent sx={{ paddingLeft: "85px", paddingTop: "40px" }}>
+          <Card
+            sx={{
+              mb: 2,
+              width: 300,
+              height: 200,
+              mx: 'auto',
+              bgcolor: '#eeffee',
+            }}
+          >
+            <CardContent sx={{ paddingLeft: '85px', paddingTop: '40px' }}>
               <SVG />
             </CardContent>
           </Card>
         </Grid>
         <Grid item xs={6} sx={{ minWidth: 350 }}>
-          <Card sx={{ mb: 2, width: 300, height: 200, mx: "auto", bgcolor: "#eeffee" }}>
-            <CardContent sx={{ paddingTop: "40px" }}>
+          <Card
+            sx={{
+              mb: 2,
+              width: 300,
+              height: 200,
+              mx: 'auto',
+              bgcolor: '#eeffee',
+            }}
+          >
+            <CardContent sx={{ paddingTop: '40px' }}>
               <Number />
             </CardContent>
           </Card>
         </Grid>
         <Grid item xs={6} sx={{ minWidth: 350 }}>
-          <Card sx={{ mb: 2, width: 300, height: 200, mx: "auto", bgcolor: "#eeffee" }}>
+          <Card
+            sx={{
+              mb: 2,
+              width: 300,
+              height: 200,
+              mx: 'auto',
+              bgcolor: '#eeffee',
+            }}
+          >
             <CardContent>
               <Scrolling />
             </CardContent>
@@ -296,27 +336,55 @@ const ReactSpringExample = () => {
       {/* Props */}
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Typography variant="h2" component="div" sx={{ textAlign: "center", fontWeight: "bold" }}>
+          <Typography
+            variant="h2"
+            component="div"
+            sx={{ textAlign: 'center', fontWeight: 'bold' }}
+          >
             Props
           </Typography>
         </Grid>
         <Grid item xs={6} sx={{ minWidth: 350 }}>
-          <Card sx={{ mb: 2, width: 300, height: 200, mx: "auto", bgcolor: "#eeffee" }}>
-            <CardContent sx={{ paddingLeft: "105px", paddingTop: "60px" }}>
+          <Card
+            sx={{
+              mb: 2,
+              width: 300,
+              height: 200,
+              mx: 'auto',
+              bgcolor: '#eeffee',
+            }}
+          >
+            <CardContent sx={{ paddingLeft: '105px', paddingTop: '60px' }}>
               <LoopTrue />
             </CardContent>
           </Card>
         </Grid>
         <Grid item xs={6} sx={{ minWidth: 350 }}>
-          <Card sx={{ mb: 2, width: 300, height: 200, mx: "auto", bgcolor: "#eeffee" }}>
-            <CardContent sx={{ paddingLeft: "60px", paddingTop: "60px" }}>
+          <Card
+            sx={{
+              mb: 2,
+              width: 300,
+              height: 200,
+              mx: 'auto',
+              bgcolor: '#eeffee',
+            }}
+          >
+            <CardContent sx={{ paddingLeft: '60px', paddingTop: '60px' }}>
               <LoopObject />
             </CardContent>
           </Card>
         </Grid>
         <Grid item xs={6} sx={{ minWidth: 350 }}>
-          <Card sx={{ mb: 2, width: 300, height: 200, mx: "auto", bgcolor: "#eeffee" }}>
-            <CardContent sx={{ paddingLeft: "90px", paddingTop: "40px" }}>
+          <Card
+            sx={{
+              mb: 2,
+              width: 300,
+              height: 200,
+              mx: 'auto',
+              bgcolor: '#eeffee',
+            }}
+          >
+            <CardContent sx={{ paddingLeft: '90px', paddingTop: '40px' }}>
               <EasingComponent />
             </CardContent>
           </Card>
@@ -326,13 +394,25 @@ const ReactSpringExample = () => {
       {/* Imperatives & Refs */}
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Typography variant="h2" component="div" sx={{ textAlign: "center", fontWeight: "bold" }}>
+          <Typography
+            variant="h2"
+            component="div"
+            sx={{ textAlign: 'center', fontWeight: 'bold' }}
+          >
             Imperatives & Refs
           </Typography>
         </Grid>
         <Grid item xs={6} sx={{ minWidth: 350 }}>
-          <Card sx={{ mb: 2, width: 300, height: 200, mx: "auto", bgcolor: "#eeffee" }}>
-            <CardContent sx={{ paddingLeft: "105px", paddingTop: "60px" }}>
+          <Card
+            sx={{
+              mb: 2,
+              width: 300,
+              height: 200,
+              mx: 'auto',
+              bgcolor: '#eeffee',
+            }}
+          >
+            <CardContent sx={{ paddingLeft: '105px', paddingTop: '60px' }}>
               <BackwardsCompatability />
             </CardContent>
           </Card>
@@ -342,21 +422,32 @@ const ReactSpringExample = () => {
       {/* Hooks */}
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Typography variant="h2" component="div" sx={{ textAlign: "center", fontWeight: "bold" }}>
+          <Typography
+            variant="h2"
+            component="div"
+            sx={{ textAlign: 'center', fontWeight: 'bold' }}
+          >
             Hooks
           </Typography>
         </Grid>
         <Grid item xs={6} sx={{ minWidth: 350 }}>
-          <Card sx={{ mb: 2, width: 300, height: 200, mx: "auto", bgcolor: "#eeffee" }}>
-            <CardContent sx={{ paddingLeft: "20px", paddingTop: "70px" }}>
+          <Card
+            sx={{
+              mb: 2,
+              width: 300,
+              height: 200,
+              mx: 'auto',
+              bgcolor: '#eeffee',
+            }}
+          >
+            <CardContent sx={{ paddingLeft: '20px', paddingTop: '70px' }}>
               <AnimatingAuto />
             </CardContent>
           </Card>
         </Grid>
       </Grid>
-
     </React.Fragment>
   );
-}
+};
 
 export default ReactSpringExample;

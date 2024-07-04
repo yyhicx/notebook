@@ -2,5 +2,6 @@
 
 | Project Name | Language      | Framework or Library |
 | ------------ | ------------- | -------------------- |
-| toolbox      | dart + python | flutter + django     |
+| chat         | dart + python | flutter + django     |
+| todo         | javascript    | react + egg          |
 | xish         | javascript    | react                |

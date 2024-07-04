@@ -1,86 +1,86 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>Dropdown Menu</title>
-  <style>
-    /* basic dropdown menu */
-    .basic-dropdown-menu {
-      position: fixed;
-      left: 300px;
-      display: inline-block;
-    }
-    .content-of-basic-dropdown-menu {
-      display: none;
-      position: absolute;
-      background-color: #f9f9f9;
-      min-width: 160px;
-      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 2);
-      padding: 12px 16px;
-    }
-    .basic-dropdown-menu:hover .content-of-basic-dropdown-menu {
-      display: block;
-    }
-    /* dropdown menu */
-    .dropdown-menu {
-      position: relative;
-      display: inline-block;
-    }
-    .dropdown-button {
-      background-color: #4caf50;
-      color: white;
-      padding: 16px;
-      font-size: 16px;
-      border: none;
-      cursor: pointer;
-    }
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: #f9f9f9;
-      min-width: 160px;
-      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    }
-    .dropdown-content a {
-      color: black;
-      padding: 12px 16px;
-      text-decoration: none;
-      display: block;
-    }
-    .dropdown-content a:hover {
-      background-color: #f1f1f1;
-    }
-    .dropdown-menu:hover .dropdown-content {
-      display: block;
-    }
-    .dropdown-menu:hover .dropdown-button {
-      background-color: #3e8e41;
-    }
-  </style>
-</head>
-<body>
-  <div class="basic-dropdown-menu">
-    <span>鼠标移动到我这！</span>
-    <div class="content-of-basic-dropdown-menu">
-      <p>菜鸟教程</p>
-      <p>www.runoob.com</p>
+  <head>
+    <meta charset="utf-8" />
+    <title>Dropdown Menu</title>
+    <style>
+      /* basic dropdown menu */
+      .basic-dropdown-menu {
+        position: fixed;
+        left: 300px;
+        display: inline-block;
+      }
+      .content-of-basic-dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 2);
+        padding: 12px 16px;
+      }
+      .basic-dropdown-menu:hover .content-of-basic-dropdown-menu {
+        display: block;
+      }
+      /* dropdown menu */
+      .dropdown-menu {
+        position: relative;
+        display: inline-block;
+      }
+      .dropdown-button {
+        background-color: #4caf50;
+        color: white;
+        padding: 16px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+      }
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      }
+      .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+      }
+      .dropdown-content a:hover {
+        background-color: #f1f1f1;
+      }
+      .dropdown-menu:hover .dropdown-content {
+        display: block;
+      }
+      .dropdown-menu:hover .dropdown-button {
+        background-color: #3e8e41;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="basic-dropdown-menu">
+      <span>鼠标移动到我这！</span>
+      <div class="content-of-basic-dropdown-menu">
+        <p>菜鸟教程</p>
+        <p>www.runoob.com</p>
+      </div>
     </div>
-  </div>
-  <div class="dropdown-menu" style="float: left;">
-    <button class="dropdown-button">下拉菜单</button>
-    <div class="dropdown-content">
-      <a href="https://www.runoob.com">菜鸟教程 1</a>
-      <a href="https://www.runoob.com">菜鸟教程 2</a>
-      <a href="https://www.runoob.com">菜鸟教程 3</a>
+    <div class="dropdown-menu" style="float: left">
+      <button class="dropdown-button">下拉菜单</button>
+      <div class="dropdown-content">
+        <a href="https://www.runoob.com">菜鸟教程 1</a>
+        <a href="https://www.runoob.com">菜鸟教程 2</a>
+        <a href="https://www.runoob.com">菜鸟教程 3</a>
+      </div>
     </div>
-  </div>
-  <div class="dropdown-menu" style="float: right;">
-    <button class="dropdown-button">下拉菜单</button>
-    <div class="dropdown-content">
-      <a href="https://www.runoob.com">菜鸟教程 1</a>
-      <a href="https://www.runoob.com">菜鸟教程 2</a>
-      <a href="https://www.runoob.com">菜鸟教程 3</a>
+    <div class="dropdown-menu" style="float: right">
+      <button class="dropdown-button">下拉菜单</button>
+      <div class="dropdown-content">
+        <a href="https://www.runoob.com">菜鸟教程 1</a>
+        <a href="https://www.runoob.com">菜鸟教程 2</a>
+        <a href="https://www.runoob.com">菜鸟教程 3</a>
+      </div>
     </div>
-  </div>
-</body>
+  </body>
 </html>

@@ -1,8 +1,5 @@
 import React, { useRef } from 'react';
-import {
-  Box,
-  Container,
-} from '@mui/material';
+import { Box, Container } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 import { useSprings, animated } from 'react-spring';
@@ -48,30 +45,36 @@ const useStyles = makeStyles({
   },
 });
 
-const fn = (order, active = false, originalIndex = 0, curIndex = 0, y = 0) => (index) => {
-  return active && index === originalIndex
-    ? {
-        y: curIndex * 50 + y,
-        scale: 1.1,
-        zIndex: 1,
-        shadow: 15,
-        immediate: (key) => key === 'y' || key === 'zIndex',
-      }
-    : {
-        y: order.indexOf(index) * 50,
-        scale: 1,
-        zIndex: 0,
-        shadow: 1,
-        immediate: false,
-      };
-};
+const fn =
+  (order, active = false, originalIndex = 0, curIndex = 0, y = 0) =>
+  (index) => {
+    return active && index === originalIndex
+      ? {
+          y: curIndex * 50 + y,
+          scale: 1.1,
+          zIndex: 1,
+          shadow: 15,
+          immediate: (key) => key === 'y' || key === 'zIndex',
+        }
+      : {
+          y: order.indexOf(index) * 50,
+          scale: 1,
+          zIndex: 0,
+          shadow: 1,
+          immediate: false,
+        };
+  };
 
 const DraggableListItems = ({ items }) => {
   const order = useRef(items.map((_, index) => index));
   const [springs, api] = useSprings(items.length, fn(order.current));
   const bind = useDrag(({ args: [originalIndex], active, movement: [, y] }) => {
     const curIndex = order.current.indexOf(originalIndex);
-    const curRow = lodash.clamp(Math.round((curIndex * 100 + y) / 100), 0, items.length - 1);
+    const curRow = lodash.clamp(
+      Math.round((curIndex * 100 + y) / 100),
+      0,
+      items.length - 1
+    );
     const newOrder = move(order.current, curIndex, curRow);
     // Feed springs new style data, they'll animate the view without causing a single render
     api.start(fn(newOrder, active, originalIndex, curIndex, y));
@@ -87,7 +90,9 @@ const DraggableListItems = ({ items }) => {
           key={i}
           style={{
             zIndex,
-            boxShadow: shadow.to(s => `rgba(0, 0, 0, 0.15) 0px ${s}px ${2 * s}px 0px`),
+            boxShadow: shadow.to(
+              (s) => `rgba(0, 0, 0, 0.15) 0px ${s}px ${2 * s}px 0px`
+            ),
             y,
             scale,
           }}
@@ -96,14 +101,16 @@ const DraggableListItems = ({ items }) => {
       ))}
     </Box>
   );
-}
+};
 
 const DraggableList = () => {
   return (
-    <Container sx={{ marginTop: "100px", display: "flex", justifyContent: "center" }}>
+    <Container
+      sx={{ marginTop: '100px', display: 'flex', justifyContent: 'center' }}
+    >
       <DraggableListItems items={'Lorem ipsum dolor sit'.split(' ')} />
     </Container>
   );
-}
+};
 
 export default DraggableList;

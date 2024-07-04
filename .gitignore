@@ -1,6 +1,5 @@
 # C
-/programming/code/small_project/base_conversion/build
-/programming/code/small_project/generate_random_password/build
+build
 
 # Python
 __pycache__
@@ -9,11 +8,10 @@ __pycache__
 node_modules
 
 # LaTeX
-/programming/documentation/subject/fundamentals_of_electronic_technology/latex/*
-!/programming/documentation/subject/fundamentals_of_electronic_technology/latex/image/
-!/programming/documentation/subject/fundamentals_of_electronic_technology/latex/template.tex
-/non-programming/math/discrete_mathematics/latex/*
-!/non-programming/math/discrete_mathematics/latex/template.tex
+template.aux
+template.log
+template.pdf
+template.synctex.gz
 
 # VS Code
 .vscode
@@ -22,4 +20,4 @@ node_modules
 .DS_Store
 
 # Confidential Data Files
-/programming/code/small_project/ocr/api_key.json
+api_key.json

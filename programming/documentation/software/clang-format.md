@@ -18,10 +18,10 @@ Install:
 Run:
 
 ```bash
-# 使用内置 style，比如 llvm、Google 等
+# Use built-in styles, such as llvm, Google, etc
 clang-format -style=google -i foo.c bar.c
-# 使用自定义 style 文件 .clang-format，程序会先查找当前目录是否有 .clang-format，然后递归查找父目录
+# Use a custom style file(.clang-format). The program will first look for a .clang-format file in the current directory, then recursively search parent directories
 clang-format -style=file -i foo.c bar.c
-# 导出一份 style 模板
+# Export a style template
 clang-format -style=google -dump-config > .clang-format
 ```

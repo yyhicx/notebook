@@ -1,91 +1,257 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>CSS Animation</title>
-  <style>
-    /* div1 */
-    #div1 {
-      width: 100px;
-      height: 100px;
-      background: red;
-      position: relative;
-      animation: myfirst 5s infinite alternate;
-      -moz-animation: myfirst 5s infinite alternate;    /* Firefox: */
-      -webkit-animation: myfirst 5s infinite alternate; /* Safari and Chrome: */
-      -o-animation: myfirst 5s infinite alternate;      /* Opera: */
-    }
-    @keyframes myfirst {
-      0%   { background: red; left: 0px; top: 0px; }
-      25%  { background: yellow; left: 200px; top: 0px; }
-      50%  { background: blue; left: 200px; top: 200px; }
-      75%  { background: green; left: 0px; top: 200px; }
-      100% { background: red; left: 0px; top: 0px; }
-    }
-    @-moz-keyframes myfirst { /* Firefox */
-      0%   { background: red; left: 0px; top: 0px; }
-      25%  { background: yellow; left: 200px; top: 0px; }
-      50%  { background: blue; left: 200px; top: 200px; }
-      75%  { background: green; left: 0px; top: 200px; }
-      100% { background: red; left: 0px; top: 0px; }
-    }
-    @-webkit-keyframes myfirst { /* Safari and Chrome */
-      0%   { background: red; left: 0px; top: 0px; }
-      25%  { background: yellow; left: 200px; top: 0px; }
-      50%  { background: blue; left: 200px; top: 200px; }
-      75%  { background: green; left: 0px; top: 200px; }
-      100% { background: red; left: 0px; top: 0px; }
-    }
-    @-o-keyframes myfirst { /* Opera */
-      0%   { background: red; left: 0px; top: 0px; }
-      25%  { background: yellow; left: 200px; top: 0px; }
-      50%  { background: blue; left: 200px; top: 200px; }
-      75%  { background: green; left: 0px; top: 200px; }
-      100% { background: red; left: 0px; top: 0px; }
-    }
-    /* div2 */
-    #div2 {
-      width:100px;
-      height:100px;
-      background:red;
-      position:relative;
-      animation:myfirst 5s linear 2s infinite alternate;
-      -moz-animation:myfirst 5s linear 2s infinite alternate;    /* Firefox: */
-      -webkit-animation:myfirst 5s linear 2s infinite alternate; /* Safari and Chrome: */
-      -o-animation:myfirst 5s linear 2s infinite alternate;      /* Opera: */
-    }
-    @keyframes mysecond {
-      0%   { background: red; left: 0px; top: 0px; }
-      25%  { background: yellow; left: 200px; top: 0px; }
-      50%  { background: blue; left: 200px; top: 200px; }
-      75%  { background: green; left: 0px; top: 200px; }
-      100% { background: red; left: 0px; top: 0px; }
-    }
-    @-moz-keyframes mysecond { /* Firefox */
-      0%   { background: red; left: 0px; top: 0px; }
-      25%  { background: yellow; left: 200px; top: 0px; }
-      50%  { background: blue; left: 200px; top: 200px; }
-      75%  { background: green; left: 0px; top: 200px; }
-      100% { background: red; left: 0px; top: 0px; }
-    }
-    @-webkit-keyframes mysecond { /* Safari and Chrome */
-      0%   { background: red; left: 0px; top: 0px; }
-      25%  { background: yellow; left: 200px; top: 0px; }
-      50%  { background: blue; left: 200px; top: 200px; }
-      75%  { background: green; left: 0px; top: 200px; }
-      100% { background: red; left: 0px; top: 0px; }
-    }
-    @-o-keyframes mysecond { /* Opera */
-      0%   { background: red; left: 0px; top: 0px; }
-      25%  { background: yellow; left: 200px; top: 0px; }
-      50%  { background: blue; left: 200px; top: 200px; }
-      75%  { background: green; left: 0px; top: 200px; }
-      100% { background: red; left: 0px; top: 0px; }
-    }
-  </style>
-</head>
-<body>
-  <div id="div1"></div>
-  <div id="div2"></div>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <title>CSS Animation</title>
+    <style>
+      /* div1 */
+      #div1 {
+        width: 100px;
+        height: 100px;
+        background: red;
+        position: relative;
+        animation: myfirst 5s infinite alternate;
+        -moz-animation: myfirst 5s infinite alternate; /* Firefox: */
+        -webkit-animation: myfirst 5s infinite alternate; /* Safari and Chrome: */
+        -o-animation: myfirst 5s infinite alternate; /* Opera: */
+      }
+      @keyframes myfirst {
+        0% {
+          background: red;
+          left: 0px;
+          top: 0px;
+        }
+        25% {
+          background: yellow;
+          left: 200px;
+          top: 0px;
+        }
+        50% {
+          background: blue;
+          left: 200px;
+          top: 200px;
+        }
+        75% {
+          background: green;
+          left: 0px;
+          top: 200px;
+        }
+        100% {
+          background: red;
+          left: 0px;
+          top: 0px;
+        }
+      }
+      @-moz-keyframes myfirst {
+        /* Firefox */
+        0% {
+          background: red;
+          left: 0px;
+          top: 0px;
+        }
+        25% {
+          background: yellow;
+          left: 200px;
+          top: 0px;
+        }
+        50% {
+          background: blue;
+          left: 200px;
+          top: 200px;
+        }
+        75% {
+          background: green;
+          left: 0px;
+          top: 200px;
+        }
+        100% {
+          background: red;
+          left: 0px;
+          top: 0px;
+        }
+      }
+      @-webkit-keyframes myfirst {
+        /* Safari and Chrome */
+        0% {
+          background: red;
+          left: 0px;
+          top: 0px;
+        }
+        25% {
+          background: yellow;
+          left: 200px;
+          top: 0px;
+        }
+        50% {
+          background: blue;
+          left: 200px;
+          top: 200px;
+        }
+        75% {
+          background: green;
+          left: 0px;
+          top: 200px;
+        }
+        100% {
+          background: red;
+          left: 0px;
+          top: 0px;
+        }
+      }
+      @-o-keyframes myfirst {
+        /* Opera */
+        0% {
+          background: red;
+          left: 0px;
+          top: 0px;
+        }
+        25% {
+          background: yellow;
+          left: 200px;
+          top: 0px;
+        }
+        50% {
+          background: blue;
+          left: 200px;
+          top: 200px;
+        }
+        75% {
+          background: green;
+          left: 0px;
+          top: 200px;
+        }
+        100% {
+          background: red;
+          left: 0px;
+          top: 0px;
+        }
+      }
+      /* div2 */
+      #div2 {
+        width: 100px;
+        height: 100px;
+        background: red;
+        position: relative;
+        animation: myfirst 5s linear 2s infinite alternate;
+        -moz-animation: myfirst 5s linear 2s infinite alternate; /* Firefox: */
+        -webkit-animation: myfirst 5s linear 2s infinite alternate; /* Safari and Chrome: */
+        -o-animation: myfirst 5s linear 2s infinite alternate; /* Opera: */
+      }
+      @keyframes mysecond {
+        0% {
+          background: red;
+          left: 0px;
+          top: 0px;
+        }
+        25% {
+          background: yellow;
+          left: 200px;
+          top: 0px;
+        }
+        50% {
+          background: blue;
+          left: 200px;
+          top: 200px;
+        }
+        75% {
+          background: green;
+          left: 0px;
+          top: 200px;
+        }
+        100% {
+          background: red;
+          left: 0px;
+          top: 0px;
+        }
+      }
+      @-moz-keyframes mysecond {
+        /* Firefox */
+        0% {
+          background: red;
+          left: 0px;
+          top: 0px;
+        }
+        25% {
+          background: yellow;
+          left: 200px;
+          top: 0px;
+        }
+        50% {
+          background: blue;
+          left: 200px;
+          top: 200px;
+        }
+        75% {
+          background: green;
+          left: 0px;
+          top: 200px;
+        }
+        100% {
+          background: red;
+          left: 0px;
+          top: 0px;
+        }
+      }
+      @-webkit-keyframes mysecond {
+        /* Safari and Chrome */
+        0% {
+          background: red;
+          left: 0px;
+          top: 0px;
+        }
+        25% {
+          background: yellow;
+          left: 200px;
+          top: 0px;
+        }
+        50% {
+          background: blue;
+          left: 200px;
+          top: 200px;
+        }
+        75% {
+          background: green;
+          left: 0px;
+          top: 200px;
+        }
+        100% {
+          background: red;
+          left: 0px;
+          top: 0px;
+        }
+      }
+      @-o-keyframes mysecond {
+        /* Opera */
+        0% {
+          background: red;
+          left: 0px;
+          top: 0px;
+        }
+        25% {
+          background: yellow;
+          left: 200px;
+          top: 0px;
+        }
+        50% {
+          background: blue;
+          left: 200px;
+          top: 200px;
+        }
+        75% {
+          background: green;
+          left: 0px;
+          top: 200px;
+        }
+        100% {
+          background: red;
+          left: 0px;
+          top: 0px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="div1"></div>
+    <div id="div2"></div>
+  </body>
 </html>

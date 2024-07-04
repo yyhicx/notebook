@@ -16,9 +16,19 @@ function move(array, moveIndex, toIndex) {
   let diff = moveIndex - toIndex;
 
   if (diff > 0) {
-    return [].concat(_toConsumableArray(array.slice(0, toIndex)), [item], _toConsumableArray(array.slice(toIndex, moveIndex)), _toConsumableArray(array.slice(moveIndex + 1, length)));
+    return [].concat(
+      _toConsumableArray(array.slice(0, toIndex)),
+      [item],
+      _toConsumableArray(array.slice(toIndex, moveIndex)),
+      _toConsumableArray(array.slice(moveIndex + 1, length))
+    );
   } else if (diff < 0) {
-    return [].concat(_toConsumableArray(array.slice(0, moveIndex)), _toConsumableArray(array.slice(moveIndex + 1, toIndex + 1)), [item], _toConsumableArray(array.slice(toIndex + 1, length)));
+    return [].concat(
+      _toConsumableArray(array.slice(0, moveIndex)),
+      _toConsumableArray(array.slice(moveIndex + 1, toIndex + 1)),
+      [item],
+      _toConsumableArray(array.slice(toIndex + 1, length))
+    );
   }
   return array;
 }

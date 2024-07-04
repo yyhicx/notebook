@@ -4,7 +4,7 @@ import { makeStyles } from '@mui/styles';
 
 import { useSpring, animated, to } from 'react-spring';
 
-import { useGesture } from 'react-use-gesture';  // 允许您将更丰富的鼠标和触摸事件绑定到任何组件或视图
+import { useGesture } from 'react-use-gesture'; // 允许您将更丰富的鼠标和触摸事件绑定到任何组件或视图
 
 const imgs = [
   'https://drscdn.500px.org/photo/126979479/w%3D440_h%3D440/v2?webp=true&v=2&sig=09ea71b0ddb91e24a59cecfb79a0189a2ab575d10372d3e8d3258e38f97a6a49',
@@ -60,12 +60,12 @@ const AnimatedCard = () => {
 
   useEffect(() => {
     const preventDefault = (e) => e.preventDefault();
-    document.addEventListener("gesturestart", preventDefault);
-    document.addEventListener("gesturechange", preventDefault);
+    document.addEventListener('gesturestart', preventDefault);
+    document.addEventListener('gesturechange', preventDefault);
 
     return () => {
-      document.removeEventListener("gesturestart", preventDefault);
-      document.removeEventListener("gesturechange", preventDefault);
+      document.removeEventListener('gesturestart', preventDefault);
+      document.removeEventListener('gesturechange', preventDefault);
     };
   }, []);
 
@@ -79,48 +79,51 @@ const AnimatedCard = () => {
       zoom: 0,
       x: 0,
       y: 0,
-      config: { mass: 5, tension: 350, friction: 40 }
+      config: { mass: 5, tension: 350, friction: 40 },
     })
   );
 
   const [{ wheelY }, wheelApi] = useSpring(() => ({ wheelY: 0 }));
 
-  useGesture({
-    // 处理拖动手势
-    onDrag: ({ active, offset: [x, y] }) =>
+  useGesture(
+    {
+      // 处理拖动手势
+      onDrag: ({ active, offset: [x, y] }) =>
         api.start({ x, y, rotateX: 0, rotateY: 0, scale: active ? 1 : 1.1 }),
-    // 处理捏合手势
-    onPinch: ({ offset: [d, a] }) => api.start({ zoom: d / 200, rotateZ: a }),
-    // 处理鼠标移动事件
-    onMove: ({ xy: [px, py], dragging }) =>
+      // 处理捏合手势
+      onPinch: ({ offset: [d, a] }) => api.start({ zoom: d / 200, rotateZ: a }),
+      // 处理鼠标移动事件
+      onMove: ({ xy: [px, py], dragging }) =>
         !dragging &&
         api.start({
           rotateX: calcX(py, y.get()),
           rotateY: calcY(px, x.get()),
-          scale: 1.1
+          scale: 1.1,
         }),
-    onHover: ({ hovering }) =>
-      !hovering && api.start({ rotateX: 0, rotateY: 0, scale: 1 }),
-    // 处理车轮手势
-    onWheel: ({ event, offset: [, y] }) => {
-      event.preventDefault();
-      wheelApi.set({ wheelY: y });
-    }
-  }, { domTarget, eventOptions: { passive: false } });
+      onHover: ({ hovering }) =>
+        !hovering && api.start({ rotateX: 0, rotateY: 0, scale: 1 }),
+      // 处理车轮手势
+      onWheel: ({ event, offset: [, y] }) => {
+        event.preventDefault();
+        wheelApi.set({ wheelY: y });
+      },
+    },
+    { domTarget, eventOptions: { passive: false } }
+  );
 
   return (
-    <Container sx={{ display: "flex", justifyContent: "center" }}>
+    <Container sx={{ display: 'flex', justifyContent: 'center' }}>
       <animated.div
         ref={domTarget}
         className={classes.card}
         style={{
-          transform: "perspective(600px)",
+          transform: 'perspective(600px)',
           x,
           y,
           scale: to([scale, zoom], (s, z) => s + z),
           rotateX,
           rotateY,
-          rotateZ
+          rotateZ,
         }}
       >
         <animated.div style={{ transform: wheelY.to(wheel) }}>
@@ -131,6 +134,6 @@ const AnimatedCard = () => {
       </animated.div>
     </Container>
   );
-}
+};
 
 export default AnimatedCard;

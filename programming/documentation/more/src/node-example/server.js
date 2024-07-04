@@ -11,13 +11,13 @@ function start(route) {
 
     route(pathname);
 
-    pathname = pathname.slice(1);  // 删除开头的 '/'
+    pathname = pathname.slice(1); // 删除开头的 '/'
 
     if (pathname[0] !== undefined) {
-      pathname = pathname.replace(pathname[0], pathname[0].toUpperCase());  // 首字母大写
+      pathname = pathname.replace(pathname[0], pathname[0].toUpperCase()); // 首字母大写
     }
 
-    response.writeHead(200, {'Content-Type': 'text/plain'});
+    response.writeHead(200, { 'Content-Type': 'text/plain' });
     response.write('Hello ' + pathname);
     response.end();
   }

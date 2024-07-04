@@ -2,11 +2,11 @@ import Head from 'next/head';
 
 type PropsTypes = {
   posts: PostsType;
-}
+};
 
 type PostsType = {
   array: string[];
-}
+};
 
 export async function getStaticProps() {
   const res = await fetch('https://localhost:3000/api/posts');

@@ -15,7 +15,7 @@ $.get('http://localhost:8000/china.json', function (chinaJson) {
       text: '中国人口普查 (2010)',
       subtext: '数据来自 www.stats.gov.cn',
       sublink: 'http://www.stats.gov.cn/tjsj/pcsj/rkpc/6rp/indexch.htm',
-      left: 'right'
+      left: 'right',
     },
     tooltip: {
       trigger: 'item',
@@ -28,7 +28,7 @@ $.get('http://localhost:8000/china.json', function (chinaJson) {
           '$1,'
         );
         return params.seriesName + '<br/>' + params.name + ': ' + valueStr;
-      }
+      },
     },
     visualMap: {
       left: 'right',
@@ -46,11 +46,11 @@ $.get('http://localhost:8000/china.json', function (chinaJson) {
           '#fdae61',
           '#f46d43',
           '#d73027',
-          '#a50026'
-        ]
+          '#a50026',
+        ],
       },
       text: ['High', 'Low'],
-      calculable: true
+      calculable: true,
     },
     toolbox: {
       show: true,
@@ -60,8 +60,8 @@ $.get('http://localhost:8000/china.json', function (chinaJson) {
       feature: {
         dataView: { readOnly: false },
         restore: {},
-        saveAsImage: {}
-      }
+        saveAsImage: {},
+      },
     },
     series: [
       {
@@ -71,12 +71,12 @@ $.get('http://localhost:8000/china.json', function (chinaJson) {
         map: 'China',
         emphasis: {
           label: {
-            show: true
-          }
+            show: true,
+          },
         },
-        data: data['data']
-      }
-    ]
+        data: data['data'],
+      },
+    ],
   };
 
   myChart.setOption(option);

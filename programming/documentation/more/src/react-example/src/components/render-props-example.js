@@ -11,9 +11,19 @@ const Cat = (props) => {
   const [x, y] = props.mouse;
 
   return (
-    <img src={CatImage} alt="cat" style={{ position: "absolute", left: x, top: y, width: imageWidth, height: imageHeight }} />
+    <img
+      src={CatImage}
+      alt="cat"
+      style={{
+        position: 'absolute',
+        left: x,
+        top: y,
+        width: imageWidth,
+        height: imageHeight,
+      }}
+    />
   );
-}
+};
 
 const Mouse = (props) => {
   const [[x, y], setState] = useState([0, 0]);
@@ -24,32 +34,39 @@ const Mouse = (props) => {
     let nextX = event.pageX;
     let nextY = event.pageY;
 
-    if (nextX < left || nextX > (right - imageWidth)) nextX = x;
-    if (nextY < top || nextY > (bottom - imageHeight)) nextY = y;
+    if (nextX < left || nextX > right - imageWidth) nextX = x;
+    if (nextY < top || nextY > bottom - imageHeight) nextY = y;
 
     setState([nextX, nextY]);
-  }
+  };
 
   return (
-    <div ref={ref} style={{ margin: "auto", width: "50vw" ,height: "50vh", border: "2px solid #ccc" }} onMouseMove={handleMouseMove}>
+    <div
+      ref={ref}
+      style={{
+        margin: 'auto',
+        width: '50vw',
+        height: '50vh',
+        border: '2px solid #ccc',
+      }}
+      onMouseMove={handleMouseMove}
+    >
       {props.render([x, y])}
     </div>
   );
-}
+};
 
 const MouseTracker = () => {
   return (
-    <div style={{ textAlign: "center" }}>
+    <div style={{ textAlign: 'center' }}>
       <h1>移动鼠标!</h1>
-      <Mouse render={mouse => (
-        <Cat mouse={mouse} />
-      )}/>
+      <Mouse render={(mouse) => <Cat mouse={mouse} />} />
     </div>
   );
-}
+};
 
 const RenderPropsExample = () => {
   return <MouseTracker />;
-}
+};
 
 export default RenderPropsExample;

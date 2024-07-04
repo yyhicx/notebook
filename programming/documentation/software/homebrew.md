@@ -10,7 +10,7 @@ Install:
 
 Update: brew update --verbose
 
-Run: brew install wget
+Run: brew install software_name
 
 Mirrors:
 

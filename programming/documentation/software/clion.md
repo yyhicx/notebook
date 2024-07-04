@@ -1,7 +1,0 @@
-# CLion
-
-## Windows
-
-Toolchains:
-
-*   MinGW

@@ -1,163 +1,175 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>JQuery Effect Methods</title>
-  <link href="https://cdn.staticfile.org/twitter-bootstrap/5.1.2/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.staticfile.org/bootstrap/5.1.2/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.staticfile.org/jquery/1.10.0/jquery.min.js"></script>
-  <style>
-    .card {
-      border: 2px solid #ccc;
-    }
-    .col-5, .col-10 {
-      background-color: #e5eecc;
-    }
-    .btn-ani-1 {
-      position: absolute;
-      right: 100px;
-      background-color: #e5eecc;
-      border: 1px solid #ccc;
-    }
-    .btn-ani-2 {
-      position: absolute;
-      right: 10px;
-      background-color: #e5eecc;
-      border: 1px solid #ccc;
-    }
-    .content-ani {
-      position: absolute;
-      top: 50px;
-      background: #98bf21;
-      height: 100px;
-      width: 100px;
-    }
-  </style>
-  <script>
-    $(function () {
-      $('#show').click(function () {
-        $('#content1').show();
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JQuery Effect Methods</title>
+    <link
+      href="https://cdn.staticfile.org/twitter-bootstrap/5.1.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.staticfile.org/bootstrap/5.1.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.0/jquery.min.js"></script>
+    <style>
+      .card {
+        border: 2px solid #ccc;
+      }
+      .col-5,
+      .col-10 {
+        background-color: #e5eecc;
+      }
+      .btn-ani-1 {
+        position: absolute;
+        right: 100px;
+        background-color: #e5eecc;
+        border: 1px solid #ccc;
+      }
+      .btn-ani-2 {
+        position: absolute;
+        right: 10px;
+        background-color: #e5eecc;
+        border: 1px solid #ccc;
+      }
+      .content-ani {
+        position: absolute;
+        top: 50px;
+        background: #98bf21;
+        height: 100px;
+        width: 100px;
+      }
+    </style>
+    <script>
+      $(function () {
+        $('#show').click(function () {
+          $('#content1').show();
+        });
+        $('#hide').click(function () {
+          $('#content1').hide();
+        });
+        $('#toggle').click(function () {
+          $('#content1').toggle();
+        });
+        $('#fade-in').click(function () {
+          $('#content2').fadeIn();
+        });
+        $('#fade-out').click(function () {
+          $('#content2').fadeOut();
+        });
+        $('#fade-toggle').click(function () {
+          $('#content2').fadeToggle();
+        });
+        $('#fade-to-15').click(function () {
+          $('#content2').fadeTo('slow', 0.15);
+        });
+        $('#fade-to-0').click(function () {
+          $('#content2').fadeTo('slow', 1);
+        });
+        $('#slide-down').click(function () {
+          $('#content3').slideDown();
+        });
+        $('#slide-up').click(function () {
+          $('#content3').slideUp();
+        });
+        $('#slide-toggle').click(function () {
+          $('#content3').slideToggle();
+        });
+        $('#animate1').click(function () {
+          let c = $('#content4');
+          c.animate({ height: '300px', opacity: '0.4' }, 'slow');
+          c.animate({ width: '300px', opacity: '0.8' }, 'slow');
+          c.animate({ height: '100px', opacity: '0.4' }, 'slow');
+          c.animate({ width: '100px', opacity: '0.8' }, 'slow');
+        });
+        $('#animate2').click(function () {
+          let c = $('#content5');
+          c.animate({ height: '300px', opacity: '0.4' }, 'slow');
+          c.animate({ width: '300px', opacity: '0.8' }, 'slow');
+          c.animate({ height: '100px', opacity: '0.4' }, 'slow');
+          c.animate({ width: '100px', opacity: '0.8' }, 'slow');
+        });
+        $('#stop-animate').click(function () {
+          $('#content5').stop();
+        });
       });
-      $('#hide').click(function () {
-        $('#content1').hide();
-      });
-      $('#toggle').click(function () {
-        $('#content1').toggle();
-      });
-      $('#fade-in').click(function () {
-        $('#content2').fadeIn();
-      });
-      $('#fade-out').click(function () {
-        $('#content2').fadeOut();
-      });
-      $('#fade-toggle').click(function () {
-        $('#content2').fadeToggle();
-      });
-      $('#fade-to-15').click(function () {
-        $('#content2').fadeTo('slow', 0.15);
-      });
-      $('#fade-to-0').click(function () {
-        $('#content2').fadeTo('slow', 1);
-      });
-      $('#slide-down').click(function () {
-        $('#content3').slideDown();
-      });
-      $('#slide-up').click(function () {
-        $('#content3').slideUp();
-      });
-      $('#slide-toggle').click(function () {
-        $('#content3').slideToggle();
-      });
-      $('#animate1').click(function () {
-        let c = $('#content4');
-        c.animate({height:'300px', opacity:'0.4'}, "slow");
-        c.animate({width:'300px', opacity:'0.8'}, "slow");
-        c.animate({height:'100px', opacity:'0.4'}, "slow");
-        c.animate({width:'100px', opacity:'0.8'}, "slow");
-      });
-      $('#animate2').click(function () {
-        let c = $('#content5');
-        c.animate({height:'300px', opacity:'0.4'}, "slow");
-        c.animate({width:'300px', opacity:'0.8'}, "slow");
-        c.animate({height:'100px', opacity:'0.4'}, "slow");
-        c.animate({width:'100px', opacity:'0.8'}, "slow");
-      });
-      $('#stop-animate').click(function () {
-        $('#content5').stop();
-      });
-    });
-  </script>
-</head>
-<body>
-  <div class="container mt-3 text-center">
-    <div class="card mb-3 p-4">
-      <h3>显示 / 隐藏</h3>
-      <div class="row">
-        <div id="show" class="col-5 offset-1 border">显示</div>
-        <div id="hide" class="col-5 border">隐藏</div>
+    </script>
+  </head>
+  <body>
+    <div class="container mt-3 text-center">
+      <div class="card mb-3 p-4">
+        <h3>显示 / 隐藏</h3>
+        <div class="row">
+          <div id="show" class="col-5 offset-1 border">显示</div>
+          <div id="hide" class="col-5 border">隐藏</div>
+        </div>
+        <div class="row">
+          <div id="toggle" class="col-10 offset-1 border">显示/隐藏</div>
+        </div>
+        <div id="content1" class="row">
+          <div class="col-10 offset-1 border">
+            <p>因为时间是宝贵的，我们提供快捷方便的学习方法。</p>
+            <p>在菜鸟教程,你可以学习需要的知识。</p>
+          </div>
+        </div>
       </div>
-      <div class="row">
-        <div id="toggle" class="col-10 offset-1 border">显示/隐藏</div>
+      <div class="card mb-3 p-4">
+        <h3>淡入 / 淡出</h3>
+        <div class="row">
+          <div id="fade-in" class="col-5 offset-1 border">淡入</div>
+          <div id="fade-out" class="col-5 border">淡出</div>
+        </div>
+        <div class="row">
+          <div id="fade-toggle" class="col-10 offset-1 border">淡入/淡出</div>
+        </div>
+        <div class="row">
+          <div id="fade-to-15" class="col-5 offset-1 border">透明</div>
+          <div id="fade-to-0" class="col-5 border">不透明</div>
+        </div>
+        <div id="content2" class="row">
+          <div class="col-10 offset-1 border">
+            <p>因为时间是宝贵的，我们提供快捷方便的学习方法。</p>
+            <p>在菜鸟教程,你可以学习需要的知识。</p>
+          </div>
+        </div>
       </div>
-      <div id="content1" class="row">
-        <div class="col-10 offset-1 border">
-          <p>因为时间是宝贵的，我们提供快捷方便的学习方法。</p>
-          <p>在菜鸟教程,你可以学习需要的知识。</p>
+      <div class="card mb-3 p-4">
+        <h3>滑动</h3>
+        <div class="row">
+          <div id="slide-down" class="col-5 offset-1 border">向下滑动</div>
+          <div id="slide-up" class="col-5 border">向上滑动</div>
+        </div>
+        <div class="row">
+          <div id="slide-toggle" class="col-10 offset-1 border">
+            向下 / 向上 滑动
+          </div>
+        </div>
+        <div id="content3" class="row">
+          <div class="col-10 offset-1 border">
+            <p>一寸光阴一寸金，因此，我们为您提供快捷易懂的学习内容。</p>
+            <p>在这里，您可以通过一种易懂的便利的模式获得您需要的任何知识。</p>
+          </div>
+        </div>
+      </div>
+      <div class="card mb-3 p-4" style="height: 450px">
+        <h3>动画</h3>
+        <div
+          class="m-auto"
+          style="position: relative; width: 400px; height: 400px"
+        >
+          <button id="animate1" class="btn-ani-2">执行动画</button>
+          <div id="content4" class="content-ani"></div>
+        </div>
+      </div>
+      <div class="card mb-3 p-4" style="height: 450px">
+        <h3>停止动画</h3>
+        <div
+          class="m-auto"
+          style="position: relative; width: 400px; height: 400px"
+        >
+          <button id="animate2" class="btn-ani-1">执行动画</button>
+          <button id="stop-animate" class="btn-ani-2">停止动画</button>
+          <div id="content5" class="content-ani"></div>
         </div>
       </div>
     </div>
-    <div class="card mb-3 p-4">
-      <h3>淡入 / 淡出</h3>
-      <div class="row">
-        <div id="fade-in" class="col-5 offset-1 border">淡入</div>
-        <div id="fade-out" class="col-5 border">淡出</div>
-      </div>
-      <div class="row">
-        <div id="fade-toggle" class="col-10 offset-1 border">淡入/淡出</div>
-      </div>
-      <div class="row">
-        <div id="fade-to-15" class="col-5 offset-1 border">透明</div>
-        <div id="fade-to-0" class="col-5 border">不透明</div>
-      </div>
-      <div id="content2" class="row">
-        <div class="col-10 offset-1 border">
-          <p>因为时间是宝贵的，我们提供快捷方便的学习方法。</p>
-          <p>在菜鸟教程,你可以学习需要的知识。</p>
-        </div>
-      </div>
-    </div>
-    <div class="card mb-3 p-4">
-      <h3>滑动</h3>
-      <div class="row">
-        <div id="slide-down" class="col-5 offset-1 border">向下滑动</div>
-        <div id="slide-up" class="col-5 border">向上滑动</div>
-      </div>
-      <div class="row">
-        <div id="slide-toggle" class="col-10 offset-1 border">向下 / 向上 滑动</div>
-      </div>
-      <div id="content3" class="row">
-        <div class="col-10 offset-1 border">
-          <p>一寸光阴一寸金，因此，我们为您提供快捷易懂的学习内容。</p>
-          <p>在这里，您可以通过一种易懂的便利的模式获得您需要的任何知识。</p>
-        </div>
-      </div>
-    </div>
-    <div class="card mb-3 p-4" style="height: 450px">
-      <h3>动画</h3>
-      <div class="m-auto" style="position: relative; width: 400px; height: 400px;">
-        <button id="animate1" class="btn-ani-2">执行动画</button>
-        <div id="content4" class="content-ani"></div>
-      </div>
-    </div>
-    <div class="card mb-3 p-4" style="height: 450px">
-      <h3>停止动画</h3>
-      <div class="m-auto" style="position: relative; width: 400px; height: 400px;">
-        <button id="animate2" class="btn-ani-1">执行动画</button>
-        <button id="stop-animate" class="btn-ani-2">停止动画</button>
-        <div id="content5" class="content-ani"></div>
-      </div>
-    </div>
-  </div>
-</body>
+  </body>
 </html>

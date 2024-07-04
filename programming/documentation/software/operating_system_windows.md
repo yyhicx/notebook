@@ -1,20 +1,34 @@
 # Windows
 
+## Shortcut keys
+
+*   Lock screen: win + l
+*   Maximize/Minimize window: win + d
+*   Open explorer: win + e
+*   Open run: win + r
+*   Switch between open windows: alt + tab
+
 ## Software Displayed in the Taskbar
 
-Software:
+*   Yuque
+*   Microsoft To Do
+*   Terminal
+*   Chrome
+*   Visual Studio Code
+*   CLion
+*   Intellij IDEA
+*   PyCharm
+*   Typora
+*   Postman
+*   Navicat
+*   Master Go
+*   Photoshop
+*   Illustrator
+*   v2rayN
 
-*   yuque
-*   microsoft to do
-*   terminal
-*   chrome
-*   visual studio code
-*   clion
-*   pycharm
-*   typora
-*   postman
-*   navicat
-*   master go
-*   photoshop
-*   illustrator
-*   v2rayn
+## Command
+
+| Command                                                                    | Description      |
+| -------------------------------------------------------------------------- | ---------------- |
+| Get-ChildItem -Path path_name -File -Recurse "file_name"                   | Search File      |
+| Get-ChildItem -Path path_name -Directory -Recurse -Filter "directory_name" | Search Directory |

@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 
 import Home from './pages/home';
@@ -29,14 +25,23 @@ function App() {
     <Router>
       <Routes>
         <Route exact path="/" element={<Home />} />
-        <Route path="/filterable-product-table" element={<FilterableProductTablePage />} />
+        <Route
+          path="/filterable-product-table"
+          element={<FilterableProductTablePage />}
+        />
         <Route path="/context-example" element={<ContextExamplePage />} />
         <Route path="/portal-example" element={<PortalExamplePage />} />
         <Route path="/profiler-example" element={<ProfilerExamplePage />} />
-        <Route path="/render-props-example" element={<RenderPropsExamplePage />} />
+        <Route
+          path="/render-props-example"
+          element={<RenderPropsExamplePage />}
+        />
         <Route path="/counter" element={<CounterPage />} />
         <Route path="/todos" element={<TodosPage />} />
-        <Route path="/react-spring-example" element={<ReactSpringExamplePage />} />
+        <Route
+          path="/react-spring-example"
+          element={<ReactSpringExamplePage />}
+        />
         <Route path="/animated-card" element={<AnimatedCardPage />} />
         <Route path="/animated-tree" element={<AnimatedTreePage />} />
         <Route path="/draggable-list" element={<DraggableListPage />} />

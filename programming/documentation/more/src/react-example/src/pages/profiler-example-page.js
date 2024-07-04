@@ -10,6 +10,6 @@ const ProfilerExamplePage = () => {
       <ProfilerExample />
     </Layout>
   );
-}
+};
 
 export default ProfilerExamplePage;

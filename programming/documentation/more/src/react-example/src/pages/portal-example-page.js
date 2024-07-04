@@ -10,6 +10,6 @@ const PortalExamplePage = () => {
       <PortalExample />
     </Layout>
   );
-}
+};
 
 export default PortalExamplePage;

@@ -18,9 +18,9 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("blog/", include("blog.urls")),
-    path("html-example/", include("html_example.urls")),
-    path("jquery-example/", include("jquery_example.urls")),
-    path("polls/", include("polls.urls")),
+    path('admin/', admin.site.urls),
+    path('blog/', include('blog.urls')),
+    path('html-example/', include('html_example.urls')),
+    path('jquery-example/', include('jquery_example.urls')),
+    path('polls/', include('polls.urls')),
 ]

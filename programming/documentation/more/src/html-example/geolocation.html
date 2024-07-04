@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   <title>Geolocation</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 <body>
   <p id="demo">点击按钮获取您当前坐标（可能需要比较长的时间获取）：</p>
@@ -17,14 +17,18 @@
         // clearWatch         停止 watchPosition 方法
         navigator.geolocation.getCurrentPosition(showPosition, showError);
       } else {
-        x.innerHTML = '该浏览器不支持获取地理位置。'
+        x.innerHTML = '该浏览器不支持获取地理位置。';
       }
     }
     function showPosition(position) {
       let latlon = position.coords.latitude + ',' + position.coords.longitude;
       // amap api，可免费申请
-      let img_url = 'https://restapi.amap.com/v3/staticmap?location=' + latlon + '&zoom=14&size=400x300&key=8a74669bc184f35d780b17ad7090544d';
-      document.getElementById('mapholder').innerHTML = '<img src="' + img_url + '">';
+      let img_url =
+        'https://restapi.amap.com/v3/staticmap?location=' +
+        latlon +
+        '&zoom=14&size=400x300&key=8a74669bc184f35d780b17ad7090544d';
+      document.getElementById('mapholder').innerHTML =
+        '<img src="' + img_url + '">';
     }
     function showError(error) {
       switch (error.code) {

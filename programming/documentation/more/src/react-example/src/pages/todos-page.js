@@ -10,6 +10,6 @@ const TodosPage = () => {
       <Todos />
     </Layout>
   );
-}
+};
 
 export default TodosPage;

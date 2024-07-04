@@ -6,7 +6,8 @@ Algorithm
 
 Artificial Intelligence:
 
-*   ai getting started
+*   mathematical foundations
+*   artificial intelligence by hung yi lee
 
 Common Issue:
 
@@ -33,9 +34,11 @@ Design:
 
 Language:
 
+*   cpp
 *   css
 *   dart
 *   html
+*   java
 *   javascript
 *   markdown
 *   typescript
@@ -74,6 +77,7 @@ Else:
 *   job title abbreviations
 *   latex getting started
 *   linux getting started
+*   mongodb getting started
 *   open source license agreement and open source community
 *   qt5 class inheritance diagram
 *   regex getting started

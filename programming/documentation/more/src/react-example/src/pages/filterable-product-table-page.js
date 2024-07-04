@@ -10,6 +10,6 @@ const FilterableProductTablePage = () => {
       <FilterableProductTable />
     </Layout>
   );
-}
+};
 
 export default FilterableProductTablePage;

@@ -1,14 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  Box,
-  Typography,
-  SvgIcon,
-} from '@mui/material';
+import { Box, Typography, SvgIcon } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 import { useSpring, animated } from 'react-spring';
 
-import useMeasure from 'react-use-measure';  // 测量您引用的视图的边界（例如宽度、高度、顶部、左侧）
+import useMeasure from 'react-use-measure'; // 测量您引用的视图的边界（例如宽度、高度、顶部、左侧）
 
 const MinusSquareO = (props) => (
   <SvgIcon {...props} viewBox="64 -65 897 897">
@@ -38,9 +34,9 @@ q11 10 11 25t-10.5 25.5zM888 760v0v0v-753v0h-752v0v753v0h752zM888 832h-752q-30 0
 );
 
 const Icons = {
-  'MinusSquareO': MinusSquareO,
-  'PlusSquareO': PlusSquareO,
-  'CloseSquareO': CloseSquareO,
+  MinusSquareO: MinusSquareO,
+  PlusSquareO: PlusSquareO,
+  CloseSquareO: CloseSquareO,
 };
 
 const usePrevious = (value) => {
@@ -49,7 +45,7 @@ const usePrevious = (value) => {
     ref.current = value;
   }, [value]);
   return ref.current;
-}
+};
 
 const tStyles = makeStyles({
   frame: {
@@ -68,7 +64,7 @@ const tStyles = makeStyles({
     padding: '0px 0px 0px 14px',
     borderLeft: '1px dashed rgba(255, 255, 255, 0.4)',
     overflow: 'hidden',
-  }
+  },
 });
 
 const Tree = React.memo(({ children, name, style, defaultOpen = false }) => {
@@ -85,14 +81,26 @@ const Tree = React.memo(({ children, name, style, defaultOpen = false }) => {
     },
   });
 
-  const Icon = Icons[`${children ? (isOpen ? 'Minus' : 'Plus') : 'Close'}SquareO`];
+  const Icon =
+    Icons[`${children ? (isOpen ? 'Minus' : 'Plus') : 'Close'}SquareO`];
   return (
     <Box className={classes.frame}>
       <Icon
-        style={{ width: "1em", height: "1em", marginRight: 10, cursor: "pointer", verticalAlign: "middle", opacity: children ? 1 : 0.3 }}
+        style={{
+          width: '1em',
+          height: '1em',
+          marginRight: 10,
+          cursor: 'pointer',
+          verticalAlign: 'middle',
+          opacity: children ? 1 : 0.3,
+        }}
         onClick={() => setOpen(!isOpen)}
       />
-      <Typography component="span" sx={{ verticalAlign: "middle" }} style={style}>
+      <Typography
+        component="span"
+        sx={{ verticalAlign: 'middle' }}
+        style={style}
+      >
         {name}
       </Typography>
       <animated.div
@@ -100,12 +108,13 @@ const Tree = React.memo(({ children, name, style, defaultOpen = false }) => {
         style={{
           opacity,
           height: isOpen && previous === isOpen ? 'auto' : height,
-        }}>
+        }}
+      >
         <animated.div ref={ref} style={{ y }} children={children} />
       </animated.div>
     </Box>
   );
-})
+});
 
 const atStyles = makeStyles({
   container: {
@@ -145,7 +154,8 @@ const AnimatedTree = () => {
                   width: '100%',
                   height: 200,
                   padding: 10,
-                }}>
+                }}
+              >
                 <div
                   style={{
                     width: '100%',
@@ -160,10 +170,19 @@ const AnimatedTree = () => {
           <Tree name="hello" />
         </Tree>
         <Tree name="world" />
-        <Tree name={<span><span role="img" aria-label="terrified">🙀</span>  something something</span>} />
+        <Tree
+          name={
+            <span>
+              <span role="img" aria-label="terrified">
+                🙀
+              </span>{' '}
+              something something
+            </span>
+          }
+        />
       </Tree>
     </Box>
   );
-}
+};
 
 export default AnimatedTree;

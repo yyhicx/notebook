@@ -18,11 +18,9 @@ const NotFound = () => {
   const classes = useStyles();
   return (
     <Layout name="Not Found">
-      <div className={classes.root}>
-        404: Page Not Found
-      </div>
+      <div className={classes.root}>404: Page Not Found</div>
     </Layout>
   );
-}
+};
 
 export default NotFound;

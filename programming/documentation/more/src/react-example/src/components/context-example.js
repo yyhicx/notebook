@@ -17,7 +17,7 @@ const ContextExample = () => {
       <Toolbar func={handleThemeChange} />
     </ThemeProvider>
   );
-}
+};
 
 function Toolbar(props) {
   return (
@@ -29,8 +29,10 @@ function Toolbar(props) {
 
 const ThemeButton = (props) => {
   return (
-    <Button onClick={props.func} variant="outlined">Outlined</Button>
+    <Button onClick={props.func} variant="outlined">
+      Outlined
+    </Button>
   );
-}
+};
 
 export default ContextExample;

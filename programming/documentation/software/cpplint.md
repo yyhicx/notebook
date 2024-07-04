@@ -9,6 +9,6 @@ Run:
 ```bash
 cpplint file
 cpplint --recursive document
-# 头文件位于同一文件夹中，排除 build 目录，递归当前目录
+# Header files are located in the same folder, exclude the build directory, recursively process the current directory
 cpplint --filter=-build/include_subdir --exclude=./build --recursive .
 ```

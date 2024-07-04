@@ -5,12 +5,37 @@ import { makeStyles } from '@mui/styles';
 import groupingArray from '../utils/grouping-array';
 
 const globalData = [
-  {category: 'Sporting Goods', price: '$49.99', stocked: true, name: 'Football'},
-  {category: 'Sporting Goods', price: '$9.99', stocked: true, name: 'Baseball'},
-  {category: 'Sporting Goods', price: '$29.99', stocked: false, name: 'Basketball'},
-  {category: 'Electronics', price: '$99.99', stocked: true, name: 'iPod Touch'},
-  {category: 'Electronics', price: '$399.99', stocked: false, name: 'iPhone 5'},
-  {category: 'Electronics', price: '$199.99', stocked: true, name: 'Nexus 7'}
+  {
+    category: 'Sporting Goods',
+    price: '$49.99',
+    stocked: true,
+    name: 'Football',
+  },
+  {
+    category: 'Sporting Goods',
+    price: '$9.99',
+    stocked: true,
+    name: 'Baseball',
+  },
+  {
+    category: 'Sporting Goods',
+    price: '$29.99',
+    stocked: false,
+    name: 'Basketball',
+  },
+  {
+    category: 'Electronics',
+    price: '$99.99',
+    stocked: true,
+    name: 'iPod Touch',
+  },
+  {
+    category: 'Electronics',
+    price: '$399.99',
+    stocked: false,
+    name: 'iPhone 5',
+  },
+  { category: 'Electronics', price: '$199.99', stocked: true, name: 'Nexus 7' },
 ];
 
 /**
@@ -74,7 +99,7 @@ const processingData = (searchObject, onlyShowStocked) => {
   data = groupingArray(data, 'category');
 
   return data;
-}
+};
 
 const FilterableProductTable = () => {
   const [searchObject, setSearchObject] = React.useState('');
@@ -87,28 +112,37 @@ const FilterableProductTable = () => {
   const handleSearchObjectChange = (value) => {
     setSearchObject(value);
     handleDataChange();
-  }
+  };
 
   const handleOnlyShowStockedChange = (checked) => {
     setOnlyShowStocked(checked);
     handleDataChange();
-  }
+  };
 
   const handleDataChange = () => {
     data = processingData(searchObject, onlyShowStocked);
     keys = Object.keys(data);
-  }
+  };
 
   return (
     <div className={classes.root}>
       <div className="searchbar">
         <input
-          type="text" placeholder="Search..." value={searchObject} className={classes.searchBarInput}
+          type="text"
+          placeholder="Search..."
+          value={searchObject}
+          className={classes.searchBarInput}
           onChange={(event) => handleSearchObjectChange(event.target.value)}
         />
         <br />
         <label className={classes.searchBarLabel}>
-          <input type="checkbox" checked={onlyShowStocked} onChange={(event) => handleOnlyShowStockedChange(event.target.checked)} />
+          <input
+            type="checkbox"
+            checked={onlyShowStocked}
+            onChange={(event) =>
+              handleOnlyShowStockedChange(event.target.checked)
+            }
+          />
           Only show products in stock
         </label>
       </div>
@@ -118,23 +152,25 @@ const FilterableProductTable = () => {
           <span className={classes.productTableTitleSpan}>Price</span>
         </div>
         {keys.map(function (k, index) {
-            return (
-              <div key={index} className={classes.productCategoryRow}>
-                {k}
-                {
-                  data[k].map(function (d, index) {
-                    return (
-                      <div key={index} className={classes.productRow}>
-                        <span className={classes.productRowSpan} style={{ color: d.stocked ? 'black' : 'red' }} >{d.name}</span>
-                        <span className={classes.productRowSpan}>{d.price}</span>
-                      </div>
-                    );
-                  })
-                }
-              </div>
-            );
-          }
-        )}
+          return (
+            <div key={index} className={classes.productCategoryRow}>
+              {k}
+              {data[k].map(function (d, index) {
+                return (
+                  <div key={index} className={classes.productRow}>
+                    <span
+                      className={classes.productRowSpan}
+                      style={{ color: d.stocked ? 'black' : 'red' }}
+                    >
+                      {d.name}
+                    </span>
+                    <span className={classes.productRowSpan}>{d.price}</span>
+                  </div>
+                );
+              })}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

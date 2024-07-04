@@ -1,219 +1,355 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>JQuery Traversal</title>
-  <link href="https://cdn.staticfile.org/twitter-bootstrap/5.1.2/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.staticfile.org/bootstrap/5.1.2/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.staticfile.org/jquery/1.10.0/jquery.min.js"></script>
-  <style>
-    .card {
-      border: 2px solid #ccc;
-    }
-    .content {
-      width: 600px;
-      margin: auto;
-      padding: 20px;
-    }
-    .content * {
-      display: block;
-      border: 2px solid lightgrey;
-      color: lightgrey;
-      padding: 5px;
-      margin: 15px;
-    }
-    .control {
-      width: 600px;
-      margin: auto;
-      background-color: #e5eecc;
-      -webkit-box-sizing: border-box;
-      box-sizing: border-box;
-      display: flex;
-    }
-    .control-button {
-      width: 150px;
-      display: inline-block;
-      cursor: pointer;
-    }
-    .control-button-small {
-      width: 120px;
-      display: inline-block;
-      cursor: pointer;
-    }
-  </style>
-  <script>
-    $(function () {
-      $('#ancestors-tbl #parent').click(function () {
-        $('#ancestors-tbl span').parentsUntil('.content').css({'color': 'lightgrey', 'border': '2px solid lightgrey'});
-        $('#ancestors-tbl span').parent().css({'color': 'red', 'border': '2px solid red'});
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JQuery Traversal</title>
+    <link
+      href="https://cdn.staticfile.org/twitter-bootstrap/5.1.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.staticfile.org/bootstrap/5.1.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.0/jquery.min.js"></script>
+    <style>
+      .card {
+        border: 2px solid #ccc;
+      }
+      .content {
+        width: 600px;
+        margin: auto;
+        padding: 20px;
+      }
+      .content * {
+        display: block;
+        border: 2px solid lightgrey;
+        color: lightgrey;
+        padding: 5px;
+        margin: 15px;
+      }
+      .control {
+        width: 600px;
+        margin: auto;
+        background-color: #e5eecc;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        display: flex;
+      }
+      .control-button {
+        width: 150px;
+        display: inline-block;
+        cursor: pointer;
+      }
+      .control-button-small {
+        width: 120px;
+        display: inline-block;
+        cursor: pointer;
+      }
+    </style>
+    <script>
+      $(function () {
+        $('#ancestors-tbl #parent').click(function () {
+          $('#ancestors-tbl span')
+            .parentsUntil('.content')
+            .css({ color: 'lightgrey', border: '2px solid lightgrey' });
+          $('#ancestors-tbl span')
+            .parent()
+            .css({ color: 'red', border: '2px solid red' });
+        });
+        $('#ancestors-tbl #parents').click(function () {
+          $('#ancestors-tbl span')
+            .parentsUntil('.content')
+            .css({ color: 'lightgrey', border: '2px solid lightgrey' });
+          // $('span').parents().css({'color': 'red', 'border': '2px solid red'});
+          $('#ancestors-tbl span')
+            .parentsUntil('.content')
+            .css({ color: 'red', border: '2px solid red' });
+        });
+        $('#ancestors-tbl #parents-ul').click(function () {
+          $('#ancestors-tbl span')
+            .parentsUntil('.content')
+            .css({ color: 'lightgrey', border: '2px solid lightgrey' });
+          $('#ancestors-tbl span')
+            .parents('ul')
+            .css({ color: 'red', border: '2px solid red' });
+        });
+        $('#ancestors-tbl #parentsuntil-div').click(function () {
+          $('#ancestors-tbl span')
+            .parentsUntil('.content')
+            .css({ color: 'lightgrey', border: '2px solid lightgrey' });
+          $('#ancestors-tbl span')
+            .parentsUntil('div')
+            .css({ color: 'red', border: '2px solid red' });
+        });
+        $('#descendants-tbl #children').click(function () {
+          $('#descendants-tbl .content div')
+            .find('*')
+            .css({ color: 'lightgrey', border: '2px solid lightgrey' });
+          $('#descendants-tbl .content div')
+            .children()
+            .css({ color: 'red', border: '2px solid red' });
+        });
+        $('#descendants-tbl #children-p1').click(function () {
+          $('#descendants-tbl .content div')
+            .find('*')
+            .css({ color: 'lightgrey', border: '2px solid lightgrey' });
+          $('#descendants-tbl .content div')
+            .children('p#p-1')
+            .css({ color: 'red', border: '2px solid red' });
+        });
+        $('#descendants-tbl #find-span').click(function () {
+          $('#descendants-tbl .content div')
+            .find('*')
+            .css({ color: 'lightgrey', border: '2px solid lightgrey' });
+          $('#descendants-tbl .content div')
+            .find('span')
+            .css({ color: 'red', border: '2px solid red' });
+        });
+        $('#descendants-tbl #find-all').click(function () {
+          $('#descendants-tbl .content div')
+            .find('*')
+            .css({ color: 'lightgrey', border: '2px solid lightgrey' });
+          $('#descendants-tbl .content div')
+            .find('*')
+            .css({ color: 'red', border: '2px solid red' });
+        });
+        $('#siblings-tbl #siblings').click(function () {
+          $('#siblings-tbl h2')
+            .siblings()
+            .css({ color: 'lightgrey', border: '2px solid lightgrey' });
+          $('#siblings-tbl h2')
+            .siblings()
+            .css({ color: 'red', border: '2px solid red' });
+        });
+        $('#siblings-tbl #siblings-p').click(function () {
+          $('#siblings-tbl h2')
+            .siblings()
+            .css({ color: 'lightgrey', border: '2px solid lightgrey' });
+          $('#siblings-tbl h2')
+            .siblings('p')
+            .css({ color: 'red', border: '2px solid red' });
+        });
+        $('#siblings-tbl #next').click(function () {
+          $('#siblings-tbl h2')
+            .siblings()
+            .css({ color: 'lightgrey', border: '2px solid lightgrey' });
+          $('#siblings-tbl h2')
+            .next()
+            .css({ color: 'red', border: '2px solid red' });
+        });
+        $('#siblings-tbl #nextall').click(function () {
+          $('#siblings-tbl h2')
+            .siblings()
+            .css({ color: 'lightgrey', border: '2px solid lightgrey' });
+          $('#siblings-tbl h2')
+            .nextAll()
+            .css({ color: 'red', border: '2px solid red' });
+        });
+        $('#siblings-tbl #nextuntil-p').click(function () {
+          $('#siblings-tbl h2')
+            .siblings()
+            .css({ color: 'lightgrey', border: '2px solid lightgrey' });
+          $('#siblings-tbl h2')
+            .nextUntil('p')
+            .css({ color: 'red', border: '2px solid red' });
+        });
+        $('#siblings-tbl #prev').click(function () {
+          $('#siblings-tbl h2')
+            .siblings()
+            .css({ color: 'lightgrey', border: '2px solid lightgrey' });
+          $('#siblings-tbl h2')
+            .prev()
+            .css({ color: 'red', border: '2px solid red' });
+        });
+        $('#siblings-tbl #prevall').click(function () {
+          $('#siblings-tbl h2')
+            .siblings()
+            .css({ color: 'lightgrey', border: '2px solid lightgrey' });
+          $('#siblings-tbl h2')
+            .prevAll()
+            .css({ color: 'red', border: '2px solid red' });
+        });
+        $('#siblings-tbl #prevuntil-p').click(function () {
+          $('#siblings-tbl h2')
+            .siblings()
+            .css({ color: 'lightgrey', border: '2px solid lightgrey' });
+          $('#siblings-tbl h2')
+            .prevUntil('p')
+            .css({ color: 'red', border: '2px solid red' });
+        });
+        $('#filtering-tbl #first').click(function () {
+          $('#filtering-tbl .content div')
+            .children()
+            .css({ color: 'lightgrey', border: '2px solid lightgrey' });
+          $('#filtering-tbl .content div span')
+            .first()
+            .css({ color: 'red', border: '2px solid red' });
+        });
+        $('#filtering-tbl #last').click(function () {
+          $('#filtering-tbl .content div')
+            .children()
+            .css({ color: 'lightgrey', border: '2px solid lightgrey' });
+          $('#filtering-tbl .content div span')
+            .last()
+            .css({ color: 'red', border: '2px solid red' });
+        });
+        $('#filtering-tbl #eq-span2').click(function () {
+          $('#filtering-tbl .content div')
+            .children()
+            .css({ color: 'lightgrey', border: '2px solid lightgrey' });
+          $('#filtering-tbl .content div span')
+            .eq(1)
+            .css({ color: 'red', border: '2px solid red' });
+        });
+        $('#filtering-tbl #filter-span3').click(function () {
+          $('#filtering-tbl .content div')
+            .children()
+            .css({ color: 'lightgrey', border: '2px solid lightgrey' });
+          $('#filtering-tbl .content div span')
+            .filter('#span-3')
+            .css({ color: 'red', border: '2px solid red' });
+        });
+        $('#filtering-tbl #not-span3').click(function () {
+          $('#filtering-tbl .content div')
+            .children()
+            .css({ color: 'lightgrey', border: '2px solid lightgrey' });
+          $('#filtering-tbl .content div span')
+            .not('#span-3')
+            .css({ color: 'red', border: '2px solid red' });
+        });
       });
-      $('#ancestors-tbl #parents').click(function () {
-        $('#ancestors-tbl span').parentsUntil('.content').css({'color': 'lightgrey', 'border': '2px solid lightgrey'});
-        // $('span').parents().css({'color': 'red', 'border': '2px solid red'});
-        $('#ancestors-tbl span').parentsUntil('.content').css({'color': 'red', 'border': '2px solid red'});
-      });
-      $('#ancestors-tbl #parents-ul').click(function () {
-        $('#ancestors-tbl span').parentsUntil('.content').css({'color': 'lightgrey', 'border': '2px solid lightgrey'});
-        $('#ancestors-tbl span').parents('ul').css({'color': 'red', 'border': '2px solid red'});
-      });
-      $('#ancestors-tbl #parentsuntil-div').click(function () {
-        $('#ancestors-tbl span').parentsUntil('.content').css({'color': 'lightgrey', 'border': '2px solid lightgrey'});
-        $('#ancestors-tbl span').parentsUntil('div').css({'color': 'red', 'border': '2px solid red'});
-      });
-      $('#descendants-tbl #children').click(function () {
-        $('#descendants-tbl .content div').find('*').css({'color': 'lightgrey', 'border': '2px solid lightgrey'});
-        $('#descendants-tbl .content div').children().css({'color': 'red', 'border': '2px solid red'});
-      });
-      $('#descendants-tbl #children-p1').click(function () {
-        $('#descendants-tbl .content div').find('*').css({'color': 'lightgrey', 'border': '2px solid lightgrey'});
-        $('#descendants-tbl .content div').children("p#p-1").css({'color': 'red', 'border': '2px solid red'});
-      });
-      $('#descendants-tbl #find-span').click(function () {
-        $('#descendants-tbl .content div').find('*').css({'color': 'lightgrey', 'border': '2px solid lightgrey'});
-        $('#descendants-tbl .content div').find('span').css({'color': 'red', 'border': '2px solid red'});
-      });
-      $('#descendants-tbl #find-all').click(function () {
-        $('#descendants-tbl .content div').find('*').css({'color': 'lightgrey', 'border': '2px solid lightgrey'});
-        $('#descendants-tbl .content div').find('*').css({'color': 'red', 'border': '2px solid red'});
-      });
-      $('#siblings-tbl #siblings').click(function () {
-        $('#siblings-tbl h2').siblings().css({'color': 'lightgrey', 'border': '2px solid lightgrey'});
-        $('#siblings-tbl h2').siblings().css({'color': 'red', 'border': '2px solid red'});
-      });
-      $('#siblings-tbl #siblings-p').click(function () {
-        $('#siblings-tbl h2').siblings().css({'color': 'lightgrey', 'border': '2px solid lightgrey'});
-        $('#siblings-tbl h2').siblings('p').css({'color': 'red', 'border': '2px solid red'});
-      });
-      $('#siblings-tbl #next').click(function () {
-        $('#siblings-tbl h2').siblings().css({'color': 'lightgrey', 'border': '2px solid lightgrey'});
-        $('#siblings-tbl h2').next().css({'color': 'red', 'border': '2px solid red'});
-      });
-      $('#siblings-tbl #nextall').click(function () {
-        $('#siblings-tbl h2').siblings().css({'color': 'lightgrey', 'border': '2px solid lightgrey'});
-        $('#siblings-tbl h2').nextAll().css({'color': 'red', 'border': '2px solid red'});
-      });
-      $('#siblings-tbl #nextuntil-p').click(function () {
-        $('#siblings-tbl h2').siblings().css({'color': 'lightgrey', 'border': '2px solid lightgrey'});
-        $('#siblings-tbl h2').nextUntil('p').css({'color': 'red', 'border': '2px solid red'});
-      });
-      $('#siblings-tbl #prev').click(function () {
-        $('#siblings-tbl h2').siblings().css({'color': 'lightgrey', 'border': '2px solid lightgrey'});
-        $('#siblings-tbl h2').prev().css({'color': 'red', 'border': '2px solid red'});
-      });
-      $('#siblings-tbl #prevall').click(function () {
-        $('#siblings-tbl h2').siblings().css({'color': 'lightgrey', 'border': '2px solid lightgrey'});
-        $('#siblings-tbl h2').prevAll().css({'color': 'red', 'border': '2px solid red'});
-      });
-      $('#siblings-tbl #prevuntil-p').click(function () {
-        $('#siblings-tbl h2').siblings().css({'color': 'lightgrey', 'border': '2px solid lightgrey'});
-        $('#siblings-tbl h2').prevUntil('p').css({'color': 'red', 'border': '2px solid red'});
-      });
-      $('#filtering-tbl #first').click(function () {
-        $('#filtering-tbl .content div').children().css({'color': 'lightgrey', 'border': '2px solid lightgrey'});
-        $('#filtering-tbl .content div span').first().css({'color': 'red', 'border': '2px solid red'});
-      });
-      $('#filtering-tbl #last').click(function () {
-        $('#filtering-tbl .content div').children().css({'color': 'lightgrey', 'border': '2px solid lightgrey'});
-        $('#filtering-tbl .content div span').last().css({'color': 'red', 'border': '2px solid red'});
-      });
-      $('#filtering-tbl #eq-span2').click(function () {
-        $('#filtering-tbl .content div').children().css({'color': 'lightgrey', 'border': '2px solid lightgrey'});
-        $('#filtering-tbl .content div span').eq(1).css({'color': 'red', 'border': '2px solid red'});
-      });
-      $('#filtering-tbl #filter-span3').click(function () {
-        $('#filtering-tbl .content div').children().css({'color': 'lightgrey', 'border': '2px solid lightgrey'});
-        $('#filtering-tbl .content div span').filter('#span-3').css({'color': 'red', 'border': '2px solid red'});
-      });
-      $('#filtering-tbl #not-span3').click(function () {
-        $('#filtering-tbl .content div').children().css({'color': 'lightgrey', 'border': '2px solid lightgrey'});
-        $('#filtering-tbl .content div span').not('#span-3').css({'color': 'red', 'border': '2px solid red'});
-      });
-    });
-  </script>
-</head>
-<body>
-  <div class="container mt-3">
-    <div id="ancestors-tbl" class="card mb-3 p-2" style="min-width: 700px;">
-      <h3 class="text-center">祖先</h3>
-      <div class="content text-center bg-light border">
-        <div style="width: 500px; margin: auto;">div（曾祖父元素）
-          <ul>ul（祖父元素）
-            <li>li（父元素）
-              <span>span（被选取元素）</span>
-            </li>
-          </ul>
+    </script>
+  </head>
+  <body>
+    <div class="container mt-3">
+      <div id="ancestors-tbl" class="card mb-3 p-2" style="min-width: 700px">
+        <h3 class="text-center">祖先</h3>
+        <div class="content text-center bg-light border">
+          <div style="width: 500px; margin: auto">
+            div（曾祖父元素）
+            <ul>
+              ul（祖父元素）
+              <li>
+                li（父元素）
+                <span>span（被选取元素）</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="control">
+          <div id="parent" class="control-button text-center border">
+            parent
+          </div>
+          <div id="parents" class="control-button text-center border">
+            parents
+          </div>
+          <div id="parents-ul" class="control-button text-center border">
+            parents('ul')
+          </div>
+          <div id="parentsuntil-div" class="control-button text-center border">
+            parentsUntil('div')
+          </div>
         </div>
       </div>
-      <div class="control">
-        <div id="parent" class="control-button text-center border">parent</div>
-        <div id="parents" class="control-button text-center border">parents</div>
-        <div id="parents-ul" class="control-button text-center border">parents('ul')</div>
-        <div id="parentsuntil-div" class="control-button text-center border">parentsUntil('div')</div>
-      </div>
-    </div>
-    <div id="descendants-tbl" class="card mb-3 p-2" style="min-width: 700px;">
-      <h3 class="text-center">子孙</h3>
-      <div class="content text-center bg-light border">
-        <div style="width: 500px; margin: auto;">div（被选取元素）
-          <p id="p-1">p（儿子元素）
-            <span>span（孙子元素）</span>
-          </p>
-          <p id="p-2">p（儿子元素）
-            <span>span（孙子元素）</span>
-          </p>
+      <div id="descendants-tbl" class="card mb-3 p-2" style="min-width: 700px">
+        <h3 class="text-center">子孙</h3>
+        <div class="content text-center bg-light border">
+          <div style="width: 500px; margin: auto">
+            div（被选取元素）
+            <p id="p-1">
+              p（儿子元素）
+              <span>span（孙子元素）</span>
+            </p>
+            <p id="p-2">
+              p（儿子元素）
+              <span>span（孙子元素）</span>
+            </p>
+          </div>
+        </div>
+        <div class="control">
+          <div id="children" class="control-button text-center border">
+            children
+          </div>
+          <div id="children-p1" class="control-button text-center border">
+            children('p#p-1')
+          </div>
+          <div id="find-span" class="control-button text-center border">
+            find('span')
+          </div>
+          <div id="find-all" class="control-button text-center border">
+            find('*')
+          </div>
         </div>
       </div>
-      <div class="control">
-        <div id="children" class="control-button text-center border">children</div>
-        <div id="children-p1" class="control-button text-center border">children('p#p-1')</div>
-        <div id="find-span" class="control-button text-center border">find('span')</div>
-        <div id="find-all" class="control-button text-center border">find('*')</div>
-      </div>
-    </div>
-    <div id="siblings-tbl" class="card mb-3 p-2" style="min-width: 700px;">
-      <h3 class="text-center">兄弟</h3>
-      <div class="content text-center bg-light border">
-        <div style="width: 500px; margin: auto;">div（父元素）
-          <p>p</p>
-          <span>span</span>
-          <h2>h2（被选取元素）</h2>
-          <h3>h3</h3>
-          <p>p</p>
+      <div id="siblings-tbl" class="card mb-3 p-2" style="min-width: 700px">
+        <h3 class="text-center">兄弟</h3>
+        <div class="content text-center bg-light border">
+          <div style="width: 500px; margin: auto">
+            div（父元素）
+            <p>p</p>
+            <span>span</span>
+            <h2>h2（被选取元素）</h2>
+            <h3>h3</h3>
+            <p>p</p>
+          </div>
+        </div>
+        <div class="control">
+          <div id="siblings" class="control-button text-center border">
+            siblings
+          </div>
+          <div id="siblings-p" class="control-button text-center border">
+            siblings('p')
+          </div>
+          <div id="next" class="control-button text-center border">next</div>
+          <div id="nextall" class="control-button text-center border">
+            nextAll
+          </div>
+        </div>
+        <div class="control">
+          <div id="nextuntil-p" class="control-button text-center border">
+            nextUntil('p')
+          </div>
+          <div id="prev" class="control-button text-center border">prev</div>
+          <div id="prevall" class="control-button text-center border">
+            prevAll
+          </div>
+          <div id="prevuntil-p" class="control-button text-center border">
+            prevUntil('p')
+          </div>
         </div>
       </div>
-      <div class="control">
-        <div id="siblings" class="control-button text-center border">siblings</div>
-        <div id="siblings-p" class="control-button text-center border">siblings('p')</div>
-        <div id="next" class="control-button text-center border">next</div>
-        <div id="nextall" class="control-button text-center border">nextAll</div>
-      </div>
-      <div class="control">
-        <div id="nextuntil-p" class="control-button text-center border">nextUntil('p')</div>
-        <div id="prev" class="control-button text-center border">prev</div>
-        <div id="prevall" class="control-button text-center border">prevAll</div>
-        <div id="prevuntil-p" class="control-button text-center border">prevUntil('p')</div>
-      </div>
-    </div>
-    <div id="filtering-tbl" class="card mb-3 p-2" style="min-width: 700px;">
-      <h3 class="text-center">过滤</h3>
-      <div class="content text-center bg-light border">
-        <div style="width: 500px; margin: auto;">div
-          <span id="span-1">first span element</span>
-          <span id="span-2">second span element</span>
-          <span id="span-3">third span element</span>
-          <span id="span-4">fourth span element</span>
-          <span id="span-5">fifth span element</span>
+      <div id="filtering-tbl" class="card mb-3 p-2" style="min-width: 700px">
+        <h3 class="text-center">过滤</h3>
+        <div class="content text-center bg-light border">
+          <div style="width: 500px; margin: auto">
+            div
+            <span id="span-1">first span element</span>
+            <span id="span-2">second span element</span>
+            <span id="span-3">third span element</span>
+            <span id="span-4">fourth span element</span>
+            <span id="span-5">fifth span element</span>
+          </div>
+        </div>
+        <div class="control">
+          <div id="first" class="control-button-small text-center border">
+            first
+          </div>
+          <div id="last" class="control-button-small text-center border">
+            last
+          </div>
+          <div id="eq-span2" class="control-button-small text-center border">
+            eq(1)
+          </div>
+          <div
+            id="filter-span3"
+            class="control-button-small text-center border"
+          >
+            filter('#span-3')
+          </div>
+          <div id="not-span3" class="control-button-small text-center border">
+            not('#span-3')
+          </div>
         </div>
       </div>
-      <div class="control">
-        <div id="first" class="control-button-small text-center border">first</div>
-        <div id="last" class="control-button-small text-center border">last</div>
-        <div id="eq-span2" class="control-button-small text-center border">eq(1)</div>
-        <div id="filter-span3" class="control-button-small text-center border">filter('#span-3')</div>
-        <div id="not-span3" class="control-button-small text-center border">not('#span-3')</div>
-      </div>
     </div>
-  </div>
-</body>
+  </body>
 </html>

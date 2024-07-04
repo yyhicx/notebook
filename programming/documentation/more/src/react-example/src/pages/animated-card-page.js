@@ -10,6 +10,6 @@ const AnimatedCardPage = () => {
       <AnimatedCard />
     </Layout>
   );
-}
+};
 
 export default AnimatedCardPage;

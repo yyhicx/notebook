@@ -1,236 +1,244 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>CSS Button</title>
-  <style>
-    .card {
-      margin: auto;
-      width: 500px;
-      height: 150px;
-      border: 2px solid #ccc;
-      margin-bottom: 5px;
-    }
-    /* 基本按钮样式 */
-    .button {
-      background-color: #4caf50;
-      border: none;
-      color: white;
-      padding: 15px 32px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-      margin: 4px 2px;
-      cursor: pointer;
-    }
-    /* 多种按钮样式 */
-    .button-blue {
-      background-color: #008cba;
-    }
-    .button-red {
-      background-color: #f44336;
-    }
-    .button-font-size-16 {
-      font-size: 16px;
-    }
-    .button-font-size-24 {
-      font-size: 24px;
-    }
-    .button-hover-gray {
-      -webkit-transition-duration: 0.4s; /* Safari */
-      transition-duration: 0.4s;
-      cursor: pointer;
-      background-color: white;
-      color: black;
-      border: 2px solid #e7e7e7;
-    }
-    .button-hover-black {
-      -webkit-transition-duration: 0.4s; /* Safari */
-      transition-duration: 0.4s;
-      cursor: pointer;
-      background-color: white;
-      color: black;
-      border: 2px solid #555555;
-    }
-    .button-hover-gray:hover {
-      background-color: #e7e7e7;
-    }
-    .button-hover-black:hover {
-      background-color: #555555;
-      color: white;
-    }
-    .button-shadow {
-      -webkit-transition-duration: 0.4s; /* Safari */
-      transition-duration: 0.4s;
-      cursor: pointer;
-      box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    }
-    .button-hover-shadow {
-      -webkit-transition-duration: 0.4s; /* Safari */
-      transition-duration: 0.4s;
-      cursor: pointer;
-    }
-    .button-hover-shadow:hover {
-      box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),0 17px 50px 0 rgba(0, 0, 0, 0.19);
-    }
-    .button-disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-    /* 按钮组 */
-    .btn-group button {
-      background-color: #04aa6d;
-      border: 1px solid green;
-      color: white;
-      padding: 10px 24px;
-      cursor: pointer;
-      float: left;
-    }
-    .btn-group:after {
-      content: "";
-      clear: both;
-      display: table;
-    }
-    .btn-group button:not(:last-child) {
-      border-right: none;
-    }
-    .btn-group button:hover {
-      background-color: #3e8e41;
-    }
-    /* 按钮动画 */
-    .button-animation-1 {
-      background-color: #f4511e;
-      color: #ffffff;
-      text-align: center;
-      font-size: 28px;
-      margin: 5px;
-      padding: 20px;
-      width: 150px;
-      display: inline-block;
-      border: none;
-      border-radius: 4px;
-      -webkit-transition: all 0.5s;
-      transition: all 0.5s;
-      cursor: pointer;
-    }
-    .button-animation-1 span {
-      cursor: pointer;
-      display: inline-block;
-      position: relative;
-      -webkit-transition: 0.5s;
-      transition: 0.5s;
-    }
-    .button-animation-1 span:after {
-      content: '»';
-      position: absolute;
-      opacity: 0;
-      top: 0;
-      right: -20px;
-      transition: 0.5s;
-    }
-    .button-animation-1:hover span {
-      padding-right: 25px;
-    }
-    .button-animation-1:hover span:after {
-      opacity: 1;
-      right: 0;
-    }
-    .button-animation-2 {
-      background-color: #4caf50;
-      color: #ffffff;
-      position: relative;
-      overflow: hidden;
-      font-size: 28px;
-      width: 150px;
-      padding: 20px;
-      text-align: center;
-      text-decoration: none;
-      border: none;
-      -webkit-transition-duration: 0.4s;
-      transition-duration: 0.4s;
-      cursor: pointer;
-    }
-    .button-animation-2:after {
-      content: "";
-      background: #90ee90;
-      display: block;
-      position: absolute;
-      padding-top: 300%;
-      padding-left: 350%;
-      margin-left: -20px !important;
-      margin-top: -120%;
-      opacity: 0;
-      transition: all 0.8s;
-    }
-    .button-animation-2:active:after {
-      padding: 0;
-      margin: 0;
-      opacity: 1;
-      transition: 0s;
-    }
-    .button-animation-3 {
-      background-color: #4caf50;
-      color: #fff;
-      display: inline-block;
-      font-size: 28px;
-      padding: 15px 25px;
-      outline: none;
-      text-align: center;
-      text-decoration: none;
-      border: none;
-      border-radius: 15px;
-      box-shadow: 0 9px #999;
-      cursor: pointer;
-    }
-    .button-animation-3:hover {
-      background-color: #3e8e41;
-    }
-    .button-animation-3:active {
-      background-color: #3e8e41;
-      box-shadow: 0 5px #666;
-      transform: translateY(4px);
-    }
-  </style>
-</head>
-<body>
-  <div class="card">
-    <p>基本按钮样式</p>
-    <button>默认按钮</button>
-    <a href="#" class="button">链接按钮</a>
-    <button class="button">按钮</button>
-    <input type="button" class="button" value="输入框按钮">
-  </div>
-  <div class="card" style="height: 600px;">
-    <p>按钮颜色</p>
-    <button class="button button-blue">Blue</button>
-    <button class="button button-red">Red</button>
-    <p>按钮大小</p>
-    <button class="button button-font-size-16">16px</button>
-    <button class="button button-font-size-24">24px</button>
-    <p>鼠标悬停按钮</p>
-    <button class="button button-hover-gray">Gray</button>
-    <button class="button button-hover-black">Black</button>
-    <p>按钮阴影</p>
-    <button class="button button-shadow">阴影按钮</button>
-    <button class="button button-hover-shadow">鼠标悬停后出现阴影</button>
-    <p>禁用按钮</p>
-    <button class="button button-disabled">禁用</button>
-  </div>
-  <div class="card">
-    <p>按钮组</p>
-    <div class="btn-group">
-      <button>Google</button>
-      <button>Apple</button>
-      <button>Amazon</button>
-      <button>Facebook</button>
+  <head>
+    <meta charset="utf-8" />
+    <title>CSS Button</title>
+    <style>
+      .card {
+        margin: auto;
+        width: 500px;
+        height: 150px;
+        border: 2px solid #ccc;
+        margin-bottom: 5px;
+      }
+      /* 基本按钮样式 */
+      .button {
+        background-color: #4caf50;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+      }
+      /* 多种按钮样式 */
+      .button-blue {
+        background-color: #008cba;
+      }
+      .button-red {
+        background-color: #f44336;
+      }
+      .button-font-size-16 {
+        font-size: 16px;
+      }
+      .button-font-size-24 {
+        font-size: 24px;
+      }
+      .button-hover-gray {
+        -webkit-transition-duration: 0.4s; /* Safari */
+        transition-duration: 0.4s;
+        cursor: pointer;
+        background-color: white;
+        color: black;
+        border: 2px solid #e7e7e7;
+      }
+      .button-hover-black {
+        -webkit-transition-duration: 0.4s; /* Safari */
+        transition-duration: 0.4s;
+        cursor: pointer;
+        background-color: white;
+        color: black;
+        border: 2px solid #555555;
+      }
+      .button-hover-gray:hover {
+        background-color: #e7e7e7;
+      }
+      .button-hover-black:hover {
+        background-color: #555555;
+        color: white;
+      }
+      .button-shadow {
+        -webkit-transition-duration: 0.4s; /* Safari */
+        transition-duration: 0.4s;
+        cursor: pointer;
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2),
+          0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      }
+      .button-hover-shadow {
+        -webkit-transition-duration: 0.4s; /* Safari */
+        transition-duration: 0.4s;
+        cursor: pointer;
+      }
+      .button-hover-shadow:hover {
+        box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
+          0 17px 50px 0 rgba(0, 0, 0, 0.19);
+      }
+      .button-disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      /* 按钮组 */
+      .btn-group button {
+        background-color: #04aa6d;
+        border: 1px solid green;
+        color: white;
+        padding: 10px 24px;
+        cursor: pointer;
+        float: left;
+      }
+      .btn-group:after {
+        content: '';
+        clear: both;
+        display: table;
+      }
+      .btn-group button:not(:last-child) {
+        border-right: none;
+      }
+      .btn-group button:hover {
+        background-color: #3e8e41;
+      }
+      /* 按钮动画 */
+      .button-animation-1 {
+        background-color: #f4511e;
+        color: #ffffff;
+        text-align: center;
+        font-size: 28px;
+        margin: 5px;
+        padding: 20px;
+        width: 150px;
+        display: inline-block;
+        border: none;
+        border-radius: 4px;
+        -webkit-transition: all 0.5s;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .button-animation-1 span {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+      }
+      .button-animation-1 span:after {
+        content: '»';
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: -20px;
+        transition: 0.5s;
+      }
+      .button-animation-1:hover span {
+        padding-right: 25px;
+      }
+      .button-animation-1:hover span:after {
+        opacity: 1;
+        right: 0;
+      }
+      .button-animation-2 {
+        background-color: #4caf50;
+        color: #ffffff;
+        position: relative;
+        overflow: hidden;
+        font-size: 28px;
+        width: 150px;
+        padding: 20px;
+        text-align: center;
+        text-decoration: none;
+        border: none;
+        -webkit-transition-duration: 0.4s;
+        transition-duration: 0.4s;
+        cursor: pointer;
+      }
+      .button-animation-2:after {
+        content: '';
+        background: #90ee90;
+        display: block;
+        position: absolute;
+        padding-top: 300%;
+        padding-left: 350%;
+        margin-left: -20px !important;
+        margin-top: -120%;
+        opacity: 0;
+        transition: all 0.8s;
+      }
+      .button-animation-2:active:after {
+        padding: 0;
+        margin: 0;
+        opacity: 1;
+        transition: 0s;
+      }
+      .button-animation-3 {
+        background-color: #4caf50;
+        color: #fff;
+        display: inline-block;
+        font-size: 28px;
+        padding: 15px 25px;
+        outline: none;
+        text-align: center;
+        text-decoration: none;
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 9px #999;
+        cursor: pointer;
+      }
+      .button-animation-3:hover {
+        background-color: #3e8e41;
+      }
+      .button-animation-3:active {
+        background-color: #3e8e41;
+        box-shadow: 0 5px #666;
+        transform: translateY(4px);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <p>基本按钮样式</p>
+      <button>默认按钮</button>
+      <a href="#" class="button">链接按钮</a>
+      <button class="button">按钮</button>
+      <input type="button" class="button" value="输入框按钮" />
     </div>
-  </div>
-  <div class="card">
-    <p>按钮动画</p>
-    <button class="button-animation-1" style="vertical-align: middle;"><span>Hover </span></button>
-    <button class="button-animation-2" style="vertical-align: middle;">Click Me</button>
-    <button class="button-animation-3" style="vertical-align: middle;">Click Me</button>
-  </div>
-</body>
+    <div class="card" style="height: 600px">
+      <p>按钮颜色</p>
+      <button class="button button-blue">Blue</button>
+      <button class="button button-red">Red</button>
+      <p>按钮大小</p>
+      <button class="button button-font-size-16">16px</button>
+      <button class="button button-font-size-24">24px</button>
+      <p>鼠标悬停按钮</p>
+      <button class="button button-hover-gray">Gray</button>
+      <button class="button button-hover-black">Black</button>
+      <p>按钮阴影</p>
+      <button class="button button-shadow">阴影按钮</button>
+      <button class="button button-hover-shadow">鼠标悬停后出现阴影</button>
+      <p>禁用按钮</p>
+      <button class="button button-disabled">禁用</button>
+    </div>
+    <div class="card">
+      <p>按钮组</p>
+      <div class="btn-group">
+        <button>Google</button>
+        <button>Apple</button>
+        <button>Amazon</button>
+        <button>Facebook</button>
+      </div>
+    </div>
+    <div class="card">
+      <p>按钮动画</p>
+      <button class="button-animation-1" style="vertical-align: middle">
+        <span>Hover </span>
+      </button>
+      <button class="button-animation-2" style="vertical-align: middle">
+        Click Me
+      </button>
+      <button class="button-animation-3" style="vertical-align: middle">
+        Click Me
+      </button>
+    </div>
+  </body>
 </html>

@@ -1,67 +1,67 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>Vertical Navigation Bar</title>
-  <style>
-    body {
-      margin: 0;
-    }
-    ul {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      width: 200px;
-      background-color: #f1f1f1;
-      border: 1px solid #555;
-    }
-    ul.left {
-      width: 25%;
-      position: fixed;
-      height: 100%;
-      overflow: auto; /* 如果导航栏选项多，允许滚动 */
-    }
-    ul.right {
-      /* 固定在左上角 */
-      position: fixed;
-      top: 10px;
-      right: 10px;
-    }
-    ul.right li {
-      text-align: center;
-      border-bottom: 1px solid #555;
-    }
-    ul.right li:last-child {
-      border-bottom: none;
-    }
-    li a {
-      display: block;
-      color: #000;
-      padding: 8px 16px;
-      text-decoration: none;
-    }
-    li a.active {
-      background-color: #4caf50;
-      color: white;
-    }
-    li a:hover:not(.active) {
-      background-color: #555;
-      color: white;
-    }
-  </style>
-</head>
-<body>
-  <ul class="left">
-    <li><a class="active" href="#home">主页</a></li>
-    <li><a href="#news">新闻</a></li>
-    <li><a href="#contact">联系</a></li>
-    <li><a href="#about">关于</a></li>
-  </ul>
-  <ul class="right">
-    <li><a class="active" href="#home">主页</a></li>
-    <li><a href="#news">新闻</a></li>
-    <li><a href="#contact">联系</a></li>
-    <li><a href="#about">关于</a></li>
-  </ul>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <title>Vertical Navigation Bar</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 200px;
+        background-color: #f1f1f1;
+        border: 1px solid #555;
+      }
+      ul.left {
+        width: 25%;
+        position: fixed;
+        height: 100%;
+        overflow: auto; /* 如果导航栏选项多，允许滚动 */
+      }
+      ul.right {
+        /* 固定在左上角 */
+        position: fixed;
+        top: 10px;
+        right: 10px;
+      }
+      ul.right li {
+        text-align: center;
+        border-bottom: 1px solid #555;
+      }
+      ul.right li:last-child {
+        border-bottom: none;
+      }
+      li a {
+        display: block;
+        color: #000;
+        padding: 8px 16px;
+        text-decoration: none;
+      }
+      li a.active {
+        background-color: #4caf50;
+        color: white;
+      }
+      li a:hover:not(.active) {
+        background-color: #555;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <ul class="left">
+      <li><a class="active" href="#home">主页</a></li>
+      <li><a href="#news">新闻</a></li>
+      <li><a href="#contact">联系</a></li>
+      <li><a href="#about">关于</a></li>
+    </ul>
+    <ul class="right">
+      <li><a class="active" href="#home">主页</a></li>
+      <li><a href="#news">新闻</a></li>
+      <li><a href="#contact">联系</a></li>
+      <li><a href="#about">关于</a></li>
+    </ul>
+  </body>
 </html>

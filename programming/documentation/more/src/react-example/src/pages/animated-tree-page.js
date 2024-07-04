@@ -10,6 +10,6 @@ const AnimatedTreePage = () => {
       <AnimatedTree />
     </Layout>
   );
-}
+};
 
 export default AnimatedTreePage;

@@ -10,6 +10,6 @@ const RenderPropsExamplePage = () => {
       <RenderPropsExample />
     </Layout>
   );
-}
+};
 
 export default RenderPropsExamplePage;

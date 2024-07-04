@@ -81,11 +81,11 @@ const Todos = () => {
     setInputValue('');
   };
 
-  const handleToggleTodo = id => {
+  const handleToggleTodo = (id) => {
     dispatch(toggleTodo(id));
   };
 
-  const handleDeleteTodo = id => {
+  const handleDeleteTodo = (id) => {
     dispatch(deleteTodo(id));
   };
 
@@ -96,7 +96,7 @@ const Todos = () => {
         <input
           className={classes.addTodoInput}
           value={inputValue}
-          onChange={e => setInputValue(e.target.value)}
+          onChange={(e) => setInputValue(e.target.value)}
           placeholder="Add a new todo"
         />
         <button className={classes.addTodoButton} onClick={handleAddTodo}>
@@ -104,12 +104,23 @@ const Todos = () => {
         </button>
       </div>
       <ul className={classes.todosList}>
-        {todos.map(todo => (
-          <li key={todo.id} className={classes.todoItem && `${todo.completed ? classes.completed : ''}`}>
-            <span className={classes.todoText} onClick={() => handleToggleTodo(todo.id)}>
+        {todos.map((todo) => (
+          <li
+            key={todo.id}
+            className={
+              classes.todoItem && `${todo.completed ? classes.completed : ''}`
+            }
+          >
+            <span
+              className={classes.todoText}
+              onClick={() => handleToggleTodo(todo.id)}
+            >
               {todo.text}
             </span>
-            <button className={classes.deleteTodoButton} onClick={() => handleDeleteTodo(todo.id)}>
+            <button
+              className={classes.deleteTodoButton}
+              onClick={() => handleDeleteTodo(todo.id)}
+            >
               Delete
             </button>
           </li>

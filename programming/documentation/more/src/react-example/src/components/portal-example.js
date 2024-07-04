@@ -24,7 +24,7 @@ const useStyles = makeStyles({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-  }
+  },
 });
 
 const PortalExample = () => {
@@ -32,7 +32,7 @@ const PortalExample = () => {
 
   const handleClick = () => {
     setClicks(clicks + 1);
-  }
+  };
 
   const classes = useStyles();
 
@@ -54,21 +54,20 @@ const PortalExample = () => {
         <div onClick={handleClick}>
           <p>Number of clicks: {clicks}</p>
           <p>
-            Open up the browser DevTools
-            to observe that the button
-            is not a child of the div
-            with the onClick handler.
+            Open up the browser DevTools to observe that the button is not a
+            child of the div with the onClick handler.
           </p>
           {ReactDOM.createPortal(
             <div className={classes.modal}>
               <button>Click</button>
-            </div>, el
+            </div>,
+            el
           )}
         </div>
       </div>
       <div id="modal-root" ref={modalRoot} className={classes.modalRoot}></div>
     </>
   );
-}
+};
 
 export default PortalExample;

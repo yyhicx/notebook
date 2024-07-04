@@ -13,13 +13,13 @@ export const todoSlice = createSlice({
       state.push(todo);
     },
     toggleTodo: (state, action) => {
-      const todo = state.find(todo => todo.id === action.payload);
+      const todo = state.find((todo) => todo.id === action.payload);
       if (todo) {
         todo.completed = !todo.completed;
       }
     },
     deleteTodo: (state, action) => {
-      return state.filter(todo => todo.id !== action.payload);
+      return state.filter((todo) => todo.id !== action.payload);
     },
   },
 });

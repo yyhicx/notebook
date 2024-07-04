@@ -1,26 +1,39 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>Express Example</title>
-  <link href="https://cdn.staticfile.org/twitter-bootstrap/5.1.2/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.staticfile.org/bootstrap/5.1.2/js/bootstrap.bundle.min.js"></script>
-</head>
-<body>
-  <div class="container mt-3">
-    <form action="process-delete" method="post" class="m-auto" style="max-width: 600px;">
-      <div class="form-group">
-        <label for="id">ID</label>
-        <select name="id" style="width: 100%;">
-          <% for(let i = 0; i < data.length; i++) {%>
+  <head>
+    <meta charset="utf-8" />
+    <title>Express Example</title>
+    <link
+      href="https://cdn.staticfile.org/twitter-bootstrap/5.1.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.staticfile.org/bootstrap/5.1.2/js/bootstrap.bundle.min.js"></script>
+  </head>
+  <body>
+    <div class="container mt-3">
+      <form
+        action="process-delete"
+        method="post"
+        class="m-auto"
+        style="max-width: 600px"
+      >
+        <div class="form-group">
+          <label for="id">ID</label>
+          <select name="id" style="width: 100%">
+            <% for(let i = 0; i < data.length; i++) {%>
             <option value="<%= i+1 %>"><%= i+1 %></option>
-          <%} %>
-        </select>
-      </div>
-      <div class="form-group mt-1">
-        <input type="submit" class="btn btn-primary btn-sm" value="Submit" style="width: 100%;">
-      </div>
-    </form>
-  </div>
-</body>
+            <%} %>
+          </select>
+        </div>
+        <div class="form-group mt-1">
+          <input
+            type="submit"
+            class="btn btn-primary btn-sm"
+            value="Submit"
+            style="width: 100%"
+          />
+        </div>
+      </form>
+    </div>
+  </body>
 </html>

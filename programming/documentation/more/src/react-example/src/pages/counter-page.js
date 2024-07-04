@@ -10,6 +10,6 @@ const CounterPage = () => {
       <Counter />
     </Layout>
   );
-}
+};
 
 export default CounterPage;

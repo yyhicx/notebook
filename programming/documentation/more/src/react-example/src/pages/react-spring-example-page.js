@@ -10,6 +10,6 @@ const ReactSpringExamplePage = () => {
       <ReactSpringExample />
     </Layout>
   );
-}
+};
 
 export default ReactSpringExamplePage;
