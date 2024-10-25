@@ -168,7 +168,7 @@ C++常量：
 *   字符常量：
     *   括在单引号中的单个字符。
     *   不含前缀表示窄字符常量，使用前缀`L`表示宽字符常量。注意：此处前缀大小写敏感，只能用大写不能用小写的`l`。
-    *   C++中还有一些特定的转义字符，如`\n`表示换行符、`\t`表示制表符、`\0`表示空字符。
+    *   C++中还有一些特定的转义字符，如`\n`表示换行符、`\r`表示回车符、`\t`表示制表符、`\b`是退格符、`\0`表示空字符。
 *   字符串常量：括在双引号中的字符序列，可以包含任意字符。
 
 ```c++
@@ -235,13 +235,13 @@ C++中的类型限定符：提供变量的额外信息，用于在定义变量�
         *   静态类成员：静态类成员的存储期也是整个程序的执行期间。静态成员变量在类的所有对象之间共享，也就是说所有对象都访问同一份静态数据成员的副本。通常静态类成员保存与类相关但是与对象无关的全局数据或功能。
 
     ```c++
-    void foo() {
+    void Foo() {
       static int si = 0;  // 只在第一次调用时初始化
       si++;
       cout << si << endl;
     }
 
-    static void bar() {  // 只在这个文件中可见
+    static void Bar() {  // 只在这个文件中可见
       cout << "Hello from bar" << endl;
     }
 
@@ -258,10 +258,10 @@ C++中的类型限定符：提供变量的额外信息，用于在定义变量�
 
     int main() {
       for (int i = 0; i < 5; i++) {
-        foo();
+        Foo();
       }
 
-      bar();
+      Bar();
 
       Test::Increment();
       cout << Test::count << endl;
@@ -487,7 +487,7 @@ C++函数：
         *   传值调用：该方法把参数的实际值赋给函数的形式参数。在这种情况下，修改函数内的形式参数对实际参数没有影响。
         *   指针调用：该方法把参数的地址（而不是值）赋给函数的形式参数。在这种情况下，修改函数内的形式参数会影响实际参数。
         *   引用调用：该方法把参数的地址赋给函数的形式参数。在这种情况下，修改函数内的形式参数会影响实际参数。
-    *   在定义函数时，可以位参数列表中后边的每一个参数指定默认值。在调用函数时，如果实际参数的值留空，则使用这个默认值。
+    *   在定义函数时，可以为参数列表中后边的每一个参数指定默认值。在调用函数时，如果实际参数的值留空，则使用这个默认值。
 *   Lambda函数（C++11引入）：也称为匿名函数或闭包，是一种可以捕获其所在作用域内变量值并定义简单函数对象的语法结构。Lambda函数特别适用于需要定义一次性使用的简单函数对象的情况。
     *   定义Lambda函数：
         *   `capture`：捕获子句，用于指定Lambda函数体中可以访问的外部变量及其访问方式（值捕获或引用捕获）。如果不指定捕获方式，则默认不能访问外部变量。
@@ -650,12 +650,84 @@ C++类：类用于指定对象的形式，是一种用户自定义的数据类�
     *   拷贝构造函数：一种特殊的成员函数，用于创建一个对象的副本。拷贝构造函数接受一个对同一类类型的常量引用作为参数。
     *   拷贝赋值运算符：用于将一个对象的值赋给另一个同类型的对象。默认情况下C++为类提供了赋值运算符的实现，但这不适用于所有情况，例如当类包含指针时，可能需要自定义赋值运算符以实现深拷贝。
     *   析构函数：一种特殊的成员函数，其名称是在类名前加上波浪号（`~`），析构函数主要用于在对象销毁前执行清理工作。
+    *   注意：
+        *   当一个类是派生类时，其调用构造函数的顺序是：基类构造函数、派生类构造函数；调用析构函数的顺序是：派生类析构函数、基类析构函数。
+        *   当一个数组成员是类对象时，其调用构造函数的顺序是：数组中第一个元素的构造函数、数组中第二个元素的构造函数、...、数组中最后一个元素的构造函数；调用析构函数的顺序是：数组中最后一个元素的析构函数、数组中倒数第二个元素的析构函数、...、数组中第一个元素的析构函数。
+
+        ```c++
+        #include <iostream>
+        using namespace std;
+
+        class Base {
+        public:
+          Base() {
+            cout << "Base's constructor called" << endl;
+          }
+
+          // 只有声明虚函数时，才能先调用 Derived 的析构函数，再调用 Base 的析构函数
+          virtual ~Base() {
+            cout << "Base's destructor called" << endl;
+          }
+        };
+
+        class Derived: public Base {
+        public:
+          Derived() {
+            cout << "Derived's constructor called" << endl;
+          }
+
+          ~Derived() {
+            cout << "Derived's destructor called" << endl;
+          }
+        };
+
+        int main() {
+          Base* d = new Derived();
+          delete d;
+          return 0;
+        }
+        ```
+
 *   成员函数可以定义在类定义内部，或者单独使用范围解析运算符（`::`）来定义。
 *   友元函数：
     *   一种特殊类型的函数，它不是类的成员函数，但可以访问类的所有私有和被保护成员。这种机制允许其他类或函数访问某个类的内部实现细节，而无需将该细节暴露给所有用户。
     *   友元函数声明在类中，经常定义在类外，使用friend关键字，不受类的访问说明符限制。
     *   使用友元时应谨慎，因为它破坏了封装性，使得类的内部实现细节对外部可见。因此，除非确实需要，否则应该避免使用友元。
     *   可以定义友元类。
+
+    ```c++
+    #include <iostream>
+    using namespace std;
+
+    class Engine {
+    public:
+      Engine(int horsepower) : horsepower_(horsepower) {}
+      friend void Print(const Engine& engine);
+      friend class Display;
+
+    private:
+      int horsepower_;
+    };
+
+    void Print(const Engine& engine) {
+      cout << engine.horsepower_ << endl;
+    }
+
+    class Display {
+    public:
+      static void Print(const Engine& engine) {
+        cout << engine.horsepower_ << endl;
+      }
+    };
+
+    int main() {
+      Engine e(10);
+      Print(e);
+      Display::Print(e);
+      return 0;
+    }
+    ```
+
 *   内联函数：
     *   一种特殊的函数，它的代码会在每个调用点处被直接展开，而不是像普通函数那样进行调用。这样做的目的是减少函数调用的开销，特别是对于那些体积小、频繁调用的函数。
     *   内联函数通过在函数声明或定义前加上inline关键字来指定。请注意，inline是向编译器发出的请求，而不是强制要求。编译器会根据函数的复杂性和调用频率等因素来决定是否将函数内联展开。
@@ -667,7 +739,7 @@ C++类：类用于指定对象的形式，是一种用户自定义的数据类�
     *   `private`：私有成员在类的外部是不可访问的，只有类的内部和友元函数可以访问私有成员。默认情况下，类的所有成员都是私有的。
 *   C++继承：
     *   继承允许我们根据一个类来定义另一个类，这使得创建和维护一个应用程序变得更容易。以达到重用代码功能和提高执行效率的效果。
-    *   继承的语法：`class derived_class : public base_class { member_list }`。
+    *   单重继承：`class derived_class : public base_class { member_list }`。
     *   多重继承：`class derived_class : public base_class1, public base_class2 { member_list }`。
     *   当使用访问修饰符来继承类时：
         *   `public`继承：基类public成员、protected成员和private成员的访问属性在派生类中依旧保持不变。
@@ -834,6 +906,12 @@ C++类：类用于指定对象的形式，是一种用户自定义的数据类�
          public:
           Time() : hour_(0), minute_(0) {}
           Time(int hour, int minute) : hour_(hour), minute_(minute) {}
+          // 重载拷贝赋值运算符
+          Time& operator=(const Time& other) {
+            this->hour_ = other.hour_;
+            this->minute_ = other.minute_;
+            return *this;
+          }
           // 重载前缀递增运算符
           Time operator++() {
             ++minute_;
@@ -864,26 +942,20 @@ C++类：类用于指定对象的形式，是一种用户自定义的数据类�
             }
             return t;
           }
-          // 非成员函数方式重载二元加法运算符
-          friend Time operator+(const Time& t1, const Time& t2);
           // 重载相等运算符
           bool operator==(const Time& other) const {
             return this->hour_ == other.hour_ && this->minute_ == other.minute_;
-          }
-          // 重载输出运算符
-          friend ostream& operator<<(ostream& output, const Time& t);
-          // 重载输入运算符
-          friend istream& operator>>(istream& input, Time& t);
-          // 重载拷贝赋值运算符
-          Time& operator=(const Time& other) {
-            this->hour_ = other.hour_;
-            this->minute_ = other.minute_;
-            return *this;
           }
           // 重载函数调用运算符
           Time operator()() {
             // do something;
           }
+          // 非成员函数方式重载二元加法运算符
+          friend Time operator+(const Time& t1, const Time& t2);
+          // 重载输出运算符
+          friend ostream& operator<<(ostream& output, const Time& t);
+          // 重载输入运算符
+          friend istream& operator>>(istream& input, Time& t);
 
          private:
           int hour_;
@@ -916,6 +988,7 @@ C++类：类用于指定对象的形式，是一种用户自定义的数据类�
     *   多态：允许不同类的对象对同一消息做出响应。
     *   在C++中，多态通常是通过继承和虚函数来实现的。多态分为编译时多态（通过函数重载和模板实现）和运行时多态（通过继承和虚函数实现）。常常讨论的是运行时多态。
     *   虚函数：虚函数是C++中用于实现多态的一种机制。当一个类中的成员函数被声明为虚函数时，它允许在派生类中被重写，并且在通过基类指针或引用调用该成员函数时，将调用派生类中的重写版本（如果存在的话），而不是基类中的版本。
+        *   注意：其中类的静态成员函数不能是虚函数。
     *   纯虚函数：在基类中声明一个虚函数，但不提供具体实现，而是要求所有派生类都必须提供该函数的实现。这样做的目的是为了创建一个抽象基类（也称为接口类），该基类不能被实例化，但可以作为其他类的基类，从而强制派生类提供特定的接口实现。
 
         ```c++
@@ -1665,6 +1738,7 @@ int main() {
 
 `iomanip`：
 
+*   `showpos`：显示正号。
 *   `setw`：设置输出字段的宽度。
 *   `setprecision`：设置浮点数的精度。
 *   `setfill`：设置填充字符。
@@ -1681,20 +1755,25 @@ int main() {
 using namespace std;
 
 int main() {
-  int number = 255;
+  int number = 10;
   double pi = 3.141592653589793;
   bool flag = true;
   streamsize prev_precision = cout.precision();
 
+  // 显示正号
+  cout << showpos;
   // 设置字段宽度、填充字符和对齐方式
+  // 默认情况下，数字出现在右边，字符填充左边空白
   cout << setw(10) << setfill('*') << left << number << endl;
   cout << setw(10) << setfill('*') << right << number << endl;
+  // 关闭显示正号
+  cout << noshowpos;
 
   // 设置浮点数的精度和格式
   cout << pi << endl;
-  cout << setprecision(3) << pi << endl;
-  cout << fixed << setprecision(3) << pi << endl;       // 固定小数点格式
-  cout << scientific << setprecision(3) << pi << endl;  // 科学计数法格式
+  cout << setprecision(5) << pi << endl;
+  cout << fixed << setprecision(5) << pi << endl;       // 固定小数点格式
+  cout << scientific << setprecision(5) << pi << endl;  // 科学计数法格式
   // 设置回默认格式，固定小数点格式，有效数字六位
   // 不知道是不是编译器实现的问题，精度多了一位，所以下面代码中精度减一
   cout << fixed << setprecision(static_cast<int>(prev_precision) - 1);

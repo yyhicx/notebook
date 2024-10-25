@@ -517,6 +517,9 @@ Java运算符：
         System.out.println(a << 2);  // 结果为 240，二进制表示为 0000 .... 0000 1111 0000
         System.out.println(c >> 2);  // 结果为 -15，二进制表示为 1111 .... 1111 1111 0001
         System.out.println(c >>> 2);  // 结果为 1073741809，二进制表示为 0011 .... 1111 0011 0001
+
+        // 特别注意：
+        System.out.println(1 >>> 32);  // 结果为 1，因为位移数字限制在 0 到 31 之间，所以 32 % 32 结果为 0，所以 1 右移 32 位后仍然为 1
       }
     }
     ```
@@ -1274,6 +1277,9 @@ Java标准库包含了许多常用的类和接口，可以帮助我们快速开�
             Integer i1 = Integer.parseInt("123");
             Integer i2 = Integer.parseInt("234");
 
+            String str3 = String.valueOf(i1 + i2);
+            Integer i3 = Integer.valueOf(str3);
+
             System.out.println(i1);
             System.out.println(i2);
             System.out.println(i1.toString());
@@ -1467,6 +1473,12 @@ Java标准库包含了许多常用的类和接口，可以帮助我们快速开�
 
 *   多线程的支持：
     *   `Thread`：Java中用于表示线程和执行线程的代码的类。`Thread`类提供了创建线程、运行线程、暂停线程、停止线程等方法。
+        *   `start`：使线程开始执行，并执行`run()`方法。
+        *   `run`：线程开始执行时调用的方法。
+        *   `join`：等待该线程终止。调用此方法的线程会被阻塞，直到被调用的线程终止。
+        *   `interrupt`：中断线程。
+        *   `yield`：让出当前线程的执行权限，并执行其他线程。
+        *   `sleep`：使当前线程休眠指定的毫秒数。这是一个静态方法。
 
         ```java
         class Worker extends Thread {
@@ -2068,9 +2080,11 @@ Java标准库包含了许多常用的类和接口，可以帮助我们快速开�
 
         System.out.println(fileName.exists());
         System.out.println(fileName.isFile());
-        System.out.println(fileName.getName());
-        System.out.println(fileName.getParent());
-        System.out.println(fileName.length());
+        System.out.println(fileName.getName());  // 打印文件名称，包括文件扩展名
+        System.out.println(fileName.getParent());  // 返回文件的父目录路径，如果没有父目录返回 null
+        System.out.println(fileName.getPath());  // 返回文件的路径（创建时输入的路径）
+        System.out.println(fileName.getAbsolutePath());  // 返回文件的绝对路径
+        System.out.println(fileName.length());  // 打印文件的大小，以字节为单位
         System.out.println(fileName.lastModified());
         System.out.println(fileName.canRead());
         System.out.println(fileName.canWrite());
@@ -2263,7 +2277,7 @@ Java标准库包含了许多常用的类和接口，可以帮助我们快速开�
     }
     ```
 
-*   对象序列化：
+*   对象序列化：把对象转换为字符序列的过程称为序列化，反之过程称为反序列化。
     *   `ObjectInputStream`：用于反序列化对象，从字节流中读取对象。
     *   `ObjectOutputStream`：用于序列化对象，将对象写入字节流。
 
@@ -2924,6 +2938,7 @@ public class Main {
 
 `java.awt`：
 
+*   ![Java组件类图](../resources/java_component_classes.png)
 *   常用组件、颜色、字体、事件处理：
 
     ```java
@@ -2943,6 +2958,8 @@ public class Main {
       @Override
       public void paint(Graphics g) {
         g.setColor(Color.RED);
+        g.drawRect(10, 10, 50, 50);
+        g.drawLine(100, 30, 200, 30);
         g.fillOval(50, 50, 100, 100);
       }
     }
@@ -2950,6 +2967,8 @@ public class Main {
     public class TestGUI {
       public static void main(String[] args) {
         Frame frame = new Frame("AWT Window");
+        frame.setSize(800, 600);
+        frame.setLayout(null);  // 禁用布局管理器，按照 setBounds 手动设置组件位置
 
         Label label = new Label("This is a label");
         label.setBackground(Color.YELLOW);
@@ -2981,8 +3000,6 @@ public class Main {
         frame.add(checkbox);
         frame.add(button);
         frame.add(canvas);
-        frame.setSize(800, 600);
-        frame.setLayout(null);  // 禁用布局管理器，按照 setBounds 手动设置组件位置
         frame.setVisible(true);
       }
     }
@@ -3073,6 +3090,7 @@ public class Main {
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -3096,6 +3114,7 @@ public class TestGUI {
     JPasswordField passwordTextField = new JPasswordField("Input Password", 20);
     JComboBox<String> sexComboBox = new JComboBox<>(sex);
     sexComboBox.setSelectedIndex(0);
+    JLabel placeholderLabel = new JLabel("Icon", new ImageIcon("icon.jpg"), 0);
     JButton loginButton = new JButton("Login");
 
     frame.add(usernameLabel);
@@ -3104,7 +3123,7 @@ public class TestGUI {
     frame.add(passwordTextField);
     frame.add(sexLabel);
     frame.add(sexComboBox);
-    frame.add(new JLabel());  // 占位符，使布局更美观
+    frame.add(placeholderLabel);  // 占位符，使布局更美观
     frame.add(loginButton);
 
     loginButton.addActionListener(new ActionListener() {
@@ -3112,7 +3131,7 @@ public class TestGUI {
       public void actionPerformed(ActionEvent e) {
         String username = usernameTextField.getText();
         String password = new String(passwordTextField.getPassword());  // getPassword 返回 char[]
-        String sex = (String)sexComboBox.getSelectedItem();
+        String sex = (String) sexComboBox.getSelectedItem();
 
         System.out.println("Username: " + username);
         System.out.println("Password: " + password);
