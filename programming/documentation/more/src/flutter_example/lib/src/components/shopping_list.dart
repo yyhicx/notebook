@@ -1,20 +1,10 @@
+// import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class Product {
-  Product({required this.name});
-
-  final String name;
-}
-
-class ShoppingListTestData {
-  static List<Product> data() {
-    return [
-      Product(name: 'Eggs'),
-      Product(name: 'Flour'),
-      Product(name: 'Chocolate chips'),
-    ];
-  }
-}
+import 'package:flutter_example/src/models/product.dart';
+import 'package:flutter_example/src/services/api_service.dart';
+import 'package:flutter_example/src/services/mock_api_service.dart';
 
 typedef CartChangedCallback = Function(Product product, bool inCart);
 
@@ -61,16 +51,38 @@ class ShoppingListItem extends StatelessWidget {
 }
 
 class ShoppingList extends StatefulWidget {
-  const ShoppingList({Key? key, required this.products}) : super(key: key);
-
-  final List<Product> products;
+  const ShoppingList({super.key});
 
   @override
   State<ShoppingList> createState() => _ShoppingListState();
 }
 
 class _ShoppingListState extends State<ShoppingList> {
-  final _shoppingCart = <Product>{};
+  late ApiService _apiService;
+  late List<Product> _shoppingCart;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Production Environment
+    // _apiService = ApiService(Dio());
+    // Development Environment
+    _apiService = MockApiService() as ApiService;
+
+    _fetchProducts();
+  }
+
+  void _fetchProducts() async {
+    try {
+      _shoppingCart = await _apiService.fetchProducts();
+      setState(() {});
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+  }
 
   void _handleCartChanged(Product product, bool inCart) {
     setState(() {
@@ -84,15 +96,17 @@ class _ShoppingListState extends State<ShoppingList> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      children: widget.products.map((product) {
-        return ShoppingListItem(
-          product: product,
-          inCart: _shoppingCart.contains(product),
-          onCartChanged: _handleCartChanged,
-        );
-      }).toList(),
-    );
+    return _shoppingCart.isEmpty
+        ? const Center(child: Text('No products in cart'))
+        : ListView(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            children: _shoppingCart.map((product) {
+              return ShoppingListItem(
+                product: product,
+                inCart: _shoppingCart.contains(product),
+                onCartChanged: _handleCartChanged,
+              );
+            }).toList(),
+          );
   }
 }
