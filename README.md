@@ -15,9 +15,7 @@ This project contains all study notes, including code files and document files.
 
 ## Non-Programming
 
-1.  Chinese
-2.  English
-3.  History
-4.  Math
-5.  Physics
-6.  Politics
+1.  English
+2.  History
+3.  Math
+4.  Physics

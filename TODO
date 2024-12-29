@@ -2,6 +2,7 @@ notebook:
   programming:
     documentation:
       book:
+        spring_in_action: chapter1
         cplusplus_primer: chapter3
         data_structures_and_algorithm_analysis_in_cplusplus: chapter1
       more:
@@ -19,13 +20,11 @@ notebook:
             - mastergo
             - c4d
             - pr
-        - language:
-            - cpp
-            - java
-            - dart
         - library_and_framework:
-            - next
             - flutter
+            - vue
+            - spring
+            - next
             - django
         - google_style_guide:
             - javascript
@@ -38,18 +37,14 @@ notebook:
         principles_of_computer_composition: chapter1
   non-programming:
     english:
-      new_concept_english: chapter1
       pets3: chapter1
-      ielts: chapter1
     math:
       advanced_mathematics: chapter1
-      discrete_mathematics: chapter1
+      discrete_mathematics: chapter6
       linear_algebar: chapter1
       probability_and_mathematical_statistics: chapter1
     physics:
       college_physics: chapter1
-    politics:
-      basic_principles_of_marxism: chapter1
 
 Attention:
   - structure
