@@ -1618,18 +1618,18 @@ class _TestState extends State<Test> {
 
 ## 常用库
 
-`fluro`
+`go_router`
 
-`provider`
+`riverpod`
 
 `shared_preferences`
+
+`hive`
+
+`drift`
 
 `sqflite`
 
 `dio`
 
-`file_picker`
-
-`flutter_local_notifications`
-
-`flutter_app_badger`
+`window_manager`
