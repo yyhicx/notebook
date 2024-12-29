@@ -18,5 +18,6 @@ This folder contains my small personal open source projects.
     7.  ocr
     8.  pinout
     9.  sort_css_property
-    10.  split_string
-    11.  translator
+    10.  speaker
+    11.  split_string
+    12.  translator

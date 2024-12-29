@@ -2,7 +2,6 @@
 
 This folder contains my large personal open source projects.
 
-1.  mango
-2.  todo
+1.  todo
+2.  xish
 3.  chat
-4.  xish
