@@ -10,6 +10,7 @@ filetype on
 
 autocmd FileType c setlocal ts=2 sts=2 sw=2
 autocmd FileType cpp setlocal ts=2 sts=2 sw=2
+autocmd FileType java setlocal ts=2 sts=2 sw=2
 autocmd FileType python setlocal ts=2 sts=2 sw=2
 autocmd FileType html setlocal ts=2 sts=2 sw=2
 autocmd FileType css setlocal ts=2 sts=2 sw=2

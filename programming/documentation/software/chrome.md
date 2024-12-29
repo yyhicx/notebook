@@ -7,9 +7,12 @@ Bookmarks:
 *   CrossPlatform
     *   Xish
     *   MDN
+    *   Spring
     *   Django
-    *   React
     *   Flutter
+    *   React
+    *   Vue
+    *   Element Plus
     *   Wix
     *   QingCloud
     *   Vultr

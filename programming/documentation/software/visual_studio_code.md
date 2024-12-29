@@ -53,7 +53,6 @@ Extensions:
 *   Fitten Code
 *   Flutter
 *   HTML CSS Support
-*   HTML Snippets
 *   Javascript (ES6) code snippets
 *   Jupyter
 *   Markdown All in One
@@ -72,9 +71,11 @@ Extensions:
 *   Remote - SSH: Editing Configuration Files
     *   remote explorer
     *   add new
-    *   ssh://root:password@ip_address:22
+    *   ssh root@ip_address
 *   Remote - WSL
 *   Tailwind CSS IntelliSense
+*   Vetur
+*   Vue - Official
 *   yapf
 
 Unrecognized file type:

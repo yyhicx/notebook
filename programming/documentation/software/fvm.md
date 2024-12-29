@@ -19,3 +19,11 @@ Global: fvm global version_name
 Use: fvm use version_name
 
 Use flutter command: fvm flutter command_name
+
+Use flutter with verbose output in windows: fvm flutter run -d windows -v
+
+Use flutter with argument in windows: fvm flutter run -d windows --dart-entrypoint-args --argument (Defining arguments using the args package)
+
+## Linux
+
+Install: curl -fsSL https://fvm.app/install.sh | bash
