@@ -27,7 +27,7 @@ Windows下Docker镜像加速：
     {
       // Other configuration information
       "registry-mirrors": [
-        "https://xxxxxxxx.mirror.aliyuncs.com" // mirrors
+        "https://xxxxxxxx.mirror.aliyuncs.com"  // mirrors
       ]
     }
     ```

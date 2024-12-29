@@ -23,7 +23,7 @@ Markdown风格：
     |           |             |
     ```
 
-注释风格
+注释风格：
 
 *   c++：
 
@@ -33,8 +33,8 @@ Markdown风格：
     /* annotation */
 
     /**
-    * annotation
-    */
+     * annotation
+     */
     ```
 
 *   python：

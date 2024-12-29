@@ -1,252 +1,395 @@
 # Dart
 
-Dart速查表：
+1.  [Dart基础](#dart基础)
+2.  [Dart速查表](#dart速查表)
 
-*   字符串插值：为了将表达式的值放在字符串中，使用`${expression}`。若表达式为单个标识符，可省略`{}`。
+## Dart基础
+
+Dart语言是一门纯对象的编程语言。这意味着Dart语言在运行时所处理的值都是对象，甚至包括一些其他语言常见的基本类型的值（如数值、布尔值等）以及函数都是对象，所有对象的父类都是`Object`。
+
+内置类型：
+
+*   数值类型：`int`、`double`、`num`。
+*   布尔类型：`bool`。
+*   字符串类型：`String`。
+*   列表类型：`List`。
+*   键值对类型：`Map`。
+*   注意：
+    *   不支持内置强制类型转换。
+    *   不支持整数类型和布尔类型之间的相互转换，例如在`if`语句的条件表达式中使用整数会导致编译错误。
+    *   支持单引号、双引号创建字符串，也可以使用3个单引号或双引号创建多行字符串，还可以使用`r`前缀创建原始字符串。
+
+Dart中特有的运算符：
+
+*   避空运算符：`??`、`??=`。
+*   级联运算符：`..`。
+
+重载运算符：
+
+```dart
+class Point {
+  double x, y;
+
+  Point(this.x, this.y);
+
+  operator +(Point other) {
+    return Point(x + other.x, y + other.y);
+  }
+
+  @override
+  String toString() {
+    return 'Point($x, $y)';
+  }
+}
+```
+
+函数：函数也是对象，并且函数的对象类型为`Function`，这一点与JavaScript类似。在JavaScript中，函数还可以作为参数传递；在Dart语言中也一样，函数能保存在变量中，也能作为参数和函数的返回值。
+
+Dart语言支持继承、多态、抽象类、接口、mixin等特性。
+
+*   继承：Dart支持单继承，但支持多重继承。
+*   多态：Dart支持运行时多态，这意味着你可以在运行时根据对象的实际类型调用不同的方法。
+*   抽象类：Dart支持抽象类，抽象类不能实例化，只能作为基类被继承。
+*   接口：Dart支持接口，接口是抽象类，但它不能实例化，只能作为其他类实现。
+*   mixin：Dart语言独有的混入语法特性，它的实现是为了解决多继承问题。mixin是一个可以把自己的方法提供给其他类，而不用成为其父类的类，它以非继承的方式来复用类中的方法。
+
+```dart
+abstract class Eatable {
+  void eat();
+}
+
+mixin Running {
+  void run() {
+    print('I am running.');
+  }
+}
+
+class Animal {
+  String name;
+
+  Animal(this.name);
+
+  void sound() {
+    print('The $name makes a sound.');
+  }
+
+  @override
+  String toString() {
+    return 'An animal named $name.';
+  }
+}
+
+class Dog extends Animal with Running implements Eatable {
+  Dog(String name) : super(name);
+
+  void bark() {
+    print('The $name barks.');
+  }
+
+  @override
+  String toString() {
+    return 'An dog named $name';
+  }
+
+  @override
+  void eat() {
+    print('The $name is eating.');
+  }
+}
+
+void main() {
+  Animal animal = Dog('Fido');
+  Dog dog = Dog('Rufus');
+
+  animal.sound();
+  // animal.bark();  // Error: 'Animal' doesn't have a method named 'bark'
+  print(animal);
+  dog.sound();
+  dog.bark();
+  dog.eat();
+  dog.run();
+  print(dog);
+}
+```
+
+泛型：
+
+```dart
+class MyGenericClass<T> {
+  T value;
+
+  MyGenericClass(this.value);
+
+  T getValue() {
+    return value;
+  }
+}
+```
+
+库：
+
+*   导入库：
 
     ```dart
-    /* 字符串插值 */
-    '${3 + 2}'                 // '5'
-    '${"word".toUpperCase()}'  // 'WORD'
-    '$myObject'                // myObject.toString()
+    import 'dart:math';
+    import 'package:http/http.dart' as http;
     ```
 
-*   可空的变量：Dart 2.12引入了健全的空安全，这意味着在启动了空安全后，除非变量显式声明为空类型，否则它们将不能为空。
+*   拆分库：
 
     ```dart
-    /* 可空的变量 */
-    int a = null;   // INVALID in null-safe Dart
-    int? a = null;  // Valid in null-safe Dart
+    // my_library.dart
+    library my_library;
+    part 'a.dart';
+    part 'b.dart';
+
+    // a.dart
+    part of my_library;
+    void printSomething() {
+      print('Something');
+    }
+    
+    // b.dart
+    part of my_library;
+    void printSomethingElse() {
+      print('Something else');
+    }
     ```
 
-*   避空运算符：`??=`和`??`。
+## Dart速查表
+
+字符串插值：为了将表达式的值放在字符串中，使用`${expression}`。若表达式为单个标识符，可省略`{}`。
+
+```dart
+'${3 + 2}'                 // '5'
+'${"word".toUpperCase()}'  // 'WORD'
+'$myObject'                // myObject.toString()
+```
+
+可空的变量：Dart 2.12引入了健全的空安全，这意味着在启动了空安全后，除非变量显式声明为空类型，否则它们将不能为空。
+
+```dart
+int a = null;   // INVALID in null-safe Dart
+int? a = null;  // Valid in null-safe Dart
+```
+
+避空运算符：`??=`和`??`。
+
+```dart
+a ??= 3;         // if a = null, a = 3, else unchanged
+print(a ?? 12);  // if a = null, print 12, else print a
+```
+
+条件属性访问：要保护可能会是空的属性的正常访问，请在点（.）之前加上一个问好（?）。
+
+```dart
+myObject?.someProperty;
+(myObject != null) ? myObject.someProperty : null;  // Equivalent to the above code
+```
+
+集合字面量：Dart内置了对list、map以及set的支持。Dart的类型推断可以自动帮你分配这些变量的类型。
+
+```dart
+final aListOfStrings = ['one', 'two', 'three'];  // List<String>
+final aSetOfStrings = {'one', 'two', 'three'};   // Set<String>
+final aMapOfStringsToInts = {'one': 1, 'two': 2, 'three': 3};  // Map<String, int>
+```
+
+箭头语法：`=>`符号是一种定义函数的方法，该函数将在其右侧执行表达式并返回其值。
+
+```dart
+bool hasEmpty = aListOfStrings.any((s) {
+  return a.isEmpty;
+});
+bool hasEmpty = aListOfStrings.any((s) => s.isEmpty);  // Equivalent to the above code
+```
+
+级连：要对同一对象执行一系列操作，请使用`..`符号。
+
+```dart
+var button = querySelector('#confirm');
+button?.text = 'Confirm';
+button?.classes.add('important');
+button?.onClick.listen((e) => window.alert('Confirmed!'));
+querySelector('#confirm')  // Equivalent to the above code
+  ?..text = 'Confirm'
+  ..classes.add('important')
+  ..onClick.listen((e) => window.alert('Confirmed!'));
+```
+
+Getters and setters：
+
+```dart
+class MyClass {
+  int _aProperty = 0;
+  int get aProperty => _aProperty;
+  set aProperty(int value) {
+    if (value >= 0) {
+      _aProperty = value;
+    }
+  }
+}
+class MyClass {
+  final List<int> _values = [];
+  void addValue(int value) {
+    _values.add(value);
+  }
+  int get count {
+    return _values.length;
+  }
+}
+```
+
+Dart有两种传参方式：位置参数和命名参数。一个方法不能同时使用可选位置参数和可选命名参数。
+
+```dart
+/* 位置参数 */
+int sumUp(int a, int b, int c) {
+  return a + b + c;
+}
+int sumUpToFive(int a, [int? b, int? c, int? d, int? e]) {
+  int sum = a;
+  if (b != null) sum += b;
+  if (c != null) sum += c;
+  if (d != null) sum += d;
+  if (e != null) sum += e;
+  return sum;
+}
+int total = sumUpToFive(1, 2);
+int otherTotal = sumUpToFive(1, 2, 3, 4, 5);
+
+/* 命名参数 */
+void printName(String firstName, String lastName, {String? suffix}) {
+  print('$firstName $lastName ${suffix ?? ''}');
+}
+printName('Avinash', 'Gupta');
+printName('Poshmeister', 'Moneybuckets', suffix: 'IV');
+```
+
+构造方法：
+
+*   在构造方法中使用this：
 
     ```dart
-    /* 避空运算符 */
-    a ??= 3;         // if a = null, a = 3, else unchanged
-    print(a ?? 12);  // if a = null, print 12, else print a
+    class MyColor {
+      int red;
+      int green;
+      int blue;
+      MyColor(this.red, this.green, this.blue);
+    }
+    final color = MyColor(80, 80, 128);
+    class MyColor {
+      // ...
+      MyColor({required this.red, required this.green, required this.blue});
+    }
+    final color = MyColor(red: 80, green: 80, blue: 80);
     ```
 
-*   条件属性访问：要保护可能会是空的属性的正常访问，请在点（.）之前加上一个问好（?）。
+*   Initializer lists：
 
     ```dart
-    /* 条件属性访问 */
-    myObject?.someProperty;
-    (myObject != null) ? myObject.someProperty : null;  // Equivalent to the above code
-    ```
-
-*   集合字面量：Dart内置了对list、map以及set的支持。Dart的类型推断可以自动帮你分配这些变量的类型。
-
-    ```dart
-    /* 集合字面量 */
-    final aListOfStrings = ['one', 'two', 'three'];  // List<String>
-    final aSetOfStrings = {'one', 'two', 'three'};   // Set<String>
-    final aMapOfStringsToInts = {'one': 1, 'two': 2, 'three': 3};  // Map<String, int>
-    ```
-
-*   箭头语法：`=>`符号是一种定义函数的方法，该函数将在其右侧执行表达式并返回其值。
-
-    ```dart
-    /* 箭头语法 */
-    bool hasEmpty = aListOfStrings.any((s) {
-      return a.isEmpty;
-    });
-    bool hasEmpty = aListOfStrings.any((s) => s.isEmpty);  // Equivalent to the above code
-    ```
-
-*   级连：要对同一对象执行一系列操作，请使用`..`符号。
-
-    ```dart
-    /* 级连 */
-    var button = querySelector('#confirm');
-    button?.text = 'Confirm';
-    button?.classes.add('important');
-    button?.onClick.listen((e) => window.alert('Confirmed!'));
-    querySelector('#confirm')  // Equivalent to the above code
-      ?..text = 'Confirm'
-      ..classes.add('important')
-      ..onClick.listen((e) => window.alert('Confirmed!'));
-    ```
-
-*   Getters and setters：
-
-    ```dart
-    /* Getters and setters */
-    class MyClass {
-      int _aProperty = 0;
-      int get aProperty => _aProperty;
-      set aProperty(int value) {
-        if (value >= 0) {
-          _aProperty = value;
-        }
+    class Point {
+      double? x;
+      double? y;
+      Point.fromJson(Map<String, double> json)
+        : x = json['x'],
+          y = json['y'] {
+        print('In Point.fromJson(): ($x, $y)');
       }
     }
-    class MyClass {
-      final List<int> _values = [];
-      void addValue(int value) {
-        _values.add(value);
-      }
-      int get count {
-        return _values.length;
-      }
+    NonNegativePoint(this.x, this.y)  // 初始化列表也是放置断言的便利位置，它仅会在开发期间运行
+      : assert(x >= 0),
+        assert(y >= 0) {
+      print('I just made a NonNegativePoint: ($x, $y)');
     }
     ```
 
-*   Dart有两种传参方式：位置参数和命名参数。一个方法不能同时使用可选位置参数和可选命名参数。
+*   命名构造方法：
 
     ```dart
-    /* 位置参数 */
-    int sumUp(int a, int b, int c) {
-      return a + b + c;
+    class Point {
+      double x, y;
+      Point(this.x, this.y);
+      Point.origin()
+        : x = 0,
+          y = 0;
     }
-    int sumUpToFive(int a, [int? b, int? c, int? d, int? e]) {
-      int sum = a;
-      if (b != null) sum += b;
-      if (c != null) sum += c;
-      if (d != null) sum += d;
-      if (e != null) sum += e;
-      return sum;
-    }
-    int total = sumUpToFive(1, 2);
-    int otherTotal = sumUpToFive(1, 2, 3, 4, 5);
-    /* 命名参数 */
-    void printName(String firstName, String lastName, {String? suffix}) {
-      print('$firstName $lastName ${suffix ?? ''}');
-    }
-    printName('Avinash', 'Gupta');
-    printName('Poshmeister', 'Moneybuckets', suffix: 'IV');
     ```
 
-*   异常：Dart代码可以抛出和捕获异常。与Java相比，Dart的所有异常都是unchecked exception。方法不会声明它们可能抛出的异常，你也不需要捕获任何异常。
+*   工厂构造方法：能够返回其子类甚至`null`对象。
 
     ```dart
-    /* 异常 */
-    throw Exception('Something bad happened.');
-    throw 'Waaaaaaah!';
-    try {
-      breedMoreLlamas();
-    } on OutOfLlamasException {
-      // A specific exception
-      buyMoreLlamas();
-    } on Exception catch (e) {
-      // Anything else that is an exception
-      print('Unknown exception: $e');
-    } catch (e) {
-      // No specified type, handles all
-      print('Something really unknown: $e');
-    } finally {
-      // Always clean up, even if an exception is thrown
-      cleanLlamaStalls();
+    class Square extends Shape {}
+    class Circle extends Shape {}
+    class Shape {
+      Shape();
+      factory Shape.fromTypeName(String typeName) {
+        if (typeName == 'square') return Square();
+        if (typeName == 'circle') return Circle();
+        throw ArgumentError('Unrecognized $typeName');
+      }
+    }
+    class Rectangle {
+      double width, height;
+      Rectangle({required this.width, required this.height});
+      factory Rectangle.withData() {
+        return Rectangle(
+          width: _createData()['width'],
+          height: _createData()['height'],
+        );
+      }
+      static Map _createData() {
+        return {'width': 10.0, 'height': 10.0};
+      }
+    }
+    Rectangle rect = Rectangle.withData();
+    ```
+
+*   重定向构造方法：
+
+    ```dart
+    class Automobile {
+      String make;
+      String model;
+      int mpg;
+      Automobile(this.make, this.model, this.mpg);
+      Automobile.hybrid(String make, String model) : this(make, model, 60);
+      Automobile.fancyHybrid(): this.hybrid('Futurecar', 'Mark 2');
     }
     ```
 
-*   构造方法：
-    *   在构造方法中使用this：
+*   Const构造方法：如果类生成的对象永远不变，则可以让这些对象成为编译时常量。
 
-        ```dart
-        /* 在构造方法中使用 this */
-        class MyColor {
-          int red;
-          int green;
-          int blue;
-          MyColor(this.red, this.green, this.blue);
-        }
-        final color = MyColor(80, 80, 128);
-        class MyColor {
-          // ...
-          MyColor({required this.red, required this.green, required this.blue});
-        }
-        final color = MyColor(red: 80, green: 80, blue: 80);
-        ```
+    ```dart
+    class ImmutablePoint {
+      static const ImmutablePoint origin = ImmutablePoint(0, 0);
+      final int x;
+      final int y;
+      const ImmutablePoint(this.x, this.y);
+    }
+    ```
 
-    *   Initializer lists：
+异常：Dart代码可以抛出和捕获异常。与Java相比，Dart的所有异常都是unchecked exception。方法不会声明它们可能抛出的异常，你也不需要捕获任何异常。
 
-        ```dart
-        /* Initializer lists */
-        class Point {
-          double? x;
-          double? y;
-          Point.fromJson(Map<String, double> json)
-            : x = json['x'],
-              y = json['y'] {
-            print('In Point.fromJson(): ($x, $y)');
-          }
-        }
-        NonNegativePoint(this.x, this.y)  // 初始化列表也是放置断言的便利位置，它仅会在开发期间运行
-          : assert(x >= 0),
-            assert(y >= 0) {
-          print('I just made a NonNegativePoint: ($x, $y)');
-        }
-        ```
-
-    *   命名构造方法：
-
-        ```dart
-        /* 命名构造方法 */
-        class Point {
-          double x, y;
-          Point(this.x, this.y);
-          Point.origin()
-            : x = 0,
-              y = 0;
-        }
-        ```
-
-    *   工厂构造方法：
-
-        ```dart
-        /* 工厂构造方法：能够返回其子类甚至 null 对象 */
-        class Square extends Shape {}
-        class Circle extends Shape {}
-        class Shape {
-          Shape();
-          factory Shape.fromTypeName(String typeName) {
-            if (typeName == 'square') return Square();
-            if (typeName == 'circle') return Circle();
-            throw ArgumentError('Unrecognized $typeName');
-          }
-        }
-        class Rectangle {
-          double width, height;
-          Rectangle({required this.width, required this.height});
-          factory Rectangle.withData() {
-            return Rectangle(
-              width: _createData()['width'],
-              height: _createData()['height'],
-            );
-          }
-          static Map _createData() {
-            return {'width': 10.0, 'height': 10.0};
-          }
-        }
-        Rectangle rect = Rectangle.withData();
-        ```
-
-    *   重定向构造方法：
-
-        ```dart
-        /* 重定向构造方法 */
-        class Automobile {
-          String make;
-          String model;
-          int mpg;
-          Automobile(this.make, this.model, this.mpg);
-          Automobile.hybrid(String make, String model) : this(make, model, 60);
-          Automobile.fancyHybrid(): this.hybrid('Futurecar', 'Mark 2');
-        }
-        ```
-
-    *   Const构造方法：
-
-        ```dart
-        /* Const构造方法：如果类生成的对象永远不变，则可以让这些对象成为编译时常量 */
-        class ImmutablePoint {
-          static const ImmutablePoint origin = ImmutablePoint(0, 0);
-          final int x;
-          final int y;
-          const ImmutablePoint(this.x, this.y);
-        }
-        ```
+```dart
+throw Exception('Something bad happened.');
+throw 'Waaaaaaah!';
+try {
+  breedMoreLlamas();
+} on OutOfLlamasException {
+  // A specific exception
+  buyMoreLlamas();
+} on Exception catch (e) {
+  // Anything else that is an exception
+  print('Unknown exception: $e');
+} catch (e) {
+  // No specified type, handles all
+  print('Something really unknown: $e');
+} finally {
+  // Always clean up, even if an exception is thrown
+  cleanLlamaStalls();
+}
+```
 
 可迭代集合：
 

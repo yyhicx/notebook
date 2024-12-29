@@ -831,7 +831,7 @@ T object{.des1 = arg1, .des2{arg2} ...};  // c++20, designated initializers
     struct A {};
     struct B : A { operator int&(); };
 
-    int& ir = B(); // ir refers to the result of B::operator int&
+    int& ir = B();  // ir refers to the result of B::operator int&
     ```
 
 *   否则，如果reference是绑定到non-volatile const-qualified type的左值引用，或者是rvalue reference：

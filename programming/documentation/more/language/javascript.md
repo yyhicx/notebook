@@ -60,7 +60,69 @@ document.getElementById('demo').innerHTML = 'new content';
 let cars = Array();
 car[0] = 'BMW';
 
-let num = (1, 2, 3);
+let num = [1, 2, 3];
+
+let [a, b, c] = num;
+console.log(a);
+console.log(b);
+console.log(c);
+
+function sum(a, b, c) {
+  return a + b + c;
+}
+console.log(sum(...num));
+```
+
+类：
+
+```javascript
+class Car {
+  constructor(make, model, year) {
+    this.make = make;
+    this.model = model;
+    this.year = year;
+  }
+  getMake() {
+    return this.make;
+  }
+  getModel() {
+    return this.model;
+  }
+  getYear() {
+    return this.year;
+  }
+  setMake(make) {
+    this.make = make;
+  }
+  setModel(model) {
+    this.model = model;
+  }
+  setYear(year) {
+    this.year = year;
+  }
+}
+
+let myCar = new Car('BMW', 'X5', 2018);
+console.log(myCar.getMake());
+console.log(myCar.getModel());
+console.log(myCar.getYear());
+myCar.setMake('Audi');
+console.log(myCar.getMake());
+
+class ColorCar extends Car {
+  constructor(make, model, year, color) {
+    super(make, model, year);
+    this.color = color;
+  }
+  getColor() {
+    return this.color;
+  }
+  setColor(color) {
+    this.color = color;
+  }
+}
+
+let myColorCar = new ColorCar('BMW', 'X5', 2018, 'Red');
 ```
 
 对象：
@@ -78,6 +140,11 @@ let person = {
 console.log(person.fullName);
 // John Doe
 console.log(person.fullName());
+
+let {firstName, lastName, id} = person;
+console.log(firstName);
+console.log(lastName);
+console.log(id);
 ```
 
 函数：
@@ -87,6 +154,21 @@ function myFunc(a, b) {
   return a * b;
 }
 console.log(myFunc(1, 2));
+```
+
+模块：
+
+```javascript
+// my_module.js
+export const pi = 3.14159;
+export default function circleArea(radius) {
+  return pi * radius * radius;
+}
+
+// main.js
+import circleArea, {pi} from './my_module.js';
+console.log(pi);
+console.log(circleArea(5));
 ```
 
 事件：
@@ -174,13 +256,12 @@ console.log(myFunc(1, 2));
 
 字符串：
 
-*   [字符串属性和方法](https://runoob.com/jsref/jsref-obj-string.html)
-
 ```javascript
 let carname = 'volvo xc60';
 let character = carname[6];
 let sln = carname.length;
 let string_carname = String('volvo xc60');
+let mycar = `My car is a ${carname}`;
 carname == string_carname;   // true
 carname === string_carname;  // false
 ```
@@ -550,6 +631,17 @@ function findMax() {
   return max;
 }
 console.log(findMax(1, 123, 500, 115, 44, 88));  // return 500
+
+function compare(...values) {
+  let max = values[0];
+  for (let i = 1; i < values.length; i++) {
+    if (values[i] > max) {
+      max = values[i];
+    }
+  }
+  return max;
+}
+console.log(compare(1, 123, 500, 115, 44, 88));  // return 500
 
 /* 内嵌函数 */
 function add() {

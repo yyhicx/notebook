@@ -1,5 +1,10 @@
 # Java
 
+1.  [Java简介](#java简介)
+2.  [Java基础](#java基础)
+3.  [Java标准库](#java标准库)
+4.  [其他](#其他)
+
 ## Java简介
 
 Java由Sun公司于1995年推出，是一门面向对象的编程语言。后来Sun公司被Oracle公司收购，Java也随之称为Oracle公司产品。
@@ -2746,10 +2751,214 @@ Java标准库包含了许多常用的类和接口，可以帮助我们快速开�
         ```
 
 *   网络通信：通过TCP、UDP协议在网络上传输数据。
-*   HTTP请求：
+    *   TCP通信：
+
+        ```java
+        // TCPServer.java
+        import java.io.IOException;
+        import java.io.InputStream;
+        import java.io.OutputStream;
+        import java.net.ServerSocket;
+        import java.net.Socket;
+
+        public class TCPServer {
+          public static void main(String[] args) {
+            try (ServerSocket serverSocket = new ServerSocket(8080)) {
+              System.out.println("Server is listening on port 8080");
+              while (true) {
+                Socket socket = serverSocket.accept();  // 接受客户端连接
+
+                // 接受数据
+                InputStream input = socket.getInputStream();
+                byte[] data = new byte[1024];
+                int bytesRead = input.read(data);
+                System.out.println("Received from client: " + new String(data, 0, bytesRead));
+
+                // 发送数据
+                OutputStream output = socket.getOutputStream();
+                output.write("Hello, Client!".getBytes());
+                socket.close();
+              }
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+
+        // TCPClient.java
+        import java.io.IOException;
+        import java.io.InputStream;
+        import java.io.OutputStream;
+        import java.net.Socket;
+
+        public class TCPClient {
+          public static void main(String[] args) {
+            try (Socket socket = new Socket("localhost", 8080)) {
+              // 发送数据
+              OutputStream output = socket.getOutputStream();
+              output.write("Hello, Server!".getBytes());
+
+              // 接收数据
+              InputStream input = socket.getInputStream();
+              byte[] data = new byte[1024];
+              int bytesRead = input.read(data);
+              System.out.println("Received from server: " + new String(data, 0, bytesRead));
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+        ```
+
+    *   UDP通信：
+
+        ```java
+        // UDPServer.java
+        import java.net.DatagramPacket;
+        import java.net.DatagramSocket;
+
+        public class UDPServer {
+          public static void main(String[] args) {
+            try (DatagramSocket socket = new DatagramSocket(9090)) {
+              byte[] buffer = new byte[1024];
+              DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+              System.out.println("Server is waiting for UDP packets...");
+              socket.receive(packet);  // 接收数据包
+              String receivedMessage = new String(packet.getData(), 0, packet.getLength());
+              System.out.println("Received from client: " + receivedMessage);
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+          }
+        }
+
+        // UDPClient.java
+        import java.net.DatagramPacket;
+        import java.net.DatagramSocket;
+        import java.net.InetAddress;
+
+        public class UDPClient {
+          public static void main(String[] args) {
+            try (DatagramSocket socket = new DatagramSocket()) {
+              String message = "Hello, UDP Server!";
+              byte[] buffer = message.getBytes();
+              InetAddress address = InetAddress.getByName("localhost");
+              DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, 9090);
+              socket.send(packet);  // 发送数据包
+              System.out.println("Message sent to server.");
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+          }
+        }
+        ```
 
 `java.rmi`：
-`java.sql`：
+
+*   `Remote`：是一个标识接口，用于标识对象可以通过远程调用访问。所有的远程对象必须实现此接口。
+*   `UnicastRemoteObject`：创建单播远程对象，使远程对象能够接收远程调用请求。
+*   `Naming`：提供了在RMI注册表中绑定、查找和解绑远程对象的方法。
+*   `RemoteException`：RMI调用过程中出现的通信故障或错误时抛出的异常。
+
+```java
+// Hello.java
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
+public interface Hello extends Remote {
+  String sayHello(String name) throws RemoteException;
+}
+
+// HelloImpl.java
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+
+public class HelloImpl extends UnicastRemoteObject implements Hello {
+  protected  HelloImpl() throws RemoteException {
+    super();
+  }
+
+  // 实现远程方法
+  @Override
+  public String sayHello(String name) throws RemoteException {
+    return "Hello, " + name + "!";
+  }
+}
+
+
+// RMIServer.java
+import java.rmi.Naming;
+import java.rmi.registry.LocateRegistry;
+
+public class RMIServer {
+  public static void main(String[] args) {
+    try {
+      HelloImpl hello = new HelloImpl();
+
+      // 启动 RMI 注册表（监听 1099 端口）
+      LocateRegistry.createRegistry(1099);
+      // 将远程对象注册到 RMI 注册表中
+      Naming.rebind("rmi://localhost:1099/HelloService", hello);
+
+      System.out.println("RMI Server is running...");
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+}
+
+// RMIClient.java
+import java.rmi.Naming;
+
+public class RMIClient {
+  public static void main(String[] args) {
+    try {
+      // 在 RMI 注册表中查找远程对象
+      Hello hello = (Hello) Naming.lookup("rmi://localhost:1099/HelloService");
+      // 调用远程方法
+      String response = hello.sayHello("Alice");
+
+      System.out.println("Response from server: " + response);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+`java.sql`：需要使用数据库官方提供的驱动程序才能连接数据库，例如MySQL驱动程序：`mysql-connector-java.jar`。
+
+```java
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class Main {
+  public static void main(String[] args) {
+    String jdbcURL = "jdbc:mysql://localhost:3306/testdb";  // testdb 为数据库名
+    String username = "root";
+    String password = "123456";
+
+    String sql = "SELECT id, name FROM users";
+
+    try (Connection connection = DriverManager.getConnection(jdbcURL, username, password);
+        PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+      ResultSet resultSet = preparedStatement.executeQuery(sql);
+
+      while (resultSet.next()) {
+        int id = resultSet.getInt("id");
+        String name = resultSet.getString("name");
+        System.out.println("ID: " + id + ", Name: " + name);
+      }
+    } catch (SQLException e) {
+      System.out.println("Failed to establish connection.");
+      e.printStackTrace();
+    }
+  }
+}
+```
 
 `java.text`：
 
@@ -2934,7 +3143,245 @@ public class Main {
     ```
 
 `java.security`：
+
+*   `MessageDigest`：用于生成消息摘要（即哈希值），用来验证数据的完整性。常见的算法包括`MD5`、`SHA-1`、`SHA-256`等。
+*   `Signature`：用于生成和验证数字签名。数字签名可以保证数据的来源和完整性。
+*   `SecureRandom`：用于生成随机数，安全性高于`java.util.Random`。
+*   `Cerificate`：表示安全证书，通常用来身份验证、公钥存储等应用场景。
+
+```java
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.MessageDigest;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.SecureRandom;
+import java.security.Signature;
+
+public class Main {
+  public static void main(String[] args) {
+    try {
+      // 使用 SHA-256 算法生成消息摘要
+      MessageDigest md = MessageDigest.getInstance("SHA-256");
+
+      String message = "Hello, World!";
+      byte[] hash = md.digest(message.getBytes());
+
+      // 将字节数组转换为十六进制字符串
+      StringBuffer hexString = new StringBuffer();
+      for (byte b : hash) {
+        hexString.append(String.format("%02x", b));
+      }
+
+      System.out.println("SHA-256 Hash: " + hexString.toString());
+
+      // 生成密钥对
+      KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+      keyPairGenerator.initialize(2048);
+      KeyPair keyPair = keyPairGenerator.generateKeyPair();
+      PrivateKey privateKey = keyPair.getPrivate();
+      PublicKey publicKey = keyPair.getPublic();
+
+      // 创建签名实例，并使用私钥签名
+      Signature sign = Signature.getInstance("SHA256withRSA");
+      sign.initSign(privateKey);
+      sign.update(message.getBytes());
+      byte[] signature = sign.sign();
+
+      // 打印签名
+      System.out.print("Digital Signature: ");
+      for (byte b : signature) {
+        System.out.printf("%02x", b);
+      }
+      System.out.println();
+
+      // 验证签名
+      sign.initVerify(publicKey);
+      sign.update(message.getBytes());
+      boolean isVerified = sign.verify(signature);
+      System.out.println("Signature verified: " + isVerified);
+
+      // 随机数
+      SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
+      for (int i = 0; i < 10; i++) {
+        System.out.println(secureRandom.nextInt(100));
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+}
+```
+
 `java.beans`：
+
+*   Java Bean：
+    *   Java Bean是一种在Java中可重复使用的Java组件的技术规范。它规定了Java类应该如何设计，以便它们可以方便地作为组件在不同的Java程序或JSP页面中使用。
+    *   Java Bean的特点：
+        1.  通常使用`public`声明类。
+        2.  提供一个无参构造函数。
+        3.  使用`private`声明实例变量，以及提供`public`的`getter`和`setter`方法。
+        4.  可以实现`Serializable`接口，使得对象可以被序列化和反序列化。
+    *   注意：
+        *   在使用Java Bean时，应注意防止常见的安全问题，如SQL注入攻击、跨站脚本攻击和跨站请求伪造等。可以通过设置合理的访问权限、使用参数化查询、对输入进行验证和过滤等措施来提供安全性。
+        *   虽然反射机制在某些情况下可以用来动态地访问和操作Java Bean的属性和方法，但过度使用反射可能会破坏封装性并导致性能问题。
+*   `Introspector`：允许开发者通过反射机制检查JavaBean的属性、事件和方法。它可以生成一个BeanInfo对象，用于描述bean的属性和行为。
+*   `PropertyDescriptor`：用于描述JavaBean中的属性，允许开发者读取或修改bean的属性。
+*   `PropertyChangeListener`：允许bean监听属性的变化，当某个属性被修改时，监听器可以做出相应的反应。
+*   `VetoableChangeListener`：允许bean在某个属性发生变化之前对该变化进行拦截，并可以通过抛出异常来拒绝该变化。
+
+```java
+// Person.java
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
+import java.beans.VetoableChangeSupport;
+
+public class Person {
+  private String name;
+  private int age;
+  private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+  private VetoableChangeSupport vetoableChangeSupport = new VetoableChangeSupport(this);
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    String oldName = this.name;
+    this.name = name;
+    propertyChangeSupport.firePropertyChange("name", oldName, name);
+  }
+
+  public int getAge() {
+    return age;
+  }
+
+  public void setAge(int age) throws PropertyVetoException {
+    int oldAge = this.age;
+    vetoableChangeSupport.fireVetoableChange("age", oldAge, age);
+    this.age = age;
+    propertyChangeSupport.firePropertyChange("age", oldAge, age);
+  }
+
+  public void addPropertyChangeListener(PropertyChangeListener listener) {
+    propertyChangeSupport.addPropertyChangeListener(listener);
+  }
+
+  public void addVetoableChangeListener(VetoableChangeListener listener) {
+    vetoableChangeSupport.addVetoableChangeListener(listener);
+  }
+}
+
+// PersonBeanInfo.java
+import java.beans.BeanDescriptor;
+import java.beans.IntrospectionException;
+import java.beans.PropertyDescriptor;
+import java.beans.SimpleBeanInfo;
+import java.lang.reflect.Method;
+
+public class PersonBeanInfo extends SimpleBeanInfo {
+  @Override
+  public BeanDescriptor getBeanDescriptor() {
+    return new BeanDescriptor(Person.class);
+  }
+
+  @Override
+  public PropertyDescriptor[] getPropertyDescriptors() {
+    try {
+      // 获取 Person 类的 Class 对象
+      Class<?> personClass = Person.class;
+
+      // 为 name 属性创建 PropertyDescriptor
+      Method getNameMethod = personClass.getMethod("getName");
+      Method setNameMethod = personClass.getMethod("setName", String.class);
+      PropertyDescriptor nameDesc = new PropertyDescriptor("name", personClass);
+      nameDesc.setReadMethod(getNameMethod);
+      nameDesc.setWriteMethod(setNameMethod);
+
+      // 为 age 属性创建 PropertyDescriptor
+      Method getAgeMethod = personClass.getMethod("getAge");
+      Method setAgeMethod = personClass.getMethod("setAge", int.class);
+      PropertyDescriptor ageDesc = new PropertyDescriptor("age", personClass);
+      ageDesc.setReadMethod(getAgeMethod);
+      ageDesc.setWriteMethod(setAgeMethod);
+
+      // 返回属性描述符数组
+      return new PropertyDescriptor[]{nameDesc, ageDesc};
+    } catch (NoSuchMethodException | IntrospectionException e) {
+      e.printStackTrace();
+      // 如果发生异常，可以返回一个空数组或抛出运行时异常
+      return new PropertyDescriptor[0];
+    }
+  }
+}
+
+// Main.java
+import java.beans.BeanInfo;
+import java.beans.Introspector;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyDescriptor;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
+import java.lang.reflect.Method;
+
+public class Main {
+  public static void main(String[] args) {
+    try {
+      // 通过 Introspector 获取 bean 的信息
+      BeanInfo beanInfo = Introspector.getBeanInfo(Person.class);
+      System.out.println("---- First ----");
+      for (PropertyDescriptor propertyDescriptor : beanInfo.getPropertyDescriptors()) {
+        System.out.println("Property: " + propertyDescriptor.getName());
+        System.out.println("Getter: " + propertyDescriptor.getReadMethod());
+        System.out.println("Setter: " + propertyDescriptor.getWriteMethod());
+      }
+
+      // 通过自定义的 BenInfo 类来获取 bean 的信息
+      beanInfo = new PersonBeanInfo();
+      System.out.println("---- Second ----");
+      for (PropertyDescriptor propertyDescriptor : beanInfo.getPropertyDescriptors()) {
+        System.out.println("Property: " + propertyDescriptor.getName());
+        System.out.println("Getter: " + propertyDescriptor.getReadMethod());
+        System.out.println("Setter: " + propertyDescriptor.getWriteMethod());
+      }
+
+      // 通过 PropertyDescriptor 修改和获取属性
+      System.out.println("---- Third ----");
+      Person person = new Person();
+      PropertyDescriptor pd = new PropertyDescriptor("name", Person.class);
+      Method setter = pd.getWriteMethod();
+      setter.invoke(person, "John");
+      Method getter = pd.getReadMethod();
+      System.out.println("Name: " + getter.invoke(person));
+
+      // 添加属性变化监听器
+      person.addPropertyChangeListener(event -> {
+        System.out.println("Property " + event.getPropertyName() + "' changed from " +
+            event.getOldValue() + " to " + event.getNewValue());
+      });
+      person.addVetoableChangeListener(new VetoableChangeListener() {
+        @Override
+        public void vetoableChange(PropertyChangeEvent event) throws PropertyVetoException {
+          if ("age".equals(event.getPropertyName())) {
+            int newAge = (int) event.getNewValue();
+            if (newAge < 0) {
+              throw new PropertyVetoException("Age cannot be negative!", event);
+            }
+          }
+        }
+      });
+
+      person.setName("John Doe");
+      person.setAge(25);
+      // person.setAge(-5);  // 失败并抛出异常
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+}
+```
 
 `java.awt`：
 
@@ -3145,10 +3592,86 @@ public class TestGUI {
 ```
 
 `javax.servlet`：
+
+*   `HttpServlet`：一个抽象类，提供了处理HTTP请求的基本功能。开发者可以通过继承`HttpServlet`类来创建自定义的`Servlet`。
+    *   `doGet`：处理`HTTP GET`请求。
+    *   `doPost`：处理`HTTP POST`请求。
+*   `ServletConfig`：用于提供`Servlet`的配置信息，包括初始化参数。
+*   `ServletContext`：提供了对整个Web应用的上下文信息，可以在不同的Servlet之间共享数据。
+*   `HttpServletRequest`：封装了客户端发出的HTTP请求，包括请求参数、头信息等。
+*   `HttpServletResponse`：用于向客户端发送HTTP响应，包括响应头信息、内容等。
+
+```java
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class HelloServlet extends HttpServlet {
+  private String message;
+
+  @Override
+  public void init(ServletConfig config) throws ServletException {
+    // 从 web.xml 中获取初始化参数
+    message = config.getInitParameter("message");
+
+    // 在 Servlet 初始化时设置共享属性
+    ServletContext context = config.getServletContext();
+    context.setAttribute("appName", "My Web Application");
+  }
+
+  @Override
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+    // 设置响应内容类型
+    response.setContentType("text/html");
+
+    // 获取输出流
+    PrintWriter out = response.getWriter();
+    String appName = (String) getServletContext().getAttribute("appName");
+
+    out.println("<html><body>");
+    out.println("<h1>Hello, Servlet!</h1>");
+    out.println("<p>Message: " + message + "</p>");
+    out.println("<p>Application Name: " + appName + "</p>");
+    out.println("</body></html>");
+  }
+}
+```
+
 `javax.xml`：
 
-## 示例
+*   `DocumentBuilderFactory`：用于创建`DocumentBuilder`实例，该实例可以解析XML文档。
+*   `SAXParserFactory`：创建`SAXParser`实例，可以进行基于事件的XML解析。
+*   `TransformerFactory`：创建`Transformer`实例，可以进行XML文档的转换和格式化。
+*   `XPathFactory`：用来创建`XPath`实例，可以对XML文档进行复杂的查询。
 
-Todo：
+## 其他
 
-*   src: java_todo
+使用`javac`编译时报错：`错误: 编码GBK的不可映射字符`。
+
+```bash
+javac -encoding UTF-8 Main.java
+```
+
+使用`mysql-connector-java.jar`：
+
+1.  如果使用Maven或Gradle等构建工具时，在`pom.xml`或`build.gradle`中添加依赖：
+
+    ```xml
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.23</version>
+    </dependency>
+    ```
+
+2.  使用`java`运行：
+
+    ```bash
+    java -classpath ".;mysql-connector-java-8.0.30.jar" Main
+    ```

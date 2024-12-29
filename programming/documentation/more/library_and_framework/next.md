@@ -1,5 +1,7 @@
 # Next
 
+## Next基础
+
 要从头开始使用React构建一个完整的Web应用程序，需要考虑许多重要的细节：
 
 *   必须使用打包程序（例如webpack）打包代码，并使用Babel等编译器进行代码转换。
@@ -17,10 +19,6 @@ Next.js是一个React开发框架，为上述问题提供了解决方案，它�
 *   开发环境支持快速刷新。
 *   利用Serverless Functions及API路由构建API功能。
 *   完全可扩展。
-
-## Next基础
-
-src: open next-example project and run it
 
 Install：
 

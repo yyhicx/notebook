@@ -69,10 +69,12 @@ Style Guide:
 
 Else:
 
+*   advanced programming in the unix environment
 *   alphabet
 *   docker getting started
 *   encoding format
 *   environment
+*   fastdfs getting started
 *   git usage specification and emoji list
 *   job title abbreviations
 *   latex getting started

@@ -788,7 +788,7 @@ std::vector<string> list{
     "First item",
     // .. and should be aligned appropriately.
     "Second item"};
-DoSomething(); /* For trailing block comments, one space is fine. */
+DoSomething();  /* For trailing block comments, one space is fine. */
 ```
 
 TODO注释：对那些临时的，短期的解决方案，或已经够好但仍不完美的代码使用TODO注释。

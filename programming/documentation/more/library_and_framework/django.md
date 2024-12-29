@@ -2,8 +2,6 @@
 
 ## Django文档
 
-src: open django_example project and run it
-
 开始：
 
 *   安装：`pip3 install django`。

@@ -30,7 +30,7 @@
 
 函数：
 
-*   函数在x<sub>0</sub>的领域内由定义，并且满足下式，则称函数f(x)在x<sub>0</sub>处取得极限：
+*   函数在x<sub>0</sub>的邻域内由定义，并且满足下式，则称函数f(x)在x<sub>0</sub>处取得极限：
 
     ![函数的极限](formula/$lim_{xtox_0}f(x)=A$.png)
 
@@ -45,5 +45,39 @@
         *   有界变量与无穷小的积仍然是无穷小。
         *   无限个无穷小之和不一定是无穷小。
         *   无穷小的商不一定是无穷小。
+    *   无穷小的比较：
+
+        ![无穷小的比较](../resources/comparison_of_infinitesimals.png)
+
 *   无穷大量：当x→x<sub>0</sub>时，f(x)的极限为无穷大，称为函数f(x)的无穷大量。
 *   无穷小和无穷大的关系：在自变量的变换的同一过程中，如果f(x)为无穷大，则$\frac{1}{f(x)}$为无穷小。
+*   函数的连续性：
+    *   设函数f(x)在点x的某邻域内有定义，如果当自变量x的改变量Δx趋近于0时，相应函数的改变量Δf(x)也趋近于0，则称f(x)在点x<sub>0</sub>处连续。即满足下式：
+
+        ![函数的连续性](formula/$lim_{deltaxto0}deltay=lim_{deltaxto0}[f(x_0+deltax)-f(x_0)]=0$.png)
+
+    *   函数f(x)在点x<sub>0</sub>处连续，需要满足：
+        *   函数在该点有定义。
+        *   函数在该点处极限存在。
+        *   极限值等于函数值。
+    *   函数f(x)在点x<sub>0</sub>处不连续，则称其为函数的间断点。
+
+## 导数
+
+如果函数f(x)的变化率的极限是存在的，即满足下式，则称此极限为函数y=f(x)在点x<sub>0</sub>处的导数。记作$f'(x_0)$、$y'|_{x=x_0}$、$\frac{dy}{dx}|_{x=x_0}$或$\frac{df(x)}{dx}|_{x=x_0}$。
+
+![导数的定义](formula/$lim_{Deltaxto0}frac{Deltay}{Deltax}=lim_{Deltaxto0}frac{f(x_0+Deltax)-f(x_0)}{Deltax}$.png)
+
+常用导数公式：
+
+![常用导数公式](../resources/common_derivative_formulas.png)
+
+导数运算法则：
+
+![导数运算法则](../resources/rules_of_derivatives.png)
+
+## 偏导数
+
+设二元函数z=f(x, y)在点(x<sub>0</sub>, y<sub>0</sub>)的某个邻域内有定义。令y=y<sub>0</sub>，一元函数f(x, y<sub>0</sub>)在点x=x<sub>0</sub>可导，即极限满足下式，则称A为函数z=f(x, y)在点(x<sub>0</sub>, y<sub>0</sub>)处关于自变量x的偏导数，记作$f_x(x_0, y_0)$、$z_x|_{x=x_0, y=y_0}$、$\frac{\partial z}{\partial x}|_{x=x_0, y=y_0}$或$\frac{\partial f}{\partial x}|_{x=x_0, y=y_0}$。
+
+![偏导数的极限](formula/$lim_{Deltaxto0}frac{f(x_0+Deltax,y_0)-f(x_0,y_0)}{Deltax}=A$.png)
