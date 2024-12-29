@@ -11,3 +11,4 @@
 | type hints                                                                   | 类型注解                                     |
 | uniform text sizes across the app in flutter                                 | 统一整个flutter应用程序的文本大小            |
 | how to slide to new page on the right instead of the bottom in flutter?      | flutter如何从右边滑动出新页面，而不是从底部  |
+| how to get css from specified element of web page                            | 如何从网页指定元素获取css                    |

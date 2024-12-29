@@ -1,4 +1,0 @@
-# IELTS
-
-| Chapter | Chinese |
-| ------- | ------- |
