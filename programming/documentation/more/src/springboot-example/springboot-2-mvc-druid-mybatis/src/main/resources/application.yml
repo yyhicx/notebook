@@ -1,0 +1,17 @@
+server:
+  port: 80
+  servlet:
+    context-path: /
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+spring:
+  mvc:
+    view:
+      prefix: /templates/
+      suffix: .html
+  web:
+    resources:
+      static-locations: classpath:/static/

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.OrderMapper">
+  <resultMap id="selectOrderWithCustomerResultMap" type="order">
+    <id column="order_id" property="orderId" />
+    <result column="order_name" property="orderName" />
+    <result column="customer_id" property="customerId" />
+
+    <association property="customer" javaType="customer">
+      <id column="customer_id" property="customerId" />
+      <result column="customer_name" property="customerName" />
+    </association>
+  </resultMap>
+
+  <select id="selectOrderWithCustomer" resultMap="selectOrderWithCustomerResultMap">
+    select order_id, order_name, orders.customer_id, customers.customer_id, customer_name
+    from orders left join customers on orders.customer_id=customers.customer_id where order_id=#{orderId}
+  </select>
+</mapper>
