@@ -2,6 +2,14 @@
 
 ## Windows
 
+安装VM-Tools实现文件共享：
+
+```bash
+apt install open-vm-tools-desktop
+
+reboot  # 重启系统
+```
+
 使用VSCode的SSH插件，连接虚拟机中Debian系统，实现远程访问文件夹：
 
 *   Debian系统安装并使用ssh服务：

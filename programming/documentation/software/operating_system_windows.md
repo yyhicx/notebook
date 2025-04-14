@@ -20,6 +20,7 @@
 
 ## Software Displayed In The Taskbar
 
+*   Explorer
 *   Microsoft To Do
 *   Yuque
 *   Terminal
@@ -29,12 +30,13 @@
 *   Intellij IDEA
 *   PyCharm
 *   Android Studio
-*   Typora
 *   Postman
 *   Navicat
-*   Master Go
+*   Power Designer
 *   Photoshop
 *   Illustrator
+*   Master Go
+*   Blender
 *   Vmware
 *   v2rayN
 

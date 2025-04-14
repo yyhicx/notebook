@@ -15,6 +15,14 @@ Shortcut keys:
 *   Replace text: ctrl + r
 *   Go to Declaration: ctrl + b
 
+Extensions:
+
+*   CMD Support
+*   Fitten Code
+*   JBLJavaToWeb
+*   Lombok Builder Helper
+*   MybatisX
+
 在IntelliJ IDEA中修改Maven的数据源：
 
 1.  打开`IntelliJ IDEA\plugins\maven\lib\maven3\conf\settings.xml`文件。

@@ -50,7 +50,6 @@ Extensions:
     *   copy src/.editorconfig to project/.editorconfig
 *   ES7 React/Redux/GraphQL/React-Native snippets
 *   ESLint
-*   Fitten Code
 *   Flutter
 *   HTML CSS Support
 *   Javascript (ES6) code snippets
@@ -74,6 +73,7 @@ Extensions:
     *   ssh root@ip_address
 *   Remote - WSL
 *   Tailwind CSS IntelliSense
+*   TONGYI Lingma
 *   Vetur
 *   Vue - Official
 *   yapf

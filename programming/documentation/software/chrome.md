@@ -22,7 +22,7 @@ Bookmarks:
     *   Colaboratory
     *   Google AI
     *   ChatGPT
-    *   ChatBaidu
+    *   DeepSeek
 *   Learn
     *   Github
     *   LeetCode
