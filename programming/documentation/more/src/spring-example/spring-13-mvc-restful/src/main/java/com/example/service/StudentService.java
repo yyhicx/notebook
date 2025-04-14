@@ -4,9 +4,15 @@ import com.example.entity.Student;
 import java.util.List;
 
 public interface StudentService {
-  /**
-   * 查询全部学员业务
-   * @return
-   */
-  List<Student> findAll();
+  Student findById(Integer id);
+
+  List<Student> findAll(String keyword);
+
+  List<Student> findAllWithPageable(String keyword, int page, int size);
+
+  boolean save(Student student);
+
+  boolean update(Student student);
+
+  boolean deleteById(Integer id);
 }

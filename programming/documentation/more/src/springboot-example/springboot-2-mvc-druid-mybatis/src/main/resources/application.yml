@@ -8,10 +8,31 @@ server:
       force: true
 
 spring:
-  mvc:
-    view:
-      prefix: /templates/
-      suffix: .html
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    encoding: UTF-8
+    suffix: .html
+    mode: HTML5
   web:
     resources:
       static-locations: classpath:/static/
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/dbforspring
+      username: root
+      password: 123456
+
+mybatis:
+  configuration:
+    auto-mapping-behavior: full
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+  type-aliases-package: com.example.entity
+  mapper-locations: classpath:/mapper/*.xml
+
+logging:
+  level:
+    root: debug

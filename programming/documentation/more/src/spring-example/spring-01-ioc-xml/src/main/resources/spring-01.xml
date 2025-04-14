@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <!--
+    bean 标签：通过配置 bean 标签告诉 IoC 容器需要创建对象的组件信息
+    id 属性：bean 的唯一标识，方便后期获取 Bean
+    class 属性：组件类的全限定符
+  -->
+  <bean id="happyComponent" class="com.example.ioc.HappyComponent" />
+  <!-- factory-method 属性：指定静态工厂方法 -->
+  <bean id="clientService" class="com.example.ioc.ClientService" factory-method="createInstance" />
+  <!--
+    factory-bean 属性：指定当前容器中工厂 Bean 的名称
+    factory-method 属性：指定实例工厂方法名
+  -->
+  <bean id="serviceLocator" class="com.example.ioc.DefaultServiceLocator" />
+  <bean id="clientServiceImpl" factory-bean="serviceLocator" factory-method="createClientServiceInstance" />
+
+</beans>

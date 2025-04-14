@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+  <settings>
+    <setting name="logImpl" value="STDOUT_LOGGING" />
+    <setting name="mapUnderscoreToCamelCase" value="true"/>
+    <!--
+      autoMappingBehavior：开启自动映射，FULL 表示自动映射所有字段，NONE 表示关闭自动映射
+        开启自动映射后，当查询结果集中包含多表关联查询的字段时，mybatis 会自动将其映射到对应的对象中
+        resultMap 标签下的所有 column 标签都会被自动映射，无需再写
+    -->
+    <setting name="autoMappingBehavior" value="FULL" />
+  </settings>
+
+  <typeAliases>
+    <package name="com.example.entity" />
+  </typeAliases>
+
+  <environments default="development">
+    <environment id="development">
+      <transactionManager type="JDBC" />
+      <dataSource type="POOLED">
+        <property name="driver" value="com.mysql.cj.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/dbforspring" />
+        <property name="username" value="root" />
+        <property name="password" value="123456" />
+      </dataSource>
+    </environment>
+  </environments>
+
+  <mappers>
+    <mapper resource="mappers/CustomerMapper.xml" />
+    <mapper resource="mappers/OrderMapper.xml" />
+  </mappers>
+
+</configuration>

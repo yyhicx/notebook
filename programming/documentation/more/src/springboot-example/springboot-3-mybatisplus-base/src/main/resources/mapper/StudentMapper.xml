@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace = 接口的全限定符 -->
+<mapper namespace="com.example.mapper.StudentMapper">
+
+  <select id="queryAll" resultType="student" >
+    select * from students
+  </select>
+
+  <select id="queryPage" resultType="student">
+    select * from students where id > #{id}
+  </select>
+
+</mapper>

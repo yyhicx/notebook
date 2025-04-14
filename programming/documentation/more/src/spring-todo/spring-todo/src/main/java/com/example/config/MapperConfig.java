@@ -3,7 +3,7 @@ package com.example.config;
 import com.github.pagehelper.PageInterceptor;
 import java.util.Properties;
 import javax.sql.DataSource;
-import org.apache.ibatis.logging.slf4j.Slf4jImpl;
+import org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl;
 import org.apache.ibatis.session.AutoMappingBehavior;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
@@ -28,7 +28,7 @@ public class MapperConfig {
 
     // <settings>
     configuration.setMapUnderscoreToCamelCase(true);
-    configuration.setLogImpl(Slf4jImpl.class);
+    configuration.setLogImpl(JakartaCommonsLoggingImpl.class);
     configuration.setAutoMappingBehavior(AutoMappingBehavior.FULL);
     sqlSessionFactoryBean.setConfiguration(configuration);
 

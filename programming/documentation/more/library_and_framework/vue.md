@@ -22,12 +22,6 @@ Vue快速入门：
 *   双向数据绑定：在Vue中，可以使用`v-model`指令在`<input>`、`<select>`、`<textarea>`等表单元素上实现双向数据绑定。
 
     ```javascript
-    const count = ref(0)
-    const increment = () => {
-      count.value++
-    }
-    <button @click="increment">Count is: {{ count }}</button>
-
     const form = reactive({
       name: '',
       region: '',
@@ -38,10 +32,10 @@ Vue快速入门：
       resource: '',
       desc: ''
     })
-    const create = () => {
+    const handleSubmit = () => {
       console.log(form)
     }
-    <form :model="form">
+    <form @submit.prevent="handleSubmit">
       <label>Name:</label>
       <input v-model="form.name" />
       <label>Region:</label>
@@ -81,7 +75,7 @@ Vue快速入门：
         *   使用`v-html`指令，可以动态渲染DOM节点，是对文本插值的补充和扩展，常用于处理一些不可预知或难以控制的DOM结构，如渲染Markdown、富文本等。
         *   由于HTML插值是直接把绑定的内容解析为DOM节点，如果绑定的内容来自用户输入，存在恶意输入的脚本时，很容易给网站造成巨大的影响。因此需要注意：
             *   尽可能多使用Vue自身的模板机制，减少对HTML插值的使用。
-            *   支队可信内容使用HTML插值。
+            *   只对可信内容使用HTML插值。
             *   绝不相信用户输入的数据（需对用户输入数据做一些脱敏或者转义操作）。
 
         ```javascript
@@ -137,7 +131,7 @@ Vue快速入门：
         </div>
 
         <!-- 修饰符 .prevent：阻止默认事件 -->
-        <!-- 点击 button 后不会触发默认的 form 提交行为（不会刷新页面），但是会console.log('Form submitted') -->
+        <!-- 点击 button 后不会触发默认的 form 提交行为（不会刷新页面），但是会 console.log('Form submitted') -->
         const handleSubmit = (event) => {
           console.log('Form submitted')
           // some code...
@@ -227,6 +221,379 @@ Vue快速入门：
         </ul>
         ```
 
+*   响应式API：
+    *   `ref`：创建基本类型的响应式数据。
+
+        ```javascript
+        const count = ref(0)
+        count.value = 1
+        console.log(count.value)  // 1
+        ```
+
+    *   `reactive`：创建对象类型的响应式数据。
+
+        ```javascript
+        const obj = reactive({ count: 0 })
+        obj.count = 1
+        console.log(obj.count)  // 1
+        ```
+
+    *   `toRefs`和`toRef`：将响应式对象中的属性转换为可响应式的单个值。
+
+        ```javascript
+        const person = reactive({name: 'John', age: 20, sex: 'male'})
+
+        let age = toRef(person, 'age')
+        let { name, sex } = toRefs(person)
+        ```
+
+    *   `computed`：创建计算属性，依赖于其他响应式属性，并自动更新。
+
+        ```javascript
+        const count = ref(1)
+
+        // 只读的计算属性
+        const plusOne1 = computed(() => count.value + 1)
+        console.log(plusOne1.value)  // 2
+
+        // 可读写的计算属性
+        const plusOne2 = computed({
+          get: () => count.value + 1,
+          set: (val) => {
+            count.value = val - 1
+          }
+        })
+        plusOne2.value = 1
+        console.log(count.value)  // 0
+        ```
+
+    *   `watch`：观察响应式数据的变化，并自动执行回调函数。
+
+        ```javascript
+        // 使用 watch 观察 ref 定义的变量
+        const count1 = ref(0)
+        const count2 = ref(0)
+        const increment1 = () => { count1.value++ }
+        const increment2 = () => { count2.value++ }
+        const stopWatch = watch(count1, (newVal) => {
+          console.log(`Count1 incremented to ${newVal}`)
+          if (newVal === 10) {
+            stopWatch()  // 执行 stopWatch 会停止观察
+          }
+        })
+        watch(count2, (newVal, oldVal) => {
+          console.log(`Count2 incremented from ${oldVal} to ${newVal}`)
+        })
+        watch([count1, count2], (newVal, oldVal) => {
+          console.log(`Count1 or Count2 changed from ${oldVal} to ${newVal}`)
+        })
+
+        // 使用 watch 观察 reactive 定义的对象中的属性
+        const person = reactive({name: 'John', age: 20, sex: 'male'})
+        const incrementAge = () => { person.age++ }
+        watch(() => person.age, (newVal, oldVal) => {
+          console.log(`Age changed from ${oldVal} to ${newVal}`)
+        })
+        watch([() => person.name, () => person.age], (newVal, oldVal) => {
+          const [oldName, oldAge] = oldVal
+          const [newName, newAge] = newVal
+          
+          if (oldName !== newName) {
+            console.log(`Name changed from ${oldName} to ${newName}`)
+          }
+          if (oldAge !== newAge) {
+            console.log(`Age changed from ${oldAge} to ${newAge}`)
+          }
+        })
+
+        // 使用 watch 观察 reactive 定义的对象感觉效果不好，不推荐
+        const person = reactive({name: 'John', age: 20, sex: 'male'})
+        const changePerson = () => {
+          // 另一种写法 Object.assign(person, { name: 'Jane', age: 25 })
+          person.name = 'Jane'
+          person.age = 25
+        }
+        // oldVal 的值会和 newVal 的值相同，都显示新值，而不是 oldVal 显示旧值
+        watch(person, (newVal, oldVal) => {
+          console.log(oldVal, newVal);
+        })
+        ```
+
+    *   `watchEffect`：响应式地追踪函数中依赖的数据变化，并自动执行回调函数。
+
+        ```javascript
+        const count = ref(0)
+        const increment = () => { count.value++ }
+        const stopWatchEffect = watchEffect(() => {
+          if (count.value >= 10) {
+            console.log('Count reached 10')
+            stopWatchEffect()
+          } else {
+            console.log(`Count incremented to ${count.value}`)
+          }
+        })
+        ```
+
+    *   模板引用：
+        *   在3.5之前，使用`ref`绑定标签：
+
+            ```javascript
+            <script setup>
+            import { ref, watch } from 'vue'
+
+            const count = ref(0)
+            const increment = () => {
+              count.value++
+            }
+
+            const content = ref('')
+            watch(count, (newVal) => {
+              console.log(content.value.innerHTML)  // 输出 Count: oldVal
+            })
+            </script>
+
+            <template>
+              <div ref="content">Count: {{ count }}</div>
+              <button @click="increment">Increment</button>
+            </template>
+            ```
+
+        *   在3.5之后，使用`useTemplateRef`绑定标签：
+            *   绑定普通DOM标签：
+
+                ```javascript
+                <script setup>
+                import { ref, watch, useTemplateRef } from "vue";
+
+                const count = ref(0);
+                const increment = () => {
+                  count.value++;
+                };
+
+                const content = useTemplateRef("content-ref");
+                watch(count, (newVal) => {
+                  console.log(content.value.innerHTML); // 输出 Count: oldVal
+                });
+                </script>
+
+                <template>
+                  <div ref="content-ref">Count: {{ count }}</div>
+                  <button @click="increment">Increment</button>
+                </template>
+                ```
+
+            *   绑定组件标签：
+
+                ```javascript
+                <!-- Child.vue -->
+                <script setup>
+                import { ref, defineExpose } from 'vue'
+
+                const count = ref(0)
+                const increment = () => {
+                  count.value++
+                }
+
+                defineExpose({ count })
+                </script>
+
+                <template>
+                  <div>Count: {{ count }}</div>
+                  <button @click="increment">Increment</button>
+                </template>
+
+                <!-- Parent.vue -->
+                <script setup>
+                import { onMounted, watchEffect, useTemplateRef } from 'vue'
+                import Child from './Child.vue'
+
+                const content = useTemplateRef("content-ref")
+                onMounted(() => {
+                  // 感觉 defineExpose 会在 count 变化时暴露给父组件，所以 watchEffect 能获取到最新的 count 值
+                  watchEffect(() => {
+                    console.log(content.value.count)  // newVal
+                  })
+                })
+                </script>
+
+                <template>
+                  <Child ref="content-ref" />
+                </template>
+                ```
+
+*   `<script setup>`下的API：
+    *   `defineProps`：用于定义组件的属性。
+
+        ```javascript
+        <!-- Child.vue -->
+        <script setup>
+        import { defineProps } from 'vue'
+
+        const props = defineProps({
+          title: String,
+          content: {
+            type: String,
+            default: 'Default content'
+          }
+        })
+
+        console.log(`${props.title}: ${props.content}`)
+        </script>
+
+        <template>
+          <h1>{{ props.title }}</title>
+          <p>{{ props.content }}</p>
+        </template>
+
+        <!-- Parent.vue -->
+        <script setup>
+        import Child from './Child.vue'
+        </script>
+
+        <template>
+          <Child title="Title" />
+        </template>
+        ```
+
+    *   `defineEmits`：用于定义组件的事件。
+
+        ```javascript
+        <!-- Child.vue -->
+        <script setup>
+        import { ref, defineProps, defineEmits } from 'vue'
+
+        const props = defineProps({
+          color: {
+            type: String,
+            required: true
+          }
+        })
+
+        const colors = ['red', 'green', 'blue']
+        const count = ref(0)
+        const emit = defineEmits(['report-color'])
+
+        const handleClick = () => {
+          emit('report-color', colors[count.value % 3], count.value)
+          count.value++
+        }
+        </script>
+
+        <template>
+          <div
+            class="box"
+            :style="{ backgroundColor: props.color }"
+            @click="handleClick"
+          ></div>
+        </template>
+
+        <style scoped>
+        .box {
+          width: 100px;
+          height: 100px;
+          cursor: pointer;
+        }
+        </style>
+
+        <!-- Parent.vue -->
+        <script setup>
+        import { ref } from 'vue'
+        import Child from './Child.vue'
+
+        const color = ref('purple')
+
+        const printColor = (childColor, childCount) => {
+          console.log(`${childCount}: ${childColor}`)
+          color.value = childColor
+        }
+        </script>
+
+        <template>
+          <Child :color="color" @report-color="printColor" />
+        </template>
+        ```
+
+    *   `defineExpose`：将组件内部的属性或方法暴露给父组件。
+*   Vue下的TypeScript：
+    *   定义类型：
+
+        ```typescript
+        export interface PersonInter {
+          id: string,
+          name: string,
+          age: number
+        }
+
+        export type Persons = Array<PersonInter>
+        ```
+
+    *   使用类型：
+
+        ```javascript
+        <script lang="ts" setup>
+        import { defineProps, withDefaults } from "vue";
+        import { Persons } from "@/types/Person";
+
+        // 接收 + 限制类型
+        // const props = defineProps<{ persons: Persons }>();
+
+        // 接收 + 限制类型 + 默认值
+        const props = withDefaults(
+          defineProps<{
+            persons: Persons;
+          }>(),
+          {
+            persons: () => [
+              { id: "1", name: "Alice", age: 25 },
+              { id: "2", name: "Bob", age: 30 },
+            ],
+          }
+        );
+        </script>
+        ```
+
+*   自定义hook：
+
+    ```javascript
+    // useCounter.js
+    import { ref, onMounted } from 'vue'
+
+    export default function useCounter() {
+      const count = ref(0)
+
+      const increment = () => {
+        count.value++
+      }
+
+      const decrement = () => {
+        count.value--
+      }
+
+      onMounted(() => {
+        console.log('Component mounted')
+      })
+
+      return {
+        count,
+        increment,
+        decrement
+      }
+    }
+
+    <!-- App.vue -->
+    <script setup>
+    import useCounter from './hooks/useCounter'
+
+    const { count, increment, decrement } = useCounter()
+    </script>
+
+    <template>
+      <h2>Counter: {{ count }}</h2>
+      <button @click="increment">Increment</button>
+      <button @click="decrement">Decrement</button>
+    </template>
+    ```
+
 *   组件：将重复的、大概率多次使用的交互元素等封装成组件，运用得当可以在很大程度上减少重复的代码量，也使得页面结构变得简洁。
     *   全局注册和局部注册：
 
@@ -234,8 +601,8 @@ Vue快速入门：
         // 全局注册
         // main.js
         import { createApp } from 'vue'
-        import App from "./App.vue";
-        import MyComponent from "./components/MyComponent.vue";
+        import App from './App.vue'
+        import MyComponent from './components/MyComponent.vue'
 
         const app = createApp({})
         app.component('MyComponent', MyComponent)
@@ -244,27 +611,27 @@ Vue快速入门：
         <!-- 局部注册 -->
         <!-- App.vue，不使用 setup 语法糖 -->
         <script>
-        import ComponentA from './ComponentA.vue'
+        import MyComponent from './components/MyComponent.vue'
 
         export default {
           components: {
-            ComponentA: ComponentA
+            MyComponent: MyComponent
           },
           setup() {
             // some code...
           }
         }
-        </script>
+        </>
 
 
         <!-- 局部注册 -->
         <!-- App.vue，使用 setup 语法糖 -->
         <script setup>
-        import ComponentA from './ComponentA.vue'
+        import MyComponent from './components/MyComponent.vue'
         </script>
 
         <template>
-          <ComponentA />
+          <MyComponent />
         </template>
         ```
 
@@ -273,12 +640,13 @@ Vue快速入门：
         1.  创建阶段：
             *   `beforeCreate(setup)`：在组件实例初始化完成之后立即调用。
             *   `created(setup)`：在组件实例处理完所有与状态相关的选项后调用。
+        2.  挂载阶段：
             *   `beforeMount(onBeforeMount)`：在组件被挂载之前调用。
             *   `mounted(onMounted)`：在组件被挂载之后调用。
-        2.  更新阶段：
+        3.  更新阶段：
             *   `beforUpdate(onBeforeUpdate)`：在组件即将因为一个响应式状态变更而更新其DOM树之前调用。
             *   `updated(onUpdated)`：在组件因为一个响应式状态变更而更新其DOM树之后调用。
-        3.  销毁阶段：
+        4.  卸载阶段：
             *   `beforeUnmount(onBeforeUnmount)`：在一个组件实例被卸载之前调用。
             *   `unmounted(onUnmounted)`：在一个组件实例被卸载之后调用。
     *   ![Vue组件生命周期](../resources/vue_component_lifecycle.jpg)
@@ -289,7 +657,7 @@ Vue快速入门：
         *   默认插槽（未命名插槽）：使用`<slot>`标签将内容插到组件的默认位置。
 
             ```javascript
-            <!-- Test.vue -->
+            <!-- Child.vue -->
             <script setup>
             </script>
 
@@ -300,17 +668,17 @@ Vue快速入门：
               </div>
             </template>
 
-            <!-- App.vue -->
+            <!-- Parent.vue -->
             <script setup>
-            import Test from './Test.vue'
+            import Child from './Child.vue'
             </script>
 
             <template>
               <div>
                 <h1>This is the parent component</h1>
-                <Test>
+                <Child>
                   <p>This is the child component</p>
-                </Test>
+                </Child>
               </div>
             </template>
             ```
@@ -318,7 +686,7 @@ Vue快速入门：
         *   具名插槽：使用`v-slot`（可以简写为`#`）和`<slot>`标签将内容插到具名插槽中。
 
             ```javascript
-            <!-- Test.vue -->
+            <!-- Child.vue -->
             <script setup>
             </script>
 
@@ -336,14 +704,14 @@ Vue快速入门：
               </div>
             </template>
 
-            <!-- App.vue -->
+            <!-- Parent.vue -->
             <script setup>
-            import Test from './Test.vue'
+            import Child from './Child.vue'
             </script>
 
             <template>
               <div>
-                <Test>
+                <Child>
                   <template v-slot:header>
                     <h1>This is the header</h1>
                   </template>
@@ -353,7 +721,7 @@ Vue快速入门：
                   <template v-slot:footer>
                     <p>This is the footer</p>
                   </template>
-                </Test>
+                </Child>
               </div>
             </template>
             ```
@@ -361,7 +729,7 @@ Vue快速入门：
         *   作用域插槽：允许父组件访问子组件中的数据。
 
             ```javascript
-            <!-- Test.vue -->
+            <!-- Child.vue -->
             <script setup>
             import { reactive } from 'vue'
 
@@ -420,13 +788,13 @@ Vue快速入门：
             }
             </style>
 
-            <!-- App.vue -->
+            <!-- Parent.vue -->
             <script setup>
-            import Test from './Test.vue'
+            import Child from './Child.vue'
             </script>
 
             <template>
-              <Test>
+              <Child>
                 <template #header>
                   <p>Tooptip</p>
                 </template>
@@ -436,14 +804,14 @@ Vue快速入门：
                 <template #footer="{ types, sources }">
                   <p>Error from: {{ sources['page'] }} - {{ types['404'] }}</p>
                 </template>
-              </Test>
+              </Child>
             </template>
             ```
 
     *   选项式API组件：
   
         ```javascript
-        <!-- Test.vue -->
+        <!-- Child.vue -->
         <script>
         export default {
           props: {
@@ -503,21 +871,21 @@ Vue快速入门：
           </div>
         </template>
 
-        <!-- App.vue -->
+        <!-- Parent.vue -->
         <script>
-        import Test from './Test.vue'
+        import Child from './Child.vue'
 
         export default {
           data() {
             return {
-              name: 'Test',
+              name: 'Child',
               data: ['Item 1', 'Item 2', 'Item 3'],
               selected: '',
               message: 'Hello, Vue!'
             }
           },
           components: {
-            Test: Test
+            Child: Child
           },
           methods: {
             onSelected(item) {
@@ -528,7 +896,7 @@ Vue快速入门：
         </script>
 
         <template>
-          <Test :name="name" :data="data" v-model="message" @selected="onSelected" />
+          <Child :name="name" :data="data" v-model="message" @selected="onSelected" />
           <div>Selected: {{ selected }}</div>
           <div>{{ message }}</div>
         </template>
@@ -537,7 +905,7 @@ Vue快速入门：
     *   组合式API组件（不使用setup语法糖）：
 
         ```javascript
-        <!-- Test.vue -->
+        <!-- Child.vue -->
         <script>
         import { ref, reactive, computed, watch, onMounted } from 'vue'
 
@@ -605,17 +973,17 @@ Vue快速入门：
         </template>
 
 
-        <!-- App.vue -->
+        <!-- Parent.vue -->
         <script>
         import { ref } from 'vue'
-        import Test from './Test.vue'
+        import Child from './Child.vue'
 
         export default {
           components: {
-            Test: Test
+            Child: Child
           },
           setup(props, { emit }) {
-            const name = 'Test'
+            const name = 'Child'
             const data = ['Item 1', 'Item 2', 'Item 3']
             const selected = ref('')
             const message = ref('Hello, Vue!')
@@ -636,7 +1004,7 @@ Vue快速入门：
         </script>
 
         <template>
-          <Test :name="name" :data="data" v-model="message" @selected="onSelected" />
+          <Child :name="name" :data="data" v-model="message" @selected="onSelected" />
           <div>Selected: {{ selected }}</div>
           <div>{{ message }}</div>
         </template>
@@ -645,7 +1013,7 @@ Vue快速入门：
     *   组合式API组件（使用setup语法糖）：
 
         ```javascript
-        <!-- Test.vue -->
+        <!-- Child.vue -->
         <script setup>
         import { ref, reactive, computed, watch, onMounted } from 'vue'
 
@@ -701,12 +1069,12 @@ Vue快速入门：
           </div>
         </template>
 
-        <!-- App.vue -->
+        <!-- Parent.vue -->
         <script setup>
         import { ref } from 'vue'
-        import Test from './Test.vue'
+        import Child from './Child.vue'
 
-        const name = 'Test'
+        const name = 'Child'
         const data = ['Item 1', 'Item 2', 'Item 3']
         const selected = ref('')
         const message = ref('Hello, Vue!')
@@ -717,7 +1085,7 @@ Vue快速入门：
         </script>
 
         <template>
-          <Test :name="name" :data="data" v-model="message" @selected="onSelected" />
+          <Child :name="name" :data="data" v-model="message" @selected="onSelected" />
           <div>Selected: {{ selected }}</div>
           <div>{{ message }}</div>
         </template>
@@ -742,7 +1110,7 @@ Vue快速入门：
         *   由于HTML5模式的URL会被完整的发送给服务器，因此服务器需要配置相应的路由规则来匹配请求。如果服务器没有配置相应的路由规则，则无法匹配请求，导致404错误。
         *   HTML5模式对SEO友好，推荐在生产环境使用。
 
-全局状态管理：使用`Vuex`管理全局状态。
+全局状态管理：使用`Vuex`管理全局状态（不推荐）。
 
 *   多个组件依赖同一个数据，如何获取这个数据？如何修改这个数据？数据修改之后其他组件如何获取到最新的数据？
     *   不使用`Vuex`的做法：
@@ -767,7 +1135,7 @@ Vue快速入门：
         <!-- App.vue -->
         <script setup>
         import { getCurrentInstance, ref, onMounted, onBeforeUnmount } from 'vue'
-        import Test from '@/components/Test.vue'
+        import Child from './Child.vue'
 
         const instance = getCurrentInstance()
         const value = ref(instance.appContext.config.globalProperties.$sharedData.value)
@@ -788,11 +1156,11 @@ Vue快速入门：
           <div>
             <h1>App Component</h1>
             <p>Shared data: {{ value }}</p>
-            <Test />
+            <Child />
           </div>
         </template>
 
-        <!-- Test.vue -->
+        <!-- Child.vue -->
         <script setup>
         import { getCurrentInstance, ref } from 'vue'
 
@@ -810,7 +1178,7 @@ Vue快速入门：
 
         <template>
           <div>
-            <h1>Test Component</h1>
+            <h1>Child Component</h1>
             <input v-model="value" @input="updateSharedData" />
           </div>
         </template>

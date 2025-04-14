@@ -1,2 +1,17 @@
-package com.example.controller;public class ProductController {
+package com.example.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+@Controller
+public class ProductController {
+
+  @RequestMapping(value = {"/product/*", "/product/**"})
+  @ResponseBody
+  public String show() {
+    System.out.println("ProductController.show");
+    return "Product Show!";
+  }
+
 }

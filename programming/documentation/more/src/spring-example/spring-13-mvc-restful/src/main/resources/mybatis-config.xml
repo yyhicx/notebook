@@ -11,46 +11,14 @@
   </settings>
 
   <typeAliases>
-    <typeAlias alias="customer" type="com.example.entity.Customer" />
-    <typeAlias alias="order" type="com.example.entity.Order" />
+    <typeAlias alias="student" type="com.example.entity.Student" />
   </typeAliases>
 
-  <!--
-    Mybatis 对插件进行了标准化设计，并提供了一套可扩展的插件机制
-    插件可以在用于语句执行过程中进行拦截，并允许通过自定义处理程序来拦截和修改 SQL 语句、映射语句的结果等
-      interceptor 参数：指定插件的全限定类名
-      properties 参数：插件的属性配置
-        helperDialect：指定数据库类型
-  -->
   <plugins>
     <plugin interceptor="com.github.pagehelper.PageInterceptor">
       <property name="helperDialect" value="mysql" />
     </plugin>
   </plugins>
-
-  <environments default="development">
-    <environment id="development">
-      <transactionManager type="JDBC" />
-      <dataSource type="POOLED">
-        <property name="driver" value="com.mysql.cj.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost:3306/dbforspring" />
-        <property name="username" value="root" />
-        <property name="password" value="123456" />
-      </dataSource>
-    </environment>
-  </environments>
-
-  <mappers>
-    <!--
-      批量映射优化：
-        实现批量映射的要求：
-          1. Mapper 接口和 Mapper 配置文件名称一致，例如：CustomerMapper.java 和 CustomerMapper.xml
-          2. Mapper 配置文件放在 Mapper 接口所在的包内，有两种方式：
-            1. 可以将 resources/mappers 目录下的所有配置文件放入 java/com/example/mapper 包内
-            2. 可以将 resources/mappers 目录下的所有配置文件放入 resources/com/example/mapper 包内
-    -->
-    <package name="com.example.mapper" />
-  </mappers>
 
 </configuration>
 

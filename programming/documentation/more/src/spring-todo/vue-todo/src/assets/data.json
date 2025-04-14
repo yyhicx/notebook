@@ -1,0 +1,19 @@
+{
+  "todos": [
+    {"id": 1, "description": "Learn Vue 3", "completed": false},
+    {"id": 2, "description": "Learn Vite", "completed": true},
+    {"id": 3, "description": "Learn Element Plus", "completed": true},
+    {"id": 4, "description": "Learn JavaWeb", "completed": true},
+    {"id": 5, "description": "Learn JavaSSM", "completed": true},
+    {"id": 6, "description": "Learn HTML", "completed": false},
+    {"id": 7, "description": "Learn CSS", "completed": true},
+    {"id": 8, "description": "Learn JavaScript", "completed": true},
+    {"id": 9, "description": "Learn C", "completed": false},
+    {"id": 10, "description": "Learn C++", "completed": false},
+    {"id": 11, "description": "Learn C#", "completed": false},
+    {"id": 12, "description": "Learn Python", "completed": true},
+    {"id": 13, "description": "Learn Ruby", "completed": false},
+    {"id": 14, "description": "Learn Go", "completed": true},
+    {"id": 15, "description": "Learn Dart", "completed": true}
+  ]
+}

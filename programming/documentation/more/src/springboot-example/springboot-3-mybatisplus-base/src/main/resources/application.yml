@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/dbforspring
+      username: root
+      password: 123456
+
+# mybatis-plus 的配置
+mybatis-plus:
+  configuration:
+    auto-mapping-behavior: full
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+  type-aliases-package: com.example.entity
+  # 默认位置 private String[] mapperLocations = new String[]{"classpath*:/mapper/**/*.xml"};
+  mapper-locations: classpath:/mapper/*.xml
+  global-config:
+    db-config:
+      # 主键自动生成策略
+      id-type: auto
+      # 表名前缀
+      # table-prefix: t_
+      # 逻辑删除配置
+      # logic-delete-field: deleted
+      # logic-delete-value: 1
+      # logic-not-delete-value: 0

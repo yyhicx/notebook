@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.TodoMapper">
+
+  <select id="queryPage" resultType="todo">
+    select id, description, completed from todos
+  </select>
+
+  <insert id="insert">
+    insert into todos (description, completed) values (#{description}, #{completed})
+  </insert>
+
+  <update id="update">
+    update todos set description = #{description}, completed = #{completed} where id = #{id}
+  </update>
+
+  <delete id="delete">
+    delete from todos where id = #{id}
+  </delete>
+
+</mapper>

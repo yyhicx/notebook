@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.OrderMapper">
+  <!--
+    创建 resultMap 实现“对一”关联关系映射
+      id 属性：通常设置为这个 resultMap 所服务的那条 SQL 语句的 id 加上 "ResultMap"
+      type 属性：要设置为这个 resultMap 所服务的那条 SQL 语句最终要返回的类型
+  -->
+  <resultMap id="selectOrderWithCustomerResultMap" type="order">
+    <!-- 先设置 Order 自身属性和字段的对应关系 -->
+    <id column="order_id" property="orderId" />
+    <result column="order_name" property="orderName" />
+    <result column="customer_id" property="customerId" />
+
+    <!--
+      使用 association 标签配置“对一”关联关系
+        property 属性：在 Order 类中对一的一端进行引用时使用的属性名
+        javaType 属性：在 Order 类中对一的一端类的全类名
+    -->
+    <association property="customer" javaType="customer">
+      <!-- 配置 Customer 类的属性和字段名之间的对应关系 -->
+      <id column="customer_id" property="customerId" />
+      <result column="customer_name" property="customerName" />
+    </association>
+  </resultMap>
+
+  <select id="selectOrderWithCustomer" resultMap="selectOrderWithCustomerResultMap">
+    select order_id, order_name, orders.customer_id, customers.customer_id, customer_name
+    from orders left join customers on orders.customer_id=customers.customer_id where order_id=#{orderId}
+  </select>
+</mapper>

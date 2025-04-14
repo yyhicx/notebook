@@ -71,7 +71,6 @@ Else:
 
 *   advanced programming in the unix environment
 *   alphabet
-*   docker getting started
 *   encoding format
 *   environment
 *   fastdfs getting started

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.StudentMapper">
+
+  <!--
+    抽取重复的 SQL 片段：
+    <sql id="mySelectSql">
+      select id, name, gender, age, class as classes from students
+    </sql>
+
+    <select id="selectStudentList" resultType="student">
+      <include refid="mySelectSql" />
+      <where>
+        <if test="gender != null">
+          or gender=#{gender}
+        </if>
+        <if test="age &gt; 15">
+          or age>#{age}
+        </if>
+      </where>
+    </select>
+  -->
+
+  <select id="selectStudentList" resultType="student">
+    <!--
+      下面动态 SQL 语句会有三种情况：
+        第一种情况：所有条件都满足 where gender=? or age>?
+        第二种情况：部分条件满足 where gender=? 或者 where age>?
+        第三种情况：所有条件都不满足 没有 where 子句
+    -->
+    select id, name, gender, age, class as classes from students
+    <!--
+      where 标签
+        如果 if 标签中的条件为 true，where 标签会转换为 where 关键字，否则不会生成 where 关键字
+        自动去掉标签内多余的 and/or
+    -->
+    <where>
+      <!--
+        if 标签
+          如果 if 标签中的条件为 true，if 标签内的 SQL 语句片段会加入到 where 子句中
+          if 标签中的 test 属性，可以访问实体类的属性，但是不可以访问数据库表的字段
+      -->
+      <if test="gender != null">
+        <!-- 在 if 标签内部，需要访问接口的参数时还是正常写 #{} -->
+        or gender=#{gender}
+      </if>
+      <if test="age &gt; 15">
+        or age>#{age}
+      </if>
+    </where>
+  </select>
+
+  <update id="updateStudentById">
+    <!--
+      下面动态 SQL 语句会有三种情况：
+        第一种情况：所有条件都满足 set name=?, age=? where id=?
+        第二种情况：部分条件满足 set name=? where id=? 或者 where age=? where id=?
+        第三种情况：所有条件都不满足 没有 set 子句，update 语句没有 set 子句会报错
+    -->
+    update students
+    <!--
+      set 标签
+        如果 if 标签中的条件为 true，set 标签会转换为 set 关键字，否则不会生成 set 关键字
+        自动去掉标签内多余的逗号
+    -->
+    <set>
+      <if test="name != null">
+        name=#{name},
+      </if>
+      <if test="age != null">
+        age=#{age},
+      </if>
+    </set>
+    where id=#{id}
+  </update>
+
+  <select id="selectStudentListTrim" resultType="student">
+    <!--
+      下面动态 SQL 语句会有三种情况：
+        第一种情况：所有条件都满足 where gender=? or age>?
+        第二种情况：部分条件满足 where gender=? 或者 where age>?
+        第三种情况：所有条件都不满足 没有 where 子句
+    -->
+    select id, name, gender, age, class as classes from students
+    <!--
+      trim 标签
+        prefix 属性：指定要动态添加的前缀
+        suffix 属性：指定要动态添加的后缀
+        prefixOverrides 属性：指定要动态去掉的前缀，使用 "|" 分隔有可能的多个值
+        suffixOverrides 属性：指定要动态去掉的后缀，使用 "|" 分隔有可能的多个值
+    -->
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="gender != null">
+        or gender=#{gender}
+      </if>
+      <if test="age &gt; 15">
+        or age>#{age}
+      </if>
+    </trim>
+  </select>
+
+  <update id="updateStudentByIdTrim">
+    <!--
+      下面动态 SQL 语句会有三种情况：
+        第一种情况：所有条件都满足 set name=?, age=? where id=?
+        第二种情况：部分条件满足 set name=? where id=? 或者 where age=? where id=?
+        第三种情况：所有条件都不满足 没有 set 子句，update 语句没有 set 子句会报错
+    -->
+    update students
+    <trim prefix="set" suffixOverrides=",">
+      <if test="name != null">
+        name=#{name},
+      </if>
+      <if test="age != null">
+        age=#{age},
+      </if>
+    </trim>
+    where id=#{id}
+  </update>
+
+  <select id="selectStudentListChoose" resultType="student">
+    <!--
+      下面动态 SQL 语句会有三种情况：
+        第一种情况：第一个条件满足 where gender=?
+        第二种情况：第二个条件满足 where age>?
+        第三种情况：两个 when 都不满足 where 1=1
+        因为总有一个标签会执行，所以 where 不需要使用 where 标签
+    -->
+    select id, name, gender, age, class as classes from students
+    where
+    <!--
+      choose 标签
+        在多条分支中，只执行一个分支，其他分支不执行
+        从上到下依次执行条件判断，遇到的第一个满足条件的分支会被采纳，被采纳分支后面的分支都不会被执行
+        如果所有的 when 分支都不执行，则执行 otherwise 标签内的 SQL 语句片段
+    -->
+    <choose>
+      <when test="gender != null">
+        gender=#{gender}
+      </when>
+      <when test="age &gt; 15">
+        age>#{age}
+      </when>
+      <otherwise>1=1</otherwise>
+    </choose>
+  </select>
+
+  <select id="selectBatch" resultType="student">
+    select id, name, gender, age, class as classes from students
+    where id in
+    <!--
+      foreach 标签
+        collection 属性：要遍历的集合
+        item 属性：遍历集合的过程中能得到每一个具体对象，在 item 属性中设置一个名字，将来通过这个名字引用遍历出来的对象
+        separator 属性：指定当 foreach 标签的标签体重复拼接字符串时，各个标签体字符串之间的分隔符
+        open 属性：指定整个循环把字符串拼好后，字符串整体的前面要添加的字符串
+        close 属性：指定整个循环把字符串拼好后，字符串整体的后面要添加的字符串
+        index 属性：这里起一个名字，便于后面引用
+          遍历 List 集合，这里能够得到 List 集合的索引值
+          遍历 Map 集合，这里能够得到 Map 集合的 key
+
+      注意：foreach 有时会一次性发送多条 SQL 语句让数据库执行（例如下面的 updateBatch 方法），所以要开启 allowMultiQueries=true
+    -->
+    <foreach collection="ids" item="id" separator="," open="(" close=")">
+      #{id}
+    </foreach>
+  </select>
+
+  <insert id="insertBatch">
+    insert into students (id, name, gender, age, class)
+    values
+    <foreach collection="students" item="student" separator=",">
+      (#{student.id}, #{student.name}, #{student.gender}, #{student.age}, #{student.classes})
+    </foreach>
+  </insert>
+
+  <update id="updateBatch">
+    <foreach collection="students" item="student" separator=";">
+      update students set name=#{student.name}, gender=#{student.gender},
+      age=#{student.age}, class=#{student.classes} where id=#{student.id}
+    </foreach>
+  </update>
+
+  <delete id="deleteBatch">
+    delete from students where id in
+    <foreach collection="ids" item="id" separator="," open="(" close=")">
+      #{id}
+    </foreach>
+  </delete>
+
+</mapper>

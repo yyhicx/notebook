@@ -1427,7 +1427,6 @@ Flutter开发的核心思想是：一切皆`Widget`（组件）。
     ```
 
 *   `ChangeNotifier`：实现状态管理和通知机制。
-    *   src: flutter_example/lib/mini_provider
 
 事件处理：
 

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <bean id="userService" class="com.example.di.UserService">
+    <!--
+      constructor-arg 标签：
+        构造参数 name 指定参数名称
+        构造参数 index 指定参数角标
+        构造参数 ref 引用其他 bean 的标识
+        构造参数 value 直接注入基本类型值
+    -->
+    <constructor-arg name="userDao" ref="userDao" />
+    <constructor-arg name="age" value="18" />
+    <constructor-arg name="name" value="John" />
+    <!--
+    <constructor-arg index="0" ref="userDao" />
+    <constructor-arg index="1" value="18" />
+    <constructor-arg index="2" value="John" />
+    -->
+  </bean>
+  <bean id="userDao" class="com.example.di.UserDao" />
+
+  <bean id="simpleMovieLister" class="com.example.di.SimpleMovieLister">
+    <!--
+      property 标签：
+        构造参数 name 指定 set 方法标识
+        构造参数 ref 引用其他 bean 的标识
+        构造参数 value 直接注入基本类型值
+    -->
+    <property name="movieFinder" ref="movieFinder" />
+    <property name="movieName" value="消失的她"/>
+  </bean>
+  <bean id="movieFinder" class="com.example.di.MovieFinder"/>
+
+</beans>

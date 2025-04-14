@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 等于 mapper 接口类的全限定名，这样实现对应 -->
+<mapper namespace="com.example.mapper.StudentMapper">
+  <!--
+    可以专门声明 resultMap，设置 column 和 property 的对应关系，然后在 select 标签中引用 resultMap
+    例如 <select id="selectStudentById" resultType="student" resultMap="studentResultMap">
+    由于我在 mybatis-config.xml 中配置了 <setting name="mapUnderscoreToCamelCase" value="true"/>
+    所以下面的 studentResultMap 就可以省略
+  -->
+  <!--
+  <resultMap id="studentResultMap" type="student">
+    <id property="id" column="id" />
+    <result property="name" column="name" />
+    <result property="gender" column="gender" />
+    <result property="age" column="age" />
+    <result property="classes" column="class" />
+  </resultMap>
+  -->
+
+
+  <!--
+    查询使用 select 标签
+      id = 方法名
+      resultType = 返回值类型
+      标签内编写 SQL 语句
+  -->
+  <select id="selectStudentById" resultType="student">
+    <!--
+      Mybatis 会将 SQL 语句中的 #{} 转换为问号占位符
+      Mybatis 会将 SQL 语句中的 ${} 使用字符串拼接的方式替换
+      通常不会采用 ${} 的方式传值，一个特定的适用场景是：通过 Java 程序动态生成数据库表，表名部分需要 Java 程序通过参数传入，
+      而 JDBC 对于表名部分是不能使用问号占位符的，此时只能使用 ${} 的方式传值
+      所以实际开发中，能用 #{} 的地方尽量用 #{}，不能用 #{} 的地方用 ${}
+    -->
+    select id, name, gender, age, class as classes from students where id = #{id}
+  </select>
+
+  <!--
+    插入使用 insert 标签
+    根据 #{xxx} 加工成 getXxx() 方法，然后通过反射在实体类对象中调用这个方法，而从获取 xxx 这个数据
+    对于自增型主键使用 useGeneratedKeys 和 keyProperty 参数
+      useGeneratedKeys = 指定是否使用数据库自增主键
+      keyProperty = 指定主键在实体类对象中的属性名，Mybatis 会将拿到的主键值存入这个属性
+  -->
+  <insert id="insertStudent" useGeneratedKeys="true" keyProperty="id">
+    insert into students (name, gender, age, class)
+    values (#{name}, #{gender}, #{age}, #{classes})
+  </insert>
+  <!--
+    对于不支持自增型主键的数据库或字符串类型主键（如 UUID），可以使用 selectKey 标签
+    selectKey 标签会首先运行，id 会被设置，然后插入语句才会被执行
+  -->
+  <!--
+  <insert id="insertStudent" parameterType="student">
+    <selectKey keyProperty="id" resultType="string" order="BEFORE">
+      select uuid() as id
+    </selectKey>
+    insert into students (id, name, gender, age, class)
+    values (#{id}, #{name}, #{gender}, #{age}, #{classes})
+  </insert>
+  -->
+
+  <!--
+    更新使用 update 标签
+  -->
+  <update id="updateStudent">
+    update students set name = #{name}, gender = #{gender}, age = #{age},
+    class = #{classes} where id = #{id}
+  </update>
+
+  <update id="updateStudentByMap">
+    update students set name = #{name}, gender = #{gender}, age = #{age},
+    class = #{classes} where id = #{id}
+  </update>
+
+  <select id="selectStudentCount" resultType="int">
+    select count(*) from students
+  </select>
+
+  <select id="selectStudentNameAndMaxAge" resultType="map">
+    select id, name, age, (select avg(age) from students) as avg_age
+    from students where age = (select max(age) from students)
+  </select>
+
+  <select id="selectAll" resultType="student">
+    select id, name, gender, age, class as classes from students
+  </select>
+
+  <!--
+    删除使用 delete 标签
+  -->
+  <delete id="deleteStudentByName">
+    delete from students where name = #{name}
+  </delete>
+</mapper>

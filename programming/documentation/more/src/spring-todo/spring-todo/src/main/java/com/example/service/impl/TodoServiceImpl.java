@@ -7,26 +7,43 @@ import com.example.utils.PageBean;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-@Slf4j
 public class TodoServiceImpl implements TodoService {
+
+  private final static Log logger = LogFactory.getLog(TodoServiceImpl.class);
 
   @Autowired
   private TodoMapper todoMapper;
 
   @Override
   public PageBean<Todo> findByPage(int pageSize, int currentPage) {
-    PageHelper pageHelper = new PageHelper(currentPage, pageSize);
+    PageHelper.startPage(currentPage, pageSize);
     List<Todo> todos = todoMapper.queryPage();
     PageInfo<Todo> pageInfo = new PageInfo<>(todos);
     PageBean<Todo> pageBean = new PageBean<>(
-        pageInfo.getPageSize(), pageInfo.getPageNum(), pageInfo.getTotal().intValue(), pageInfo.getList());
+        pageInfo.getPageSize(), pageInfo.getPageNum(), (int)pageInfo.getTotal(), pageInfo.getList());
 
-    log.info("Result: {}", pageBean);
+    logger.info("Result: " + pageBean);
     return pageBean;
+  }
+
+  @Override
+  public void saveTodo(Todo todo) {
+    todoMapper.insert(todo);
+  }
+
+  @Override
+  public void updateTodo(Todo todo) {
+    todoMapper.update(todo);
+  }
+
+  @Override
+  public void removeTodoById(Integer id) {
+    todoMapper.delete(id);
   }
 }

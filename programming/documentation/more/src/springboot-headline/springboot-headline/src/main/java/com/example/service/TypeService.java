@@ -1,2 +1,7 @@
-package com.example.service;public class TypeService {
+package com.example.service;
+
+import com.example.utils.Result;
+
+public interface TypeService {
+  Result findAll();
 }

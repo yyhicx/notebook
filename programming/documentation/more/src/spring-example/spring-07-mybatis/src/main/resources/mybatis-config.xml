@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+  <settings>
+    <!-- 开启 Mybatis 的日志输出，并且指定日志输出到控制台 -->
+    <setting name="logImpl" value="STDOUT_LOGGING" />
+    <!-- 开启驼峰命名自动映射：自动将数据库字段名映射到 Java 驼峰命名风格，例如：数据库中字段名 user_name 映射到Java属性名 userName -->
+    <setting name="mapUnderscoreToCamelCase" value="true"/>
+  </settings>
+
+  <typeAliases>
+    <!-- 类型别名注册：为实体类指定一个别名 -->
+    <typeAlias alias="student" type="com.example.entity.Student" />
+    <!--
+      包扫描的方式：扫描 com.example.entity 包下的所有类，并为其注册别名
+        如果类型为 Student，那么别名是 student，即首字母小写的非限定类名作为别名
+        可以使用 @Alias 注解为类指定别名，例如 @Alias("student")
+    -->
+    <!-- package name="com.example.entity" /> -->
+  </typeAliases>
+
+  <!--
+    environments 表示配置 Mybatis 的开发环境，可以配置多个环境
+    在众多具体环境中，使用 default 属性指定实际运行时使用的环境
+    default 属性的取值是 environment 标签的 id 属性的值
+  -->
+  <environments default="development">
+    <!-- environment 表示配置 Mybatis 的一个具体的环境 -->
+    <environment id="development">
+      <!-- Mybatis 的内置的事务管理器 -->
+      <transactionManager type="JDBC" />
+      <!-- 配置数据源 -->
+      <dataSource type="POOLED">
+        <!-- 建立数据库连接的具体信息 -->
+        <property name="driver" value="com.mysql.cj.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/dbforspring" />
+        <property name="username" value="root" />
+        <property name="password" value="123456" />
+      </dataSource>
+    </environment>
+  </environments>
+
+  <mappers>
+    <!--
+      Mapper 注册：指定 Mybatis 映射文件的具体位置
+        mapper 标签：配置一个具体的 Mapper 映射文件
+        resource 属性：指定 Mapper 映射文件的实际存储位置，这里需要使用一个以类路径根目录为基准的相对路径
+        对 Maven 工程的目录结构来说，resources 目录下的内容会直接放入类路径，所以这里我们可以以 resources 目录为基准
+    -->
+    <mapper resource="mappers/StudentMapper.xml" />
+  </mappers>
+
+</configuration>
