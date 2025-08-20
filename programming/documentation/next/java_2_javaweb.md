@@ -857,12 +857,25 @@ SQL语法：
     *   数据库的事务是一种机制，一个操作序列，包含了一组数据库操作命令。
     *   事务把所有的命令作为一个整体一起向系统提交或撤销操作请求，即这一组数据库命令要么同时成功，要么同时失败。
     *   事务是一个不可分割的工作逻辑单元。
+*   查询事务的默认提交方式：
+
+    ```sql
+    -- 默认是自动提交事务，值为 1
+    select @@autocommit;
+
+    -- 修改事务的提交方式为手动提交
+    set @@autocommit = 0;
+    ```
+
 *   事务操作：开启事务、提交事务、回滚事务、查询事务。
 
     ```sql
     -- ========== 准备工作 ==========
-    -- 1. 创建银行账户表
+    -- 1. 删除表
+    drop table if exists transactions;
     drop table if exists bank_accounts;
+
+    -- 2. 创建银行账户表
     create table bank_accounts (
       account_id int primary key auto_increment,
       account_name varchar(50) not null,
@@ -870,8 +883,7 @@ SQL语法：
       last_transaction timestamp null -- 最后一次交易时间
     );
 
-    -- 2. 创建交易记录表
-    drop table if exists transactions;
+    -- 3. 创建交易记录表
     create table transactions (
       transaction_id int primary key auto_increment,
       from_account int not null,
@@ -883,13 +895,13 @@ SQL语法：
       foreign key (to_account) references bank_accounts(account_id)
     );
 
-    -- 3. 插入初始账户数据
+    -- 4. 插入初始账户数据
     insert into bank_accounts (account_name, balance) values
     ('张三', 10000.00),
     ('李四', 5000.00),
     ('王五', 20000.00);
 
-    -- 4. 查看初始数据
+    -- 5. 查看初始数据
     select * from bank_accounts;
 
     -- ========== 事务演示开始 ==========
@@ -955,22 +967,10 @@ SQL语法：
     set @current_balance = (select balance from bank_accounts where account_name = '李四');
 
     select concat('转账后李四余额：', @current_balance) as balance_check;
+    select '余额不足，请观察上面的负数，现在回滚事务' as action;
 
-    -- 4. 如果余额不足则回滚
-    if @current_balance < 0 then
-      select '余额不足，回滚事务' as action;
-      rollback;
-
-      -- 更新交易状态为失败
-      update transactions set status = 'failed' where transaction_id = last_insert_id();
-    else
-      -- 继续转账
-      update bank_accounts set balance = balance + 10000.00 where account_name = '王五';
-
-      update transactions set status = 'completed' where transaction_id = last_insert_id();
-
-      commit;
-    end if;
+    -- 4. 回滚事务，撤销所有更改
+    rollback;
 
     -- 5. 查看回滚后的数据
     select '回滚后账户余额：' as info;
@@ -978,13 +978,6 @@ SQL语法：
 
     select '交易记录状态：' as info;
     select * from transactions;
-
-    -- 场景 3：使用保存点
-    select '===== 使用保存点示例 =====' as log;
-
-    start transaction;
-
-    -- 1. 初始操作：
     ```
 
 *   事务四大特征：
@@ -993,9 +986,59 @@ SQL语法：
     *   隔离性：多个事务之间，操作的可见性。
     *   持久性：事务一旦提交或回滚，它对数据库中的数据的改变就是永久的。
 
-JDBC：使用Java语言操作关系型数据库的一套API。
+JDBC：
 
 *   JDBC简介：
+    *   JDBC（Java DataBase Connectivity，Java数据库连接）是使用Java语言操作关系型数据库的一套API。
+    *   JDBC的本质：
+        *   由官方（Sun公司）定义的一套操作所有关系型数据库的规则，即接口。
+        *   各个数据库厂商去实现这套接口，提供数据库驱动jar包。
+        *   我们可以使用这套接口（JDBC）编程，真正执行的代码是驱动jar包中的实现类。
+    *   JDBC的好处：
+        *   各数据库厂商使用相同的接口，Java代码不需要针对不同数据库分别开发。
+        *   可随时替换底层数据库，访问数据库的Java代码基本不变。
 *   JDBC快速入门：
+    *   导入依赖：在项目中创建lib文件夹，导入mysql-connector-java.jar包，最后在IDEA中右键jar包以`Add as Library...`添加到项目中。
+    *   示例：
+
+        ```java
+        public class Main {
+          public static void main(String[] args) throws ClassNotFoundException, SQLException {
+            // 注册驱动
+            // 老版本
+            Class.forName("com.mysql.jdbc.Driver");
+            // 新版本
+            // Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // 获取连接
+            String url = "jdbc:mysql://localhost:3306/testdb?useSSL=false&serverTimezone=UTC";
+            String user = "root";
+            String password = "123456";
+            Connection conn = DriverManager.getConnection(url, user, password);
+
+            // 定义 SQL 语句
+            String sql = "update account set money = 500 where id = 1";
+
+            // 获取执行 SQL 对象
+            Statement stmt = conn.createStatement();
+
+            // 执行 SQL
+            int count = stmt.executeUpdate(sql);
+
+            // 处理返回结果
+            System.out.println(count);
+
+            // 释放资源
+            stmt.close();
+            conn.close();
+          }
+        }
+        ```
+
 *   JDBC API详解：
+    *   DriverManager：
+    *   Connection：
+    *   Statement：
+    *   ResultSet：
+    *   PreparedStatement：
 *   数据库连接池：
