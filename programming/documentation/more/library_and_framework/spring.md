@@ -300,6 +300,8 @@ Maven继承和聚合特性：
     ```bash
     # Windows 下安装命令中字符串一定要用双引号包括起来，不然会报错
     mvn install:install-file -DgroupId="jakarta.platform" -DartifactId="jakarta.jakartaee-web-api" -Dversion="9.1.0" -Dpackaging="jar" -Dfile=".\java-archive\jakarta.jakartaee-web-api-9.1.0.jar"
+
+    mvn install:install-file -DgroupId="org.apache.tomcat.maven" -DartifactId="tomcat7-maven-plugin" -Dversion="2.2" -Dpackaging="maven-plugin" -Dfile=".\java-archive\tomcat7-maven-plugin-2.2.jar"
     ```
 
 ## SpringFramework实战指南
@@ -2934,7 +2936,7 @@ SpringBoot3简介：
     *   开箱即用，设置合理的默认值，但是也可以根据需求进行适当的调整。
     *   提供一系列大型项目通用的非功能性程序（如嵌入式服务器、安全性、指标、运行检查等）。
     *   约定大于配置，基本不需要主动编写配置类、也不需要XML配置文件。
-*   总结：简化开发，简化配置，简化整合，简化部署，简化监控，简化运维
+*   总结：简化开发，简化配置，简化整合，简化部署，简化监控，简化运维。
 *   快速入门：
     1.  创建Maven工程。
     2.  添加依赖：
@@ -2978,12 +2980,17 @@ SpringBoot3简介：
          *
          * 使用 @SpringBootApplication 注解，可以将上述三个注解的功能集中在一个注解上，简化了配置文件的编写和组件的加载和扫描过程。它是 SpringBoot 应用程序的入口点，标识了应用程序的主类，
          * 并告诉 SpringBoot 在启动时应如何配置和加载应用程序。
+         *
+         * 自定义包扫描：
+         *   1. @SpringBootApplication(scanBasePackages = {"com.example.controller"})
+         *   2. @ComponentScan("com.example.controller")
          */
         @SpringBootApplication
         public class MainApplication {
-          // SpringApplication.run() 方法是启动 SpringBoot 应用程序的关键步骤。它创建应用程序上下文、
-          // 自动配置应用程序、启动应用程序，并处理命令行参数，使应用程序能够运行和提供所需的功能。
           public static void main(String[] args) {
+            // SpringApplication.run() 方法是启动 SpringBoot 应用程序的关键步骤。它创建应用程序上下文、
+            // 自动配置应用程序、启动应用程序，并处理命令行参数，使应用程序能够运行和提供所需的功能。
+            // 例如 SSM 中 DispatcherSerlet、ViewResolver、CharacterEncodingFilter 这些组件都会被自动配置。
             SpringApplication.run(MainApplication.class, args);
           }
         }
@@ -3000,12 +3007,30 @@ SpringBoot3简介：
         @RestController
         public class HelloController {
           @GetMapping("/hello")
-          public String hello(){
+          public String hello() {
             return "Hello, Spring Boot 3!";
           }
         }
         ```
 
+    5.  打包：
+        *   导入依赖：
+
+            ```xml
+            <build>
+              <plugins>
+                <plugin>
+                  <groupId>org.springframework.boot</groupId>
+                  <artifactId>spring-boot-maven-plugin</artifactId>
+                </plugin>
+              </plugins>
+            </build>
+            ```
+
+        *   打包命令：`mvn clean package`。
+    6.  运行（假设`spring-boot-demo.jar`在`target`目录下`）：
+        *   配置：通过命令行参数配置（`java -jar -Dserver.port=8080 target/spring-boot-demo.jar`）、通过外置配置文件配置（在`target`目录下创建`application.yml`文件进行配置）、通过环境变量进行配置、通过`jar`包内的配置文件进行配置，上述四种优先级由高到低。
+        *   运行：`java -jar target/spring-boot-demo.jar`。
 *   入门总结：
     *   为什么依赖不需要写版本？
         *   每个SpringBoot项目都有一个父项目`spring-boot-starter-parent`。
@@ -3014,25 +3039,28 @@ SpringBoot3简介：
         *   SpringBoot提供了一种叫做Starter的概念，它是一组预定义的依赖项集合，旨在简化Spring应用程序的配置和构建过程。Starter包含了一组相关的依赖项，以便在启动应用程序时自动引入所需的库、配置和功能。
         *   主要作用：
             *   简化依赖管理：SpringBoot Starter通过捆绑和管理一组相关的依赖项，减少了手动解析和配置依赖项的工作。只需引入一个相关的Starter依赖，即可获取应用程序所需的全部依赖。
-            *   自动配置：SpringBoot Starter在应用程序启动时自动配置所需的组件和功能。通过根据类路径和其他设置的自动检测，Starter可以自动配置Spring Bean、数据源、消息传递等常见组件，从而使应用程序的配置变得简单和维护成本降低。
+            *   按需自动配置：SpringBoot Starter在应用程序启动时自动配置所需的组件和功能。通过根据类路径和其他设置的自动检测，Starter可以自动配置Spring Bean、数据源、消息传递等常见组件，从而使应用程序的配置变得简单和维护成本降低。
             *   提供约定优于配置：SpringBoot Starter遵循`约定优于配置`的原则，通过提供一组默认设置和约定，减少了手动配置的需要。它定义了标准的配置文件命名约定、默认属性值、日志配置等，使得开发者可以更专注于业务逻辑而不是繁琐的配置细节。
             *   快速启动和开发应用程序：SpringBoot Starter使得从零开始构建一个完整的SpringBoot应用程序变得容易。它提供了主要领域（如Web开发、数据访问、安全性、消息传递等）的Starter，帮助开发者快速搭建一个具备特定功能的应用程序原型。
             *   模块化和可扩展性：SpringBoot Starter的组织结构使得应用程序的不同模块可以进行分离和解耦。每个模块可以有自己的Starter和依赖项，使得应用程序的不同部分可以按需进行开发和扩展。
         *   预定义的Starter：
-            *   SpringBoot提供了许多预定义的Starter，例如spring-boot-starter-web用于构建Web应用程序，spring-boot-starter-data-jpa用于使用JPA进行数据库访问，spring-boot-starter-security用于安全认证和授权等等。
+            *   SpringBoot提供了许多预定义的Starter，例如`spring-boot-starter-web`用于构建Web应用程序，`spring-boot-starter-data-jpa`用于使用JPA进行数据库访问，`spring-boot-starter-security`用于安全认证和授权等等。
             *   使用Starter非常简单，只需要在项目的构建文件（例如Maven的pom.xml）中添加所需的Starter依赖，SpringBoot会自动处理依赖管理和配置。
             *   通过使用Starter，开发人员可以方便地引入和配置应用程序所需的功能，避免了手动添加大量的依赖项和编写冗长的配置文件的繁琐过程。同时，Starter也提供了一致的依赖项版本管理，确保依赖项之间的兼容性和稳定性。
+            *   为什么版本号都不用写？
+                *   每个SpringBoot项目都有一个父项目`spring-boot-starter-parent`。
+                *   `spring-boot-starter-parent`的父项目是`spring-boot-dependencies`，它包含了所有常见的依赖项的版本管理。
         *   [官方提供的所有Starter](https://docs.spring.io/spring-boot/docs/current/reference/html/using.html#using.build-systems.starters)
         *   Starter的命名规则：
             *   官方提供的场景：`spring-boot-starter-<name>`。
             *   第三方提供的场景：`<name>-spring-boot-starter`。
-    *   @SpringBootApplication注解的功效？
-        *   @SpringBootApplication添加到启动类上，是一个组合注解，他的功效有具体的子注解实现！
-        *   @SpringBootApplication注解是SpringBoot框架中的核心注解，它的主要作用是简化和加速SpringBoot应用程序的配置和启动过程。
+    *   `@SpringBootApplication`注解的功效？
+        *   `@SpringBootApplication`添加到启动类上，是一个组合注解，他的功效有具体的子注解实现！
+        *   `@SpringBootApplication`注解是SpringBoot框架中的核心注解，它的主要作用是简化和加速SpringBoot应用程序的配置和启动过程。
         *   主要作用：
-            *   声明配置类：@SpringBootApplication注解包含了@SpringBootConfiguration注解，将被标注的类声明为配置类。配置类可以包含Spring框架相关的配置、Bean定义，以及其他的自定义配置。通过@SpringBootApplication注解，开发者可以将配置类与启动类合并在一起，使得配置和启动可以同时发生。
-            *   自动配置：@SpringBootApplication注解包含了@EnableAutoConfiguration注解，用于启用SpringBoot的自动配置机制。自动配置会根据应用程序的依赖项和类路径，自动配置各种常见的Spring配置和功能，减少开发者的手动配置工作。它通过智能地分析类路径、加载配置和条件判断，为应用程序提供适当的默认配置。
-            *   组件扫描：@SpringBootApplication注解包含了@ComponentScan注解，用于自动扫描并加载应用程序中的组件，例如控制器（Controllers）、服务（Services）、存储库（Repositories）等。它默认会扫描@SpringBootApplication注解所在类的包及其子包中的组件，并将它们纳入SpringBoot应用程序的上下文中，使它们可被自动注入和使用。
+            *   声明配置类：`@SpringBootApplication`注解包含了`@SpringBootConfiguration`注解，将被标注的类声明为配置类。配置类可以包含Spring框架相关的配置、Bean定义，以及其他的自定义配置。通过@SpringBootApplication注解，开发者可以将配置类与启动类合并在一起，使得配置和启动可以同时发生。
+            *   自动配置：`@SpringBootApplication`注解包含了`@EnableAutoConfiguration`注解，用于启用SpringBoot的自动配置机制。自动配置会根据应用程序的依赖项和类路径，自动配置各种常见的Spring配置和功能，减少开发者的手动配置工作。它通过智能地分析类路径、加载配置和条件判断，为应用程序提供适当的默认配置。
+            *   组件扫描：`@SpringBootApplication`注解包含了`@ComponentScan`注解，用于自动扫描并加载应用程序中的组件，例如控制器（Controllers）、服务（Services）、存储库（Repositories）等。它默认会扫描@SpringBootApplication注解所在类的包及其子包中的组件，并将它们纳入SpringBoot应用程序的上下文中，使它们可被自动注入和使用。
 
 SpringBoot3配置文件：
 
@@ -3040,6 +3068,9 @@ SpringBoot3配置文件：
     *   SpringBoot工程下，进行统一的配置管理，你想设置的任何参数（端口号、项目根路径、数据库连接信息等等）都集中到一个固定位置和命名的配置文件（`application.properties`或`application.yml`）中。
     *   配置文件应该放置在SpringBoot工程的`src/main/resources`目录下。这是因为src/main/resources目录是SpringBoot默认的类路径（classpath），配置文件会被自动加载并可供应用程序访问。
     *   [功能配置参数说明](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#appendix.application-properties)
+    *   配置文件中所有配置项都会和某个对象值进行一一绑定，绑定了配置文件中每一项值的类称为属性类。例如：
+        *   `ServerProperties`：绑定了所有Tomcat服务器有关的配置。
+        *   `MultipartProperties`：绑定了所有文件上传有关的配置。
     *   总结：
         *   集中式管理配置。统一在一个文件完成程序功能参数设置和自定义参数声明。
         *   位置在resources文件下，必须命名为application.properties或application.yml。
@@ -3092,6 +3123,7 @@ SpringBoot3配置文件：
 
             @Component
             @Data
+            // @ConfigurationProperties(prefix = "spring.jdbc.datasource")
             public class DataSourceProperties {
               @Value("${spring.jdbc.datasource.driverClassName}")
               private String driverClassName;
@@ -3146,6 +3178,60 @@ SpringBoot3配置文件：
 *   多环境配置和使用（以YAML格式为例）：
     1.  属性文件分离：通过创建多个属性文件，例如`application-dev.yml`、`application-prod.yml`、`application-test.yml`等，分别对应不同的环境。
     2.  指定环境：在`application.yml`文件中通过`spring.profiles.active`属性指定当前环境或者在命令行参数中通过`--spring.profiles.active=<env>`来指定当前环境。
+
+深入理解SpringBoot自动配置的原理：
+
+*   ![SpringBoot自动配置原理](../resources/springboot_automatic_configuration_principle.png)
+*   自动配置流程细节梳理：
+    *   以导入`spring-boot-starter-web`依赖为例：
+        *   场景启动器（`Starter`）会先导入相关场景的所有依赖，例如`spring-boot-starter-json`、`spring-boot-starter-tomcat`等。
+        *   每个场景启动器都会引入一个`spring-boot-starter`（核心场景启动器），核心场景启动器会导入一个`spring-boot-autoconfigure`依赖，该依赖囊括了所有场景的默认配置。
+        *   所以只要`spring-boot-autoconfigure`这个依赖包下的所有类都被加载，那么SpringBoot官方写好的整合功能都会生效。但是SpringBoot默认却扫描不到`spring-boot-autoconfigure`下写好的所有配置类，默认只会扫描主程序所在的包，所以要通过`@SpringBootApplication`注解来实现。
+    *   `@SpringBootApplication`：
+        *   `@SpringBootApplication`其中包含注解`@EnableAutoConfiguration`，`@EnableAutoConfiguration`注解包含`@Import(AutoConfigurationImportSelector.class)`，默认会按需导入`spring-boot-autoconfigure.jar/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports`文件内所有配置类（只有`@ConditionalOnXxx`的条件成立才导入），并注册到容器中。
+        *   以`autoconfigure.AutoConfiguration.imports`文件下的`ServletWebServerFactoryAutoConfiguration`为例，只有`@ConditionalOnXxx`成立才会导入，并且会开启`@EnableConfigurationProperties({ServerProperties.class})`，其中`ServerProperties`包含了`server.port`、`server.servlet.context-path`等配置信息。
+*   对于程序员只需要引入场景启动器并写好配置文件，即可快速开发项目。
+*   普通开发：导入Starter、编写业务逻辑（Controller、Service、Repository）、偶尔修改配置文件；高级开发：自定义组件、自定义配置、自定义Starter。
+
+SpringBoot3常用注解（SpringBoot摒弃XML配置方式，改为全注解驱动）：
+
+*   组件注册：
+    *   `@Configuration`：用来声明一个类是一个配置类，相当于XML配置文件中的`<beans>`标签。
+    *   `@SpringBootConfiguration`：SpringBoot提供的用于声明一个类是一个配置类的方法，包含了`@Configuration`注解。
+    *   `@Bean`：用来声明一个方法返回一个Bean，相当于XML配置文件中的`<bean>`标签。
+    *   `@Scope`：用来声明一个Bean的作用域，相当于XML配置文件中的`<bean scope="">`标签，可能值有`singleton`、`prototype`等。
+    *   `@Controller`：用来声明一个类是一个控制器，相当于XML配置文件中的`<bean class="">`标签。
+    *   `@Service`：用来声明一个类是一个服务类，相当于XML配置文件中的`<bean class="">`标签。
+    *   `@Repository`：用来声明一个类是一个数据访问类，相当于XML配置文件中的`<bean class="">`标签。
+    *   `@Component`：用来声明一个类是一个组件，相当于XML配置文件中的`<bean class="">`标签。
+    *   `@Import`：用来导入第三方组件，相当于XML配置文件中的`<import resource=""/>`标签。
+    *   `@ComponentScan`：用来扫描指定包下的类，相当于XML配置文件中的`<context:component-scan base-package="">`标签。
+    *   使用步骤：通过`@Configuration`方法创建一个配置类，通过`@Bean`方法创建一个Bean，通过`@ComponentScan`方法扫描指定包下的类，通过`@Import`方法导入第三方组件。
+*   条件注解（如果注解指定的条件成立，则触发指定行为）：
+    *   一般形式为：`@ConditionalOnXXX`。
+    *   `ConditionalOnClass`：如果类路径中存在这个类，则触发指定行为。
+    *   `ConditionalOnMissingClass`：如果类路径中不存在这个类，则触发指定行为。
+    *   `ConditionalOnBean`：如果容器中存在这个Bean，则触发指定行为。
+    *   `ConditionalOnMissingBean`：如果容器中不存在这个Bean，则触发指定行为。
+*   属性配置：
+    *   `@ConfigurationProperties`：用来将配置文件中的属性值注入到JavaBean中，相当于XML配置文件中的`<context:property-placeholder location=""/>`标签。
+    *   `@EnableConfigurationProperties`：用来对第三方组件进行属性注入。
+
+SpringBoot3中Web开发：
+
+*   SpringBoot提供`WebMvcConfigurer`接口，用来对Web开发进行配置。可以定义配置类（`@Configuration`）来实现配置。
+*   SpringBoot提供`WebMvcAutoConfiguration`定义了默认的Web开发配置，可以使用配置文件进行修改配置。
+*   三种配置方法：
+    *   全自动：直接编写业务逻辑，使用自动配置（`WebMvcAutoConfiguration`）。
+    *   手自一体：使用`@Configuration`定义配置类，该配置类实现`WebMvcConfigurer`接口，但不标注`@EnableWebMvc`。这样既有自动配置，又添加了自定义配置。
+    *   全手动：使用使用`@Configuration`定义配置类，该配置类实现`WebMvcConfigurer`接口，并标注`@EnableWebMvc`。这样会禁用自动配置，只能使用自定义配置。
+
+路径匹配规则：默认使用`PathPatternParser`策略，可以通过`spring.mvc.pathmatch.matching-strategy`配置修改（还支持`AntPathMatcher`）。
+
+内容协商：
+
+*   一套系统适配多端数据多种类型格式（如json、xml、yaml、自定义协议等）返回。
+*   内容协商原理：编写`WebMvcConfigurer`提供的`configureMessageConverters`底层，修改底层的`MessageConverter`，来定制`HttpMessageConverter`来实现多端内容协商。
 
 SpringBoot3整合：
 
@@ -3636,3 +3722,11 @@ JWT和Token介绍：
         *   用户在浏览器端使用用户名和密码等信息访问登录服务器，服务器验证用户身份信息，如果验证通过则生成Token，并返回给用户。
         *   用户在浏览器端将Token存储在本地，例如cookie、localStorage等。在之后的请求中，用户在请求头中携带Token，服务器根据Token验证用户身份，并允许用户访问资源。
 *   JWT介绍：Token是一项规范和标准，JWT（JSON Web Token）是具体可以生成、校验、解析等动作的Token技术。
+
+## 版本控制
+
+| 项目类型       | JDK | Maven  | Tomcat         |
+| -------------- | --- | ------ | -------------- |
+| SSM            | 8   | 3.5+   | 9.x            |
+| SpringBoot 2.x | 8   | 3.6.3+ | 9.x（内置）    |
+| SpringBoot 3.x | 17  | 3.8.5+ | 10.1.x（内置） |

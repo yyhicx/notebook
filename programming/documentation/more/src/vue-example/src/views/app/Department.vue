@@ -89,10 +89,7 @@ function handleSubmit() {
     <div class="toolbar">
       <el-form :inline="true" :model="filters">
         <el-form-item>
-          <el-input
-            v-model="filters.name"
-            :placeholder="t('tableHeader.name')"
-          ></el-input>
+          <el-input v-model="filters.name" :placeholder="t('tableHeader.name')"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button icon="search" type="primary" @click="doSearch">{{
@@ -106,53 +103,22 @@ function handleSubmit() {
         </el-form-item>
       </el-form>
     </div>
-    <cm-table
-      rowKey="id"
-      ref="tableRef"
-      :get-page="listTree"
-      :filters="filters"
-      :columns="columns"
-      :showBatchDelete="false"
-      :showPagination="false"
-      @handleEdit="handleEdit"
-      @handleDelete="handleDelete"
-    ></cm-table>
+    <cm-table rowKey="id" ref="tableRef" :get-page="listTree" :filters="filters" :columns="columns"
+      :showBatchDelete="false" :showPagination="false" @handleEdit="handleEdit" @handleDelete="handleDelete"></cm-table>
   </div>
-  <el-dialog
-    :title="isEdit ? t('action.edit') : t('action.add')"
-    width="40%"
-    draggable
-    v-model="dialogVisible"
-    :close-on-click-modal="false"
-    @close="doClose"
-  >
-    <el-form
-      :model="form"
-      :rules="rules"
-      ref="formRef"
-      @keyup.enter="handleSubmit"
-      label-width="80px"
-    >
+  <el-dialog :title="isEdit ? t('action.edit') : t('action.add')" width="40%" draggable v-model="dialogVisible"
+    :close-on-click-modal="false" @close="doClose">
+    <el-form :model="form" :rules="rules" ref="formRef" @keyup.enter="handleSubmit" label-width="80px">
       <el-form-item :label="t('tableHeader.name')" prop="name">
-        <el-input
-          v-model="form.name"
-          :placeholder="t('tableHeader.name')"
-        ></el-input>
+        <el-input v-model="form.name" :placeholder="t('tableHeader.name')"></el-input>
       </el-form-item>
       <el-form-item :label="t('form.parent')" prop="parentId">
-        <el-cascader
-          v-model="form.parentId"
-          :props="{
-            label: 'name',
-            value: 'id',
-            checkStrictly: true,
-            emitPath: false
-          }"
-          :options="departmentData"
-          clearable
-          filterable
-          class="w100p"
-        ></el-cascader>
+        <el-cascader v-model="form.parentId" :props="{
+          label: 'name',
+          value: 'id',
+          checkStrictly: true,
+          emitPath: false
+        }" :options="departmentData" clearable filterable class="w100p"></el-cascader>
       </el-form-item>
     </el-form>
     <template #footer>

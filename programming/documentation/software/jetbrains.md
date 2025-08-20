@@ -13,7 +13,11 @@ Shortcut keys:
 *   Undo content: ctrl + z
 *   Find text: ctrl + f
 *   Replace text: ctrl + r
-*   Go to Declaration: ctrl + b
+*   Go to declaration: ctrl + b
+*   Search everywhere: double shift
+*   Find in files: ctrl + shift + f
+*   Show fields and methods of current class: ctrl + f12
+*   Surround selection: ctrl + alt + t
 
 Extensions:
 

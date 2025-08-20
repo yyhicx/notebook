@@ -44,16 +44,19 @@ Extensions:
     *   install dash(macos) or zeal(windows or linux)
     *   ctrl + shift + p
     *   dash
+*   Database Client JDBC
 *   Django
 *   Docker
 *   EditorConfig for VS Code
     *   copy src/.editorconfig to project/.editorconfig
+*   Element UI Snippets
 *   ES7 React/Redux/GraphQL/React-Native snippets
 *   ESLint
 *   Flutter
 *   HTML CSS Support
 *   Javascript (ES6) code snippets
 *   Jupyter
+*   Lingma
 *   Markdown All in One
 *   markdownlint
     *   copy src/.markdownlint.json to project/.markdownlint.json
@@ -73,9 +76,9 @@ Extensions:
     *   ssh root@ip_address
 *   Remote - WSL
 *   Tailwind CSS IntelliSense
-*   TONGYI Lingma
-*   Vetur
+*   uni-app-snippets
 *   Vue - Official
+*   Vue VSCode Snippets
 *   yapf
 
 Unrecognized file type:
