@@ -1,0 +1,11 @@
+@font-face {
+  font-family: "Basic";
+  src: url("../fonts/Basic-Regular.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+html,
+body {
+  font-family: Basic;
+}
