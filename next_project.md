@@ -1,4 +1,4 @@
-# Next
+# Next Project
 
 | Project Name | Language                 | Framework or Library   |
 | ------------ | ------------------------ | ---------------------- |

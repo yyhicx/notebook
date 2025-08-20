@@ -21,3 +21,6 @@ template.synctex.gz
 
 # Confidential Data Files
 api_key.json
+
+# CHW Files
+*.chw
