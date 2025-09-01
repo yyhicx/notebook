@@ -415,7 +415,7 @@ public class Main {
 
               @Override
               public String toString() {
-                return "Student{" + "name='" + name + ", age=" + age + '}';
+                return "Student{" + "name='" + name + "', age=" + age + '}';
               }
             }
             ```
@@ -466,7 +466,7 @@ public class Main {
 
               @Override
               public String toString() {
-                return "Student{" + "name='" + name + ", age=" + age + '}';
+                return "Student{" + "name='" + name + "', age=" + age + '}';
               }
             }
             ```
@@ -1640,8 +1640,6 @@ public class Main {
               while ((len = is.read(bytes)) != -1) {
                 System.out.println(new String(bytes, 0, len));
               }
-            } catch (FileNotFoundException e) {
-              e.printStackTrace();
             } catch (IOException e) {
               e.printStackTrace();
             }
@@ -1673,6 +1671,182 @@ public class Main {
 *   异常有什么作用：
     1.  异常是用来查询系统Bug的关键参考信息。
     2.  异常可以作为方法内部的一种特殊返回值，以便通知上层调用者底层的执行情况。
+*   注意：
+    *   在使用try-catch-finally时：无论try中的程序是否有异常，最后都一定会执行finally区，除非JVM终止；不要在finally区中使用return语句。
+
+        ```java
+        try {
+          getAndUseResource();
+
+          // 如果上面代码有异常，会直接执行 catch 块，然后执行 finally 块
+          // 如果上面代码没有异常，并且运行 System.exit(0)，会终止 JVM 进程，将不会运行 finally 块
+          // System.exit(0);
+        } catch (Exception e) {
+          e.printStackTrace();
+        } finally {
+          closeResource();
+
+          // 不要在 finally 中返回值，因为返回值会覆盖 try 块的返回值
+          // 如果 try 中有 return 1，现在执行到 finally 块，然后 return 0，那么最终返回的是 0
+          // return 0;
+        }
+        ```
+
+    *   在使用try-with-resources时：try后的小括号中只能定义资源，不能定义变量。资源类型必须实现AutoCloseable接口，该接口会有一个close方法，当try-with-resources块执行完毕，会自动调用close方法完成资源释放的操作。
+
+        ```java
+        try (
+          InputStream is = new FileInputStream("test1.txt");
+          OutputStream os = new FileOutputStream("test2.txt")
+        ) {
+          useResource(is, os);
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+        ```
+
+注解：
+
+*   Java代码里的特殊标记，例如@Override、@Test等。用于让其他程序根据注解信息来决定怎么执行该程序。
+*   注解可以用在类上、构造器上、方法上、成员变量上、参数上、等位置处。
+*   自定义注解：
+    *   模板：
+
+        ```java
+        public @interface MyAnnotation {
+          public AttributeType attributeName() default "defaultValue";
+        }
+        ```
+
+    *   特殊属性名：value。如果注解中只有一个value属性，使用注解时，value名称可以不写。
+    *   示例：
+
+        ```java
+        public @interface MyTest1 {
+          String aaa();
+          boolean bbb() default true;
+          String[] ccc();
+        }
+        ```
+
+        ```java
+        public @interface MyTest2 {
+          String value();  // 特殊属性
+          int age() default 23;
+        }
+        ```
+
+        ```java
+        @MyTest1(aaa = "aaa", ccc = {"aaa", "bbb"})
+        @MyTest2("bbb")  // 等价于 @MyTest2(value = "bbb")
+        public class AnnotationTest {
+          @MyTest1(aaa = "张三", bbb = false, ccc = {"HTML", "Java"})
+          public void test1() {}
+        }
+        ```
+
+*   注解的原理：
+    *   注解本质是一个接口，Java中所有注解都是继承了Annotation接口的。
+
+        ```java
+        /**
+         * 原始自定义注解
+         */
+        public @interface MyTest1 {
+          String aaa();
+          boolean bbb();
+          String[] ccc();
+        }
+        ```
+
+        ```java
+        /**
+         * 本质实现
+         */
+        public interface MyTest1 extends Annotation {
+          public abstract String aaa();
+          public abstract boolean bbb();
+          public abstract String[] ccc();
+        }
+        ```
+
+    *   `@MyAnnotation(...)`本质上是一个实现类对象，实现了该注解以及Annotation接口。
+
+        ```java
+        @MyTest1(aaa = "张三", bbb = false, ccc = {"HTML", "Java"})
+        public void test1() {}
+        ```
+
+*   元注解：修饰注解的注解。
+    *   @Target：用于声明被修饰的注解只能在哪些位置使用。
+        *   TYPE：类、接口。
+        *   FIELD：成员变量。
+        *   METHOD：成员方法。
+        *   PARAMETER：方法参数。
+        *   CONSTRUCTOR：构造器。
+        *   LOCAL_VARIABLE：局部变量。
+
+        ```java
+        @Target(ElementType.TYPE)
+        ```
+
+    *   @Retention：用于声明注解的保留周期。
+        *   SOURCE：只作用在源码阶段，字节码文件中不存在。
+        *   CLASS（默认值）：保留到字节码文件阶段，运行阶段不存在。
+        *   RUNTIME（开发常用）：一直保留到运行阶段。
+
+        ```java
+        @Retention(RetentionPolicy.RUNTIME)
+        ```
+
+    ```java
+    @Target({ElementType.TYPE, ElementType.METHOD})
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface MyTest {}
+    ```
+
+*   注解的解析：
+    *   判断类上、方法上、成员变量上是否存在注解，并把注解里的内容给解析出来。
+    *   如果解析注解？
+        *   指导思想：要解析谁上面的注解，就应该先拿到谁。
+        *   比如要解析类上面的注解，则应该先获取该类的Class对象，再通过Class对象解析其上面的注解。
+        *   比如要解析成员方法上面的注解，则应该获取到该成员方法的Method对象，再通过Method对象解析其上面的注解。
+        *   Class、Method、Field、Constructor都实现了AnnotatedElement接口，它们都拥有解析注解的能力。
+
+    ```java
+    @Target({ElementType.TYPE, ElementType.METHOD})
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface MyTest {
+      String value();
+      double aaa() default 100.0;
+      String[] bbb();
+    }
+    ```
+
+    ```java
+    @MyTest(value = "张三", aaa = 99.5, bbb = {"HTML", "Java"})
+    public class Demo {
+      @MyTest(value = "李四", aaa = 199.9, bbb = {"HTML", "Java"})
+      public void test1() {}
+    }
+    ```
+
+    ```java
+    public class Main {
+      public static void main(String[] args) throws NoSuchMethodException {
+        Class c = Demo.class;
+        Method m = c.getMethod("test1");
+
+        // 判断方法上面是否有某个注解
+        if (m.isAnnotationPresent(MyTest.class)) {
+          MyTest myTest = (MyTest) m.getDeclaredAnnotation(MyTest.class);
+          System.out.println(myTest.value());
+          System.out.println(myTest.aaa());
+          System.out.println(Arrays.toString(myTest.bbb()));
+        }
+      }
+    }
+    ```
 
 JDK8的新特性：
 
@@ -1760,7 +1934,7 @@ JDK8的新特性：
 
           @Override
           public String toString() {
-            return "Student{" + "name='" + name + ", age=" + age + '}';
+            return "Student{" + "name='" + name + "', age=" + age + '}';
           }
         }
         ```
@@ -2246,6 +2420,51 @@ JDK8的新特性：
 *   注意：
     *   字符编码时使用的字符集和解码时使用的字符集必须一致，否则会出现乱码。
     *   英文，数字一般不会乱码，因为很多字符集都兼容了ASCII编码。
+    *   Java中char类型是16位无符号整数，占用2个字节，采用Unicode编码，具体实现是UTF-16编码，并不是UTF-8编码。
+        *   Java内部使用UTF-16编码的char数组存储字符串，与外部系统交互时（文件、网络），通常使用UTF-8编码。
+        *   表示一个ASCII字符时，char使用2个字节，UTF-8使用1个字节；表示一个中文字符时，char固定使用2个字节，UTF-8通常使用3个字节；对于扩展字符（如emoji），对于java内部需要两个char存储（即4个字节），对于UTF-8编码需要4个字节。
+
+        ```java
+        public class Main {
+          public static void main(String[] args) {
+            char ch = 'A';
+            char chinese = '中';
+            // char emoji = '😊';  // 无法定义
+
+            System.out.println((int) ch);  // 输出 65
+            System.out.println((int) chinese);  // 输出 20013
+            // System.out.println((int) emoji);  // 无法输出
+
+            // 对于 Unicode 值大于 0xFFFF 的字符（如表情符号），需要使用两个 char 存储
+            String smile = "😊";
+            System.out.println(smile.length());  // 输出 2，即需要 2 个 char 存储
+            System.out.println(smile.codePointCount(0, smile.length()));  // 输出 1，即实际字符数只有 1 个
+            
+            int codePoint = smile.codePointAt(0);
+            System.out.println("😊 的 Unicode 代码点：U+" + Integer.toHexString(codePoint));  // 输出 U+1f60a
+          }
+        }
+        ```
+
+        ```java
+        public class Main {
+          public static void main(String[] args) {
+            String text = "Hello 中文 😊";
+
+            // 内部表示（UTF-16）
+            char[] chars = text.toCharArray();
+            System.out.println(chars.length);
+
+            // 转换为 UTF-8 编码
+            byte[] bytes = text.getBytes(StandardCharsets.UTF_8);
+            System.out.println(bytes.length);
+
+            // 从 UTF-8 编码转换回字符串
+            String decoded = new String(bytes, StandardCharsets.UTF_8);
+            System.out.println(decoded);
+          }
+        }
+        ```
 
 ## Java API
 
@@ -2263,6 +2482,179 @@ API：Application Programming Interface，应用程序编程接口。
     *   如果当前程序中，要调用其他包下的程序，则必须在当前程序中导包，才可以访问。导包的语法格式：`import package_name.ClassName;`，例如`com.example.demo.Student;`。
     *   如果当前程序中，要调用Java提供的程序，也需要先导包才可以使用，但是java.lang包下的程序不需要导包，可以直接使用。
     *   如果当前程序中，要调用多个不同包下的程序，而这些程序名正好一样，此时默认只能导入一个程序，另一个程序必须带包名进行访问。
+
+反射：
+
+*   加载类，并允许以编程的方式解剖类中的各种成分（成员变量、方法、构造器等）。
+*   获取并操纵类：
+    1.  加载类并获取Class对象：
+
+        ```java
+        public class Main {
+          public static void main(String[] args) {
+            // 第一种方法：ClassName.class
+            Class c1 = Student.class;
+            System.out.println(c1.getName());  // 输出 com.example.demo.Student
+            System.out.println(c1.getSimpleName());  // 输出 Student
+
+            // 第二种方法：Class.forName("ClassName")
+            try {
+              Class c2 = Class.forName("com.example.demo.Student");
+              System.out.println(c1 == c2);
+            } catch (ClassNotFoundException e) {
+              e.printStackTrace();
+            }
+
+            // 第三种方法：objectName.getClass()
+            Student student = new Student();
+            Class c3 = student.getClass();
+            System.out.println(c1 == c3);
+          }
+        }
+        ```
+
+    2.  获取类的构造器：
+
+        ```java
+        public class Main {
+          public static void main(String[] args) {
+            Class c = Student.class;
+
+            // 获取全部由 public 修饰的构造器
+            Constructor[] constructors1 = c.getConstructors();
+            for (Constructor constructor : constructors1) {
+              System.out.println(constructor.getName() + "--->" + constructor.getParameterCount());
+            }
+
+            // 获取全部构造器，只要存在就能获取
+            Constructor[] constructors2 = c.getDeclaredConstructors();
+            for (Constructor constructor : constructors2) {
+              System.out.println(constructor.getName() + "--->" + constructor.getParameterCount());
+            }
+
+            try {
+              // 获取某个由 public 修饰的构造器
+              Constructor constructor1 = c.getConstructor(String.class, int.class, double.class);
+              System.out.println(constructor1.getName() + "--->" + constructor1.getParameterCount());
+
+              // 禁止检查访问控制（暴力反射）
+              constructor1.setAccessible(true);
+              // 调用构造器对象创建对象
+              Student student1 = (Student) constructor1.newInstance("张三", 18, 90.0);  // 张三，18 岁，90 分
+              System.out.println(student1);
+
+              // 获取某个构造器，只要存在就能获取
+              Constructor constructor2 = c.getConstructor();
+              System.out.println(constructor2.getName() + "--->" + constructor2.getParameterCount());
+
+              // 禁止检查访问控制（暴力反射）
+              constructor2.setAccessible(true);
+              Student student2 = (Student) constructor2.newInstance();  // 无参构造器
+              System.out.println(student2);
+            } catch (NoSuchMethodException e) {
+              e.printStackTrace();
+            } catch (InvocationTargetException e) {
+              e.printStackTrace();
+            } catch (InstantiationException e) {
+              e.printStackTrace();
+            } catch (IllegalAccessException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+        ```
+
+    3.  获取类的成员变量：
+
+        ```java
+        public class Main {
+          public static void main(String[] args) {
+            Class c = Student.class;
+
+            // 获取全部由 public 修饰的成员变量
+            Field[] fields1 = c.getFields();
+            for (Field field : fields1) {
+              System.out.println(field.getName() + "--->" + field.getType());
+            }
+
+            // 获取全部成员变量，只要存在就能获取
+            Field[] fields2 = c.getDeclaredFields();
+            for (Field field : fields2) {
+              System.out.println(field.getName() + "--->" + field.getType());
+            }
+
+            try {
+              // 获取某个由 public 修饰的成员变量
+              // name 由 private 修饰不能获取
+              // Field field1 = c.getField("name");
+              // System.out.println(field1.getName() + "--->" + field1.getType());
+
+              // 获取某个成员变量，只要存在就能获取
+              Field field2 = c.getDeclaredField("age");
+              System.out.println(field2.getName() + "--->" + field2.getType());
+
+              // 禁止检查访问控制（暴力反射）
+              field2.setAccessible(true);
+
+              Student student = new Student();
+              field2.set(student, 18);
+              System.out.println(student);
+
+              int age = (int) field2.get(student);
+              System.out.println(age);
+            } catch (NoSuchFieldException e) {
+              e.printStackTrace();
+            } catch (IllegalAccessException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+        ```
+
+    4.  获取类的成员方法：
+
+        ```java
+        public class Main {
+          public static void main(String[] args) {
+            Class c = Student.class;
+
+            // 获取全部由 public 修饰的成员方法
+            Method[] methods1 = c.getMethods();
+            for (Method method : methods1) {
+              System.out.println(method.getName() + "--->" + method.getParameterCount() + "--->" + method.getReturnType());
+            }
+
+            // 获取全部成员方法，只要存在就能获取
+            Method[] methods2 = c.getDeclaredMethods();
+            for (Method method : methods2) {
+              System.out.println(method.getName() + "--->" + method.getParameterCount() + "--->" + method.getReturnType());
+            }
+
+            try {
+              // 获取某个由 public 修饰的成员方法
+              Method method1 = c.getMethod("setName", String.class);
+              System.out.println(method1.getName() + "--->" + method1.getParameterCount() + "--->" + method1.getReturnType());
+
+              // 获取某个成员方法，只要存在就能获取
+              Method method2 = c.getDeclaredMethod("getName");
+              System.out.println(method2.getName() + "--->" + method2.getParameterCount() + "--->" + method2.getReturnType());
+
+              // 禁止检查访问控制（暴力反射）
+              method1.setAccessible(true);
+
+              Student student = new Student();
+              method1.invoke(student, "张三");
+              System.out.println(student);
+            } catch (NoSuchMethodException e) {
+              e.printStackTrace();
+            } catch (InvocationTargetException e) {
+              e.printStackTrace();
+            } catch (IllegalAccessException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+        ```
 
 JDK中时间相关的API：
 
@@ -2440,6 +2832,7 @@ IO流：
 *   IO流的分类：
     *   按流的方向分为：输入流和输出流。
     *   按流中数据的最小单位分为：字节流（适合操作所有类型的文件，例如音频、视频、图片、文本文件的复制和转移等）和字符流（只适合操作纯文本文件，如读写txt、java文件等）。
+    *   按功能划分：原始流，缓冲流，转换流，打印流，数据流，序列化流。
     *   IO流总体分为四大类：
         *   字节输入流：以内存为基准，来自磁盘文件/网络中的数据以字节的形式读入到内存中去的流。
         *   字节输出流：以内存为基准，把内存中的数据以字节的形式写出到磁盘文件/网络中去的流。
@@ -2448,13 +2841,2128 @@ IO流：
 *   IO流的体系：
     *   InputStream（接口）：字节输入流。
         *   FileInputStream（实现类）：文件字节输入流。
+        *   BufferedInputStream（实现类）：字节缓冲输入流。
+        *   DataInputStream（实现类）：数据输入流。
+        *   ObjectInputStream（实现类）：对象输入流。
     *   OutputStream（接口）：字节输出流。
         *   FileOutputStream（实现类）：文件字节输出流。
+        *   BufferedOutputStream（实现类）：字节缓冲输出流。
+        *   PrintStream（实现类）：字节打印流。
+        *   DataOutputStream（实现类）：数据输出流。
+        *   ObjectOutputStream（实现类）：对象输出流。
     *   Reader（接口）：字符输入流。
         *   FileReader（实现类）：文件字符输入流。
+        *   BufferedReader（实现类）：字符缓冲输入流。
+        *   InputStreamReader（实现类）：字符输入转换流。
     *   Writer（接口）：字符输出流。
         *   FileWriter（实现类）：文件字符输出流。
+        *   BufferedWriter（实现类）：字符缓冲输出流。
+        *   OutputStreamWriter（实现类）：字符输出转换流。
+        *   PrintWriter（实现类）：字符打印流。
+
+    ![IO流体系](resources/java_io_stream_system.png)
+
+*   使用字节流对文件进行复制操作：
+    *   字节流非常适合做一切文件的复制操作。
+    *   任何文件的底层都是字节，字节流做复制，是一字不漏的转移完全部字节，只要复制后的文件格式一致就没问题。
+
+    ```java
+    public class Main {
+      public static void main(String[] args) throws IOException {
+        InputStream is = new FileInputStream("picture1.png");
+        OutputStream os = new FileOutputStream("picture2.png");
+        byte[] buffer = new byte[1024];  // 创建一个字节数组，大小为 1024 字节，负责转移字节
+        int len;
+
+        while ((len = is.read(buffer)) != -1) {
+          os.write(buffer, 0, len);
+        }
+        
+        os.close();
+        is.close();
+        System.out.println("Copy completed!");
+      }
+    }
+    ```
+
+*   使用字符流对文本文件进行读写操作：
+
+    ```java
+    public class Main {
+      public static void main(String[] args) throws IOException {
+        Reader r = new FileReader("input.txt");
+        Writer w = new FileWriter("output.txt");
+        char[] buffer = new char[1024];
+        int len;
+
+        while ((len = r.read(buffer)) != -1) {
+          w.write(buffer, 0, len);
+        }
+
+        w.close();
+        r.close();
+        System.out.println("Copy completed!");
+      }
+    }
+    ```
+
+*   使用缓冲流提高原始流的性能：
+
+    ```java
+    public class Main {
+      public static void main(String[] args) {
+        try (
+          InputStream is = new FileInputStream("input.txt");
+          InputStream bis = new BufferedInputStream(is);
+          OutputStream os = new FileOutputStream("output.txt");
+          OutputStream bos = new BufferedOutputStream(os)
+        ) {
+          byte[] buffer = new byte[1024];
+          int len;
+          while ((len = bis.read(buffer)) != -1) {
+            bos.write(buffer, 0, len);
+          }
+          System.out.println("Copy completed!");
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+    ```
+
+*   使用打印流实现输出语句的重定向：
+
+    ```java
+    public class Main {
+      public static void main(String[] args) {
+        try (PrintStream ps = new PrintStream("test.txt")) {
+          PrintStream console = System.out;
+
+          System.setOut(ps);
+          System.out.println("Hello World!");
+          System.out.println("I am learning Java.");
+
+          System.setOut(console);
+          System.out.println("I am learning Java.");
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+    ```
+
+*   使用序列化流读写对象：
+
+    ```java
+    public class User implements Serializable {
+      private String username;
+      private int age;
+      // 用 transient 修饰的成员变量表明其不参与序列化
+      private transient String password;
+
+      public User() {}
+
+      public User(String username, int age, String password) {
+        this.username = username;
+        this.age = age;
+        this.password = password;
+      }
+
+      public String getUsername() {
+        return username;
+      }
+
+      public void setUsername(String username) {
+        this.username = username;
+      }
+
+      public int getAge() {
+        return age;
+      }
+
+      public void setAge(int age) {
+        this.age = age;
+      }
+
+      public String getPassword() {
+        return password;
+      }
+
+      public void setPassword(String password) {
+        this.password = password;
+      }
+
+      @Override
+      public String toString() {
+        return "User{" + "username='" + username + "', age=" + age + '}';
+      }
+    }
+    ```
+
+    ```java
+    public class Main {
+      public static void main(String[] args) {
+        try (
+          ObjectInputStream ois = new ObjectInputStream(new FileInputStream("test.txt"));
+          ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("test.txt"))
+        ) {
+          User user1 = new User("张三", 18, "123456");
+          oos.writeObject(user1);
+          User user2 = (User) ois.readObject();
+          System.out.println(user2);
+          System.out.println(user1 == user2);
+        } catch (IOException | ClassNotFoundException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+    ```
+
 *   关闭和释放资源：
+    1.  使用try-catch-finally：
+
+        ```java
+        public class Main {
+          public static void main(String[] args) {
+            InputStream is = null;
+            OutputStream os = null;
+            try {
+              is = new FileInputStream("test1.txt");
+              os = new FileOutputStream("test2.txt");
+
+              System.out.println(10 / 0);  // throw ArithmeticException
+
+              byte[] buffer = new byte[1024];
+              int len;
+              while ((len = is.read(buffer)) != -1) {
+                os.write(buffer, 0, len);
+              }
+              System.out.println("Copy completed!");
+            } catch (IOException e) {
+              e.printStackTrace();
+            } finally {
+              try {
+                if (os != null) os.close();
+              } catch (IOException e) {
+                e.printStackTrace();
+              }
+
+              try {
+                if (is != null) is.close();
+              } catch (IOException e) {
+                e.printStackTrace();
+              }
+            }
+          }
+        }
+        ```
+
+    2.  使用try-with-resources：
+
+        ```java
+        public class Main {
+          public static void main(String[] args) {
+            try (
+              InputStream is = new FileInputStream("test1.txt");
+              OutputStream os = new FileOutputStream("test2.txt")
+            ) {
+              byte[] buffer = new byte[1024];
+              int len;
+              while ((len = is.read(buffer)) != -1) {
+                os.write(buffer, 0, len);
+              }
+              System.out.println("Copy completed!");
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+        ```
+
+*   注意：
+    *   缓冲流对原始流进行包装，以提高原始流读写数据的性能。例如文件有16KB、程序中定义的数组有1KB，如果仅使用原始流读取，则需要反复从磁盘中读取数据到数组中，速度很慢；如果使用缓冲流并使用8KB缓冲区，则理论上只需要两次就能将数据从磁盘中读入内存中，然后从内存中读取数据到数组中，速度大大提高。
+    *   转换流用于解决不同编码时字符流读取文本内容乱码的问题。当读取文件时，先获取文件的原始字节流，再将其按真实的字符集编码转换成字符输入流，这样字符输入流中的字符就不会乱码了；当写入文件时，先获取字节输出流，再按照指定的字符集编码将其转换成字符输出流，以后写出去就会用该字符集编码了。
+    *   打印流可以实现更方便、更高效的打印数据出去，能实现打印啥出去就是啥出去。PrintStream继承自OutputStream，因此使用write方法时可以写整数或者字节数组出去；PrintWriter继承自Writer，因此使用write方法时可以写整数、字符串或者字符数组出去。但是两者都支持使用println方法打印任意类型的数据。
+    *   数据流可以按照类型读写数据，默认只支持读写基本数据类型和字符串类型。
+    *   序列化流可以读写Java对象。对象序列化指的是把Java对象写入到文件中；对象反序列化指的是把文件里的Java对象读出来。同时需要注意，对象如果要参与序列化，必须实现Serializable接口。如果要序列化多个对象，那么可以用ArrayList存储多个对象，然后直接对ArrayList进行序列化，因为ArrayList已经实现了Serializable接口。
+
+多线程：
+
+*   线程是一个程序内部的一条执行流程；程序中如果只有一条执行流程，那这个程序就是单线程的程序。
+*   多线程是指从软硬件上实现的多条执行流程的技术（多条线程由CPU负责调度执行）。
+*   创建线程的方式：
+    1.  继承Thread类：
+        *   定义一个子类MyThread继承线程类java.lang.Thread类，重写run方法；创建MyThread对象；调用线程对象的start方法启动线程（本质上start方法会调用线程对象中的run方法）。
+        *   优点：编码简单；缺点：线程类已经继承Thread，无法继承其他类，不利于功能的扩展。
+
+        ```java
+        public class Main {
+          public static void main(String[] args) {
+            Thread t = new MyThread();
+            t.start();
+
+            for (int i = 0; i < 100; i++) {
+              System.out.println("Main Thread: " + i);
+            }
+          }
+        }
+
+        class MyThread extends Thread {
+          @Override
+          public void run() {
+            for (int i = 0; i < 100; i++) {
+              System.out.println("Child Thread: " + i);
+            }
+          }
+        }
+        ```
+
+    2.  实现Runnable接口：
+        *   定义一个线程任务类MyRunnable类实现Runnable接口，重写run方法；创建MyRunnable任务对象；把MyRunnable任务对象交给Thread处理，然后调用线程对象的start方法启动线程。
+        *   优点：任务类只是实现接口，可以继续继承其他类，实现其他接口，扩展性强；缺点：需要多一个Runnable对象。
+
+        ```java
+        /**
+         * 非匿名内部类写法
+         */
+        public class Main {
+          public static void main(String[] args) {
+            Runnable r = new MyRunnable();
+            new Thread(r).start();
+
+            for (int i = 0; i < 100; i++) {
+              System.out.println("Main Thread: " + i);
+            }
+          }
+        }
+
+        class MyRunnable implements Runnable {
+          @Override
+          public void run() {
+            for (int i = 0; i < 100; i++) {
+              System.out.println("Child Thread: " + i);
+            }
+          }
+        }
+        ```
+
+        ```java
+        /**
+         * 匿名内部类写法
+         */
+        public class Main {
+          public static void main(String[] args) {
+            Runnable r = new Runnable() {
+              @Override
+              public void run() {
+                for (int i = 0; i < 100; i++) {
+                  System.out.println("Child1 Thread: " + i);
+                }
+              }
+            };
+            new Thread(r).start();
+
+            new Thread(new Runnable() {
+              @Override
+              public void run() {
+                for (int i = 0; i < 100; i++) {
+                  System.out.println("Child2 Thread: " + i);
+                }
+              }
+            }).start();
+
+            new Thread(() -> {
+              for (int i = 0; i < 100; i++) {
+                System.out.println("Child3 Thread: " + i);
+              }
+            }).start();
+
+            for (int i = 0; i < 100; i++) {
+              System.out.println("Main Thread: " + i);
+            }
+          }
+        }
+        ```
+
+    3.  实现Callable接口：
+        *   定义一个线程任务类MyCallable类，重写call方法，封装要做的事情和要返回的数据；把MyCallable类型的对象封装成FutureTask（未来任务对象）；把未来任务对象交给Thread对象；调用Thread对象中的start方法启动线程；线程执行完毕后，通过FutureTask对象的get方法去获取线程任务执行的结果。
+        *   好处：线程任务类只是实现接口，可以继续继承类和实现接口，扩展性强；可以在线程执行完毕后去获取线程执行的结果。缺点：编码复杂一点。
+
+        ```java
+        public class Main {
+          public static void main(String[] args) {
+            try {
+              Callable<String> c = new MyCallable(100);
+              FutureTask<String> ft = new FutureTask<>(c);
+              new Thread(ft).start();
+
+              // 如果程序执行到这里，但是线程任务还没有执行完毕，那么程序会阻塞在这里，等待线程任务执行完毕
+              String result = ft.get();
+              System.out.println(result);
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+          }
+        }
+
+        class MyCallable implements Callable<String> {
+          private int n;
+          public MyCallable(int n) {
+            this.n = n;
+          }
+
+          @Override
+          public String call() throws Exception {
+            int sum = 0;
+            for (int i = 1; i <= n; i++) {
+              sum += i;
+            }
+            return "Sum of " + n + " numbers from 1 to " + n + " is " + sum;
+          }
+        }
+        ```
+
+    *   注意事项：
+        1.  启动线程必须是调用start方法，不是调用run方法。如果直接调用run方法会当作普通方法调用去运行，此时相当于还是单线程执行。只有调用start方法才是启动一个新的线程执行。
+        2.  不要把主线程任务放在启动子线程之前。这样主线程一直是先跑完，相当于是一个单线程的效果。
+*   线程安全问题：
+    *   多个线程，同时操作同一个共享资源的时候，可能会出现业务安全问题。
+    *   模拟因线程安全可能导致数据出错的示例：
+
+        ```java
+        public class Account {
+          private String cardId;
+          private double money;
+
+          public Account() {}
+
+          public Account(String cardId, double money) {
+            this.cardId = cardId;
+            this.money = money;
+          }
+
+          public String getCardId() {
+            return cardId;
+          }
+
+          public void setCardId(String cardId) {
+            this.cardId = cardId;
+          }
+
+          public double getMoney() {
+            return money;
+          }
+
+          public void setMoney(double money) {
+            this.money = money;
+          }
+
+          public void drawMoney(double money) {
+            String name = Thread.currentThread().getName();
+            if (this.money >= money) {
+              System.out.println(name + "取钱成功，取钱金额：" + money);
+              this.money -= money;
+              System.out.println(name + "取钱成功，剩余金额：" + this.money);
+            } else {
+              System.out.println(name + "取钱失败，余额不足！");
+            }
+          }
+        }
+        ```
+
+        ```java
+        public class DrawMoneyThread extends Thread {
+          private Account account;
+
+          public DrawMoneyThread(Account account, String name) {
+            super(name);
+            this.account = account;
+          }
+
+          @Override
+          public void run() {
+            account.drawMoney(100000.0);
+          }
+        }
+        ```
+
+        ```java
+        public class Main {
+          public static void main(String[] args) {
+            // 创建一个共享账户，两个人都可以从这个账户中取钱
+            Account account = new Account("ICBC-001", 100000.0);
+
+            new DrawMoneyThread(account, "张三").start();  // 模拟张三开始取钱的操作
+            new DrawMoneyThread(account, "李四").start();  // 模拟李四开始取钱的操作
+          }
+        }
+        ```
+
+*   线程同步：
+    *   解决线程安全问题的方案。
+    *   线程同步的思想：让多个线程实现先后依次访问共享资源，这样就解决了安全问题。
+    *   线程同步的常见方案：通过加锁限制线程访问共享资源，每次只允许一个线程加锁，加锁后才能访问资源，访问完毕后释放锁，其他线程才能加锁访问资源。
+    *   具体实现：
+        1.  同步代码块：
+            *   把访问共享资源的核心代码上锁，以此保证线程安全。
+
+                ```java
+                synchronized (同步锁) {
+                  // 访问共享资源的核心代码
+                }
+                ```
+
+            *   以上面取钱的安全问题为示例：
+
+                ```java
+                public void drawMoney(double money) {
+                  String name = Thread.currentThread().getName();
+                  // 同步锁必须是相同的对象，张三和李四使用同一个 Account 对象作为锁
+                  // 如果将 this 改为 new Object() 或任意局部变量将不能保证线程安全
+                  // 对于实例方法推荐使用 this 作为锁，对于静态方法推荐使用 Account.class 作为锁
+                  synchronized (this) {
+                    if (this.money >= money) {
+                      System.out.println(name + "取钱成功，取钱金额：" + money);
+                      this.money -= money;
+                      System.out.println(name + "取钱成功，剩余金额：" + this.money);
+                    } else {
+                      System.out.println(name + "取钱失败，余额不足！");
+                    }
+                  }
+                }
+                ```
+
+            *   注意：对于当前同时执行的线程来说，同步锁（Synchronization Lock）必须是同一把（同一个对象），否则会出bug。
+        2.  同步方法：
+            *   把访问共享资源的核心方法上锁，以此保证线程安全
+
+                ```java
+                修饰符 synchronized 返回值类型 方法名(参数列表) {
+                  // 访问共享资源的核心代码
+                }
+                ```
+
+            *   以上面取钱的安全问题为示例：
+
+                ```java
+                public synchronized void drawMoney(double money) {
+                  String name = Thread.currentThread().getName();
+                  if (this.money >= money) {
+                    System.out.println(name + "取钱成功，取钱金额：" + money);
+                    this.money -= money;
+                    System.out.println(name + "取钱成功，剩余金额：" + this.money);
+                  } else {
+                    System.out.println(name + "取钱失败，余额不足！");
+                  }
+                }
+                ```
+
+            *   同步方法底层原理：
+                *   同步方法其实底层也是有隐式锁对象的，只是锁的范围是整个方法。
+                *   如果方法是实例方法，同步方法默认使用this作为锁对象；如果方法是静态方法，同步方法默认使用ClassName.class作为锁对象。
+            *   同步代码块和同步方法区别：
+                *   范围上：同步代码块锁的范围更小，同步方法锁的范围更大。
+                *   可读性：同步方法更好。
+        3.  Lock锁：
+            *   JDK5开始提供的一个新的锁定操作，通过它可以创建出锁对象进行加锁和解锁，更灵活、更方便、更强大。
+            *   Lock是接口，不能直接实例化，可以采用它的实现类ReentrantLock来构建Lock锁对象。
+            *   以上面取钱的安全问题为示例：
+
+            ```java
+            public class Account {
+              private String cardId;
+              private double money;
+              private final Lock lock = new ReentrantLock();
+
+              public Account() {}
+
+              public Account(String cardId, double money) {
+                this.cardId = cardId;
+                this.money = money;
+              }
+
+              public String getCardId() {
+                return cardId;
+              }
+
+              public void setCardId(String cardId) {
+                this.cardId = cardId;
+              }
+
+              public double getMoney() {
+                return money;
+              }
+
+              public void setMoney(double money) {
+                this.money = money;
+              }
+
+              public void drawMoney(double money) {
+                String name = Thread.currentThread().getName();
+                lock.lock();
+                if (this.money >= money) {
+                  System.out.println(name + "取钱成功，取钱金额：" + money);
+                  this.money -= money;
+                  System.out.println(name + "取钱成功，剩余金额：" + this.money);
+                } else {
+                  System.out.println(name + "取钱失败，余额不足！");
+                }
+                lock.unlock();
+              }
+            }
+            ```
+
+*   线程通信：
+    *   当多个线程共同操作共享资源时，线程间通过某种方式互相告知自己的状态，以相互协调，并避免无效的资源争夺。
+    *   线程通信的常用模型：生产者与消费者模型。
+        *   生产者线程负责生产数据。
+        *   消费者线程负责消费生产者生产的数据。
+        *   生产者生产完数据应该通知并等待消费者消费；消费者消费完数据应该通知并等待生产者生产数据。
+    *   示例：
+
+        ```java
+        /**
+         * 三个生产者线程负责生产数据，每个线程每次只能生产一份数据放入一个缓冲区中。
+         * 两个消费者线程负责消费数据，每个线程每次只能从缓冲区中取出一份数据消费。
+         */
+        public class Main {
+          public static void main(String[] args) {
+            // 创建缓冲区
+            Buffer buffer = new Buffer();
+
+            // 创建三个生产者线程
+            new Thread(() -> {
+              while (true) {
+                buffer.put();
+              }
+            }, "Producer1").start();
+
+            new Thread(() -> {
+              while (true) {
+                buffer.put();
+              }
+            }, "Producer2").start();
+
+            new Thread(() -> {
+              while (true) {
+                buffer.put();
+              }
+            }, "Producer3").start();
+
+            // 创建两个消费者线程
+            new Thread(() -> {
+              while (true) {
+                buffer.get();
+              }
+            }, "Consumer1").start();
+
+            new Thread(() -> {
+              while (true) {
+                buffer.get();
+              }
+            }, "Consumer2").start();
+          }
+        }
+
+        class Buffer {
+          private static int count = 0;
+          private List<String> list = new ArrayList<>();
+
+          // 放入数据
+          public synchronized void put() {
+            try {
+              String name = Thread.currentThread().getName();
+
+              // 如果缓冲区内没有数据，就放入一个数据
+              if (list.size() == 0) {
+                list.add("No." + count + " data");
+                count++;
+                System.out.println(name + " put " + list.get(0));
+                Thread.sleep(2000);
+              }
+
+              // 唤醒别人，阻塞自己
+              this.notifyAll();
+              this.wait();
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+          }
+
+          public synchronized void get() {
+            try {
+              String name = Thread.currentThread().getName();
+
+              // 如果缓冲区内有数据就消费
+              if (list.size() == 1) {
+                System.out.println(name + " get " + list.get(0));
+                list.clear();
+                Thread.sleep(1000);
+              }
+
+              // 唤醒别人，阻塞自己
+              this.notifyAll();
+              this.wait();
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+          }
+        }
+        ```
+
+*   线程池：
+    *   线程池就是一个可以复用线程的技术。
+    *   不使用线程池的问题：用户每发起一个请求，后台就需要创建一个新线程来处理，下次新任务来了肯定又要创建新线程处理，而创建新线程的开销是很大的，并且请求过多时，肯定会产生大量的线程出来，这样会严重影响系统的性能。
+    *   线程池的工作原理：当你向线程池提交一个任务时，它会遵循一套严格的规则来决定如何处理这个任务，其工作流程可以按照下述步骤进行：
+        1.  正式员工优先：当一个新任务来临时，线程池首先检查当前线程数是否小于corePoolSize（核心线程数），如果是，即使有其他线程空闲，也会立即创建一个新的核心线程来执行这个任务。
+        2.  入队等待：如果核心线程已满，新任务不会立即执行，而是被放入WorkQueue（工作队列）中等待。
+        3.  招募临时工：如果工作队列也满了，线程池会尝试创建新的非核心线程（临时工）来立即执行这个新任务，而不是让任务在队列中一直等待。
+        4.  拒绝策略：如果线程数已经达到maximumPoolSize，并且队列也满了，说明线程池已经完全饱和，无法处理新的任务。此时，会启动决绝策略RejectedExecutionhandler来处理这个被拒绝的任务。
+        5.  任务执行与复用：一旦线程被创建（无论是核心还是非核心），它就会启动并执行任务。线程不会在执行完一个任务后就退出，相反，它会循环往复地工作，不停的从工作队列中通过getTask方法获取下一个任务（如果工作队列中没有任务，则线程会阻塞，等待有任务加入工作队列），然后执行该任务。通过这个循环，一个线程可以连续执行无数个任务，实现了线程的复用，极大的减少了创建线程和销毁线程的次数。
+        6.  回收临时工：如果一个非核心线程在keepAliveTime内都是空闲的，没有获取到新任务，那么它就会被销毁，以节省系统资源。核心线程默认会一直存活，除非设置了allowCoreThreadTimeOut为true。
+    *   创建线程池：
+        1.  使用ExecutorService（接口）的实现类ThreadPoolExecutor创建一个线程池对象。
+
+            ```java
+            /**
+             * 使用线程池处理 Runnable 任务
+             */
+            public class Main {
+              public static void main(String[] args) {
+                ExecutorService pool = new ThreadPoolExecutor(
+                  // corePoolSize：指定线程池的核心线程数
+                  3,
+                  // maximumPoolSize：指定线程池的最大线程数
+                  5,
+                  // keepAliveTime：指定临时线程的存活时间
+                  8,
+                  // unit：指定 keepAliveTime 的单位，如秒、分、时、天
+                  TimeUnit.SECONDS,
+                  // workQueue：指定任务队列，用于存放等待状态的线程
+                  new ArrayBlockingQueue<>(4),
+                  // threadFactory：指定线程工厂，用于创建线程
+                  Executors.defaultThreadFactory(),
+                  // 指定决绝策略
+                  // AbortPolicy：丢弃任务并抛出异常
+                  // DiscardPolicy：丢弃任务，但是不抛出异常，不推荐使用
+                  // DiscardOldestPolicy：丢弃队列中最老的任务，然后重新尝试执行任务
+                  // CallerRunsPolicy：由主线程处理该任务，绕过线程池直接执行
+                  new ThreadPoolExecutor.AbortPolicy()
+                );
+
+                Runnable r = new MyRunnable();
+                pool.execute(r);
+                pool.execute(r);
+                pool.execute(r);
+                pool.execute(r);
+                pool.execute(r);
+                pool.execute(r);
+                pool.execute(r);
+                pool.execute(r);
+                pool.execute(r);
+                // 再添加一个新任务会抛出异常，因为工作线程和任务队列都已经满了
+                // pool.execute(r);
+
+                // 线程池默认不会关闭，会一直等待接收新任务
+                pool.shutdown();  // 等待线程池中任务全部执行完毕后关闭线程池
+                // pool.shutdownNow();  // 立即关闭线程池，不管任务是否执行完毕
+              }
+            }
+
+            class MyRunnable implements Runnable {
+              @Override
+              public void run() {
+                System.out.println(Thread.currentThread().getName() + " is running...");
+                try {
+                  Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                  e.printStackTrace();
+                }
+              }
+            }
+            ```
+
+            ```java
+            /**
+             * 使用线程池处理 Callable 任务
+             */
+            public class Main {
+              public static void main(String[] args) throws ExecutionException, InterruptedException {
+                ExecutorService pool = new ThreadPoolExecutor(
+                  3,
+                  5,
+                  8,
+                  TimeUnit.SECONDS,
+                  new ArrayBlockingQueue<>(4),
+                  Executors.defaultThreadFactory(),
+                  new ThreadPoolExecutor.CallerRunsPolicy()
+                );
+
+                Future<String> f1 = pool.submit(new MyCallable(100));
+                Future<String> f2 = pool.submit(new MyCallable(200));
+                Future<String> f3 = pool.submit(new MyCallable(300));
+                Future<String> f4 = pool.submit(new MyCallable(400));
+
+                System.out.println(f1.get());
+                System.out.println(f2.get());
+                System.out.println(f3.get());
+                System.out.println(f4.get());
+              }
+            }
+
+            class MyCallable implements Callable<String> {
+              private int n;
+              public MyCallable(int n) {
+                this.n = n;
+              }
+
+              @Override
+              public String call() throws Exception {
+                int sum = 0;
+                for (int i = 1; i <= n; i++) {
+                  sum += i;
+                }
+                return "Sum of " + n + " numbers from 1 to " + n + " is " + sum;
+              }
+            }
+            ```
+
+        2.  使用Executors（线程池的工作类）调用方法返回不同特点的线程池对象。
+            *   Executors中有4种线程池对象，分别如下：newFixedThreadPool()、newCachedThreadPool()、newSingleThreadExecutor()、newScheduledThreadPool()。
+            *   上述方法的底层，都是通过线程池的实现类ThreadPoolExecutor来实现的。
+            *   阿里巴巴Java开发手册不推荐使用Executors创建线程池，而是推荐使用ThreadPoolExecutor创建线程池。
+*   进程：正在运行的程序（软件）就是一个对立的进程；线程是属于进程的，一个进程中可以同时运行很多个线程；进程中的多个线程其实是并发和并行执行的。多线程也是并发和并行同时进行的。
+    *   并发：单核处理器通过是时间片切换“同时”处理多个任务（逻辑上同时）。
+    *   并行：多核处理器真正同时执行多个任务（物理上同时）。
+*   线程的生命周期：线程从生到死的过程中，经历的各种状态及状态转换。理解线程这些状态有利于提升并发编程的理解能力。
+    *   Java总共定义了6个状态，都定义在Thread类的内部枚举类中：
+
+        ```java
+        // 来自 JDK
+        public class Thread {
+          public enum State {
+            NEW,
+            RUNNABLE,
+            BLOCKED,
+            WAITING,
+            TIMED_WAITING,
+            TERMINATED;
+          }
+        }
+        ```
+
+    *   ![Java线程状态转换图](resources/java_thread_state_transition_diagram.png)
+*   悲观锁：认为一定会发生并发冲突，因此每次操作数据前都先加锁，确保独占资源。
+    *   基于synchronized实现：
+
+        ```java
+        public class Main {
+          private int balance = 100;
+
+          public static void main(String[] args) {
+            Main main = new Main();
+
+            // 创建多个线程模拟同时取款
+            for (int i = 0; i < 5; i++) {
+              new Thread(() -> main.withdraw(30), "线程" + i).start();
+            }
+          }
+
+          public synchronized void withdraw(int amount) {
+            if (balance >= amount) {
+              try {
+                Thread.sleep(1000);
+              } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+              }
+
+              balance -= amount;
+              System.out.println(Thread.currentThread().getName() + "取款" + amount + "，余额为" + balance);
+            } else {
+              System.out.println(Thread.currentThread().getName() + "取款失败，余额不足");
+            }
+          }
+        }
+        ```
+
+    *   基于ReentrantLock实现：
+
+        ```java
+        public class Main {
+          private int balance = 100;
+          private final Lock lock = new ReentrantLock();
+
+          public static void main(String[] args) {
+            Main main = new Main();
+
+            // 创建多个线程模拟同时取款
+            for (int i = 0; i < 5; i++) {
+              new Thread(() -> main.withdraw(30), "线程" + i).start();
+            }
+          }
+
+          public void withdraw(int amount) {
+            lock.lock();
+
+            try {
+              if (balance >= amount) {
+                try {
+                  Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                  Thread.currentThread().interrupt();
+                }
+
+                balance -= amount;
+                System.out.println(Thread.currentThread().getName() + "取款" + amount + "，余额为" + balance);
+              } else {
+                System.out.println(Thread.currentThread().getName() + "取款失败，余额不足");
+              }
+            } finally {
+              lock.unlock();
+            }
+          }
+        }
+        ```
+
+*   乐观锁：认为不会发生并发冲突，因此不对数据加锁，而是在更新时才判断在此期间是否有其他操作修改了数据。通常使用
+    *   基于CAS（Compare And Swap）实现：
+
+        ```java
+        public class Main {
+          private AtomicInteger balance = new AtomicInteger(100);
+
+          public static void main(String[] args) {
+            Main main = new Main();
+
+            // 创建多个线程模拟同时取款
+            for (int i = 0; i < 5; i++) {
+              new Thread(() -> main.withdraw(30), "线程" + i).start();
+            }
+          }
+
+          public void withdraw(int amount) {
+            while (true) {
+              int current = balance.get();
+              if (current < amount) {
+                System.out.println(Thread.currentThread().getName() + "取款失败，余额不足");
+                return;
+              }
+
+              try {
+                Thread.sleep(1000);
+              } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+              }
+
+              // 如果当前值仍然是 current，则更新为 current - amount
+              if (balance.compareAndSet(current, current - amount)) {
+                System.out.println(Thread.currentThread().getName() + "取款" + amount + "，余额为" + (current - amount));
+                return;
+              } else {
+                System.out.println(Thread.currentThread().getName() + "检测到冲突，重试中...");
+              }
+            }
+          }
+        }
+        ```
+
+    *   基于版本号实现：
+
+        ```java
+        public class Main {
+          private int balance = 100;
+          private int version = 0;
+
+          public static void main(String[] args) {
+            Main main = new Main();
+
+            // 创建多个线程模拟同时取款
+            for (int i = 0; i < 5; i++) {
+              new Thread(() -> main.withdraw(30), "线程" + i).start();
+            }
+          }
+
+          public void withdraw(int amount) {
+            while (true) {
+              int currentVersion = version;
+              int currentBalance = balance;
+
+              if (currentBalance < amount) {
+                System.out.println(Thread.currentThread().getName() + "取款失败，余额不足");
+                return;
+              }
+
+              try {
+                Thread.sleep(1000);
+              } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+              }
+
+              // 检查版本号是否变化
+              synchronized (this) {
+                if (version == currentVersion) {
+                  balance = currentBalance - amount;
+                  version++;  // 更新版本号
+                  System.out.println(Thread.currentThread().getName() + "取款" + amount + "，余额为" + balance);
+                  return;
+                } else {
+                  System.out.println(Thread.currentThread().getName() + "检测到冲突，重试中...");
+                }
+              }
+            }
+          }
+        }
+        ```
+
+网络编程：
+
+*   可以让设备中程序与网络上其他设备中的程序进行数据交互，实现网络通信。
+*   基本的通信架构：CS架构（客户端/服务器）；BS架构（浏览器/服务器）。
+*   传输层的通信协议：
+    *   UDP协议：用户数据报协议。
+        *   无连接，不可靠通信；通信效率高。
+        *   适合实现语音通话、视频直播等场景。
+    *   TCP协议：传输控制协议。
+        *   面向连接，可靠通信；通信效率相对不高。
+        *   适合实现网页、文件下载、支付等场景。
+*   使用UDP协议实现网络通信：
+    *   一发一收：
+
+        ```java
+        /**
+         * 客户端
+         */
+        public class Client {
+          public static void main(String[] args) {
+            try (DatagramSocket socket = new DatagramSocket()) {
+              byte[] bytes = "hello world".getBytes();
+              DatagramPacket packet = new DatagramPacket(bytes, bytes.length, InetAddress.getLocalHost(), 8080);
+
+              // 发送数据
+              socket.send(packet);
+            
+              System.out.println("Send success!");
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+        ```
+
+        ```java
+        /**
+         * 服务器
+         */
+        public class Server {
+          public static void main(String[] args) {
+            try (DatagramSocket socket = new DatagramSocket(8080)) {
+              byte[] buffer = new byte[1024 * 64];  // 64KB
+              DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+
+              // 服务器接收客户端发出的数据
+              socket.receive(packet);
+
+              System.out.println("Receive: " + new String(packet.getData(), 0, packet.getLength()));
+
+              System.out.println(packet.getAddress().getHostAddress());
+              System.out.println(packet.getPort());
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+        ```
+
+    *   多发多收：
+
+        ```java
+        /**
+         * 客户端
+         */
+        public class Client {
+          public static void main(String[] args) {
+            Scanner scanner = new Scanner(System.in);
+            try (DatagramSocket socket = new DatagramSocket()) {
+              while (true) {
+                System.out.print("Input: ");
+                String input = scanner.nextLine();
+
+                if ("exit".equals(input)) {
+                  System.out.println("Exit!");
+                  break;
+                }
+
+                byte[] bytes = input.getBytes();
+                DatagramPacket packet = new DatagramPacket(bytes, bytes.length, InetAddress.getLocalHost(), 8080);
+
+                socket.send(packet);
+              }
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+        ```
+
+        ```java
+        /**
+         * 服务器
+         */
+        public class Server {
+          public static void main(String[] args) {
+            try (DatagramSocket socket = new DatagramSocket(8080)) {
+              byte[] buffer = new byte[1024 * 64];
+              DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+
+              while (true) {
+                socket.receive(packet);
+
+                System.out.println("Receive: " + new String(packet.getData(), 0, packet.getLength()));
+                
+                System.out.println(packet.getAddress().getHostAddress());
+                System.out.println(packet.getPort());
+              }
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+        ```
+
+*   使用TCP协议实现网络通信：
+    *   一发一收：
+
+        ```java
+        public class Client {
+          public static void main(String[] args) {
+            try (
+              Socket socket = new Socket("localhost", 8080);
+              OutputStream outputStream = socket.getOutputStream();
+              DataOutputStream dataOutputStream = new DataOutputStream(outputStream)
+            ) {
+              dataOutputStream.writeUTF("hello world");
+              System.out.println("Send success!");
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+        ```
+
+        ```java
+        public class Server {
+          public static void main(String[] args) {
+            try (
+              ServerSocket serverSocket = new ServerSocket(8080);
+              Socket socket = serverSocket.accept();
+              InputStream inputStream = socket.getInputStream();
+              DataInputStream dataInputStream = new DataInputStream(inputStream)
+            ) {
+              System.out.println("Receive: " + dataInputStream.readUTF());
+              System.out.println(socket.getRemoteSocketAddress());
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+        ```
+
+    *   多发多收：
+
+        ```java
+        public class Client {
+          public static void main(String[] args) {
+            try (
+              Socket socket = new Socket("localhost", 8080);
+              OutputStream outputStream = socket.getOutputStream();
+              DataOutputStream dataOutputStream = new DataOutputStream(outputStream)
+             ) {
+              Scanner scanner = new Scanner(System.in);
+              while (true) {
+                System.out.print("Input: ");
+                String input = scanner.nextLine();
+
+                if ("exit".equals(input)) {
+                  System.out.println("Exit!");
+                  break;
+                }
+
+                dataOutputStream.writeUTF(input);
+                dataOutputStream.flush();
+              }
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+        ```
+
+        ```java
+        public class Server {
+          public static void main(String[] args) {
+            try (
+              ServerSocket serverSocket = new ServerSocket(8080);
+              Socket socket = serverSocket.accept();
+              InputStream inputStream = socket.getInputStream();
+              DataInputStream dataInputStream = new DataInputStream(inputStream)
+            ) {
+              while (true) {
+                try {
+                  System.out.println("Receive: " + dataInputStream.readUTF());
+                } catch (Exception e) {
+                  System.out.println(socket.getRemoteSocketAddress() + " disconnected");
+                  break;
+                }
+              }
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+        ```
+
+    *   单服务器与多客户端同时通信：
+
+        ```java
+        public class Client {
+          public static void main(String[] args) {
+            try (
+              Socket socket = new Socket("localhost", 8080);
+              OutputStream outputStream = socket.getOutputStream();
+              DataOutputStream dataOutputStream = new DataOutputStream(outputStream)
+             ) {
+              Scanner scanner = new Scanner(System.in);
+              while (true) {
+                System.out.print("Input: ");
+                String input = scanner.nextLine();
+
+                if ("exit".equals(input)) {
+                  System.out.println("Exit!");
+                  break;
+                }
+
+                dataOutputStream.writeUTF(input);
+                dataOutputStream.flush();
+              }
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+        ```
+
+        ```java
+        public class Server {
+          public static void main(String[] args) {
+            try (ServerSocket serverSocket = new ServerSocket(8080)) {
+              while (true) {
+                Socket socket = serverSocket.accept();
+                System.out.println("New client connected! " + socket.getRemoteSocketAddress());
+                new ServerReaderThread(socket).start();
+              }
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+        ```
+
+        ```java
+        class ServerReaderThread extends Thread {
+          private Socket socket;
+
+          public ServerReaderThread(Socket socket) {
+            this.socket = socket;
+          }
+
+          @Override
+          public void run() {
+            try (
+              InputStream inputStream = socket.getInputStream();
+              DataInputStream dataInputStream = new DataInputStream(inputStream)
+            ) {
+              while (true) {
+                try {
+                  System.out.println("Receive: " + dataInputStream.readUTF());
+                } catch (Exception e) {
+                  System.out.println(socket.getRemoteSocketAddress() + " disconnected");
+                  break;
+                }
+              }
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+        ```
+
+*   简易CS架构案例（即时通讯）：
+
+    ```java
+    public class Client {
+      public static void main(String[] args) {
+        try (
+          Socket socket = new Socket("localhost", 8080);
+          OutputStream outputStream = socket.getOutputStream();
+          DataOutputStream dataOutputStream = new DataOutputStream(outputStream)
+        ) {
+          new ClientReaderThread(socket).start();
+
+          Scanner scanner = new Scanner(System.in);
+          while (true) {
+            System.out.print("Input: ");
+            String input = scanner.nextLine();
+
+            if ("exit".equals(input)) {
+              System.out.println("Exit!");
+              break;
+            }
+
+            dataOutputStream.writeUTF(input);
+            dataOutputStream.flush();
+          }
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+    ```
+
+    ```java
+    public class ClientReaderThread extends Thread {
+      private Socket socket;
+
+      public ClientReaderThread(Socket socket) {
+        this.socket = socket;
+      }
+
+      @Override
+      public void run() {
+        try (
+          InputStream inputStream = socket.getInputStream();
+          DataInputStream dataInputStream = new DataInputStream(inputStream)
+        ) {
+          while (true) {
+            try {
+              String message = dataInputStream.readUTF();
+              System.out.println("\nReceive: " + message);
+              System.out.print("Input: ");
+            } catch (Exception e) {
+              System.out.println("\n" + socket.getRemoteSocketAddress() + " disconnected");
+              break;
+            }
+          }
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+    ```
+
+    ```java
+    public class Server {
+      public static List<Socket> onLineSockets = new ArrayList<>();
+
+      public static void main(String[] args) {
+        System.out.println("Server started!");
+
+        try (ServerSocket serverSocket = new ServerSocket(8080)) {
+          while (true) {
+            Socket socket = serverSocket.accept();
+            onLineSockets.add(socket);
+            System.out.println("New client connected! " + socket.getRemoteSocketAddress());
+            new ServerReaderThread(socket).start();
+          }
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+    ```
+
+    ```java
+    class ServerReaderThread extends Thread {
+      private Socket socket;
+
+      public ServerReaderThread(Socket socket) {
+        this.socket = socket;
+      }
+
+      @Override
+      public void run() {
+        try (
+          InputStream inputStream = socket.getInputStream();
+          DataInputStream dataInputStream = new DataInputStream(inputStream)
+        ) {
+          while (true) {
+            try {
+              String message = dataInputStream.readUTF();
+              System.out.println("Receive: " + message);
+              sendMessageToAll(message);
+            } catch (Exception e) {
+              System.out.println(socket.getRemoteSocketAddress() + " disconnected");
+              Server.onLineSockets.remove(socket);
+              break;
+            }
+          }
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+
+      private void sendMessageToAll(String message) throws IOException {
+        for (Socket socket : Server.onLineSockets) {
+          if (this.socket != socket) {
+            OutputStream outputStream = socket.getOutputStream();
+            DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
+            dataOutputStream.writeUTF(message);
+            dataOutputStream.flush();
+          }
+        }
+      }
+    }
+    ```
+
+*   简易BS架构案例（网页）：
+    *   不使用线程池：
+
+        ```java
+        public class Server {
+          public static void main(String[] args) {
+            System.out.println("Server started!");
+
+            try (ServerSocket serverSocket = new ServerSocket(8080)) {
+              while (true) {
+                Socket socket = serverSocket.accept();
+                System.out.println("New client connected! " + socket.getRemoteSocketAddress());
+                new ServerReaderThread(socket).start();
+              }
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+        ```
+
+        ```java
+        class ServerReaderThread extends Thread {
+          private Socket socket;
+
+          public ServerReaderThread(Socket socket) {
+            this.socket = socket;
+          }
+
+          @Override
+          public void run() {
+            try (
+              OutputStream outputStream = socket.getOutputStream();
+              PrintStream printStream = new PrintStream(outputStream)
+            ) {
+              printStream.println("HTTP/1.1 200 OK");
+              printStream.println("Content-Type:text/html;charset=UTF-8");
+              printStream.println();  // 必须换行
+              printStream.println("<html>");
+              printStream.println("<body>");
+              printStream.println("<h1>Hello World!</h1>");
+              printStream.println("</body>");
+              printStream.println("</html>");
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+
+            try {
+              socket.close();
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+        ```
+
+    *   使用线程池优化：
+
+        ```java
+        public class Server {
+          public static void main(String[] args) {
+            System.out.println("Server started!");
+
+            try (ServerSocket serverSocket = new ServerSocket(8080)) {
+              ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
+                32,
+                64,
+                8,
+                TimeUnit.SECONDS,
+                new ArrayBlockingQueue<>(8),
+                Executors.defaultThreadFactory(),
+                new ThreadPoolExecutor.AbortPolicy()
+              );
+
+              while (true) {
+                Socket socket = serverSocket.accept();
+                System.out.println("New client connected! " + socket.getRemoteSocketAddress());
+                threadPoolExecutor.execute(new ServerReaderRunnable(socket));
+              }
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+        ```
+
+        ```java
+        public class ServerReaderRunnable implements Runnable {
+          private Socket socket;
+
+          public ServerReaderRunnable(Socket socket) {
+            this.socket = socket;
+          }
+
+          @Override
+          public void run() {
+            try (
+              OutputStream outputStream = socket.getOutputStream();
+              PrintStream printStream = new PrintStream(outputStream)
+            ) {
+              printStream.println("HTTP/1.1 200 OK");
+              printStream.println("Content-Type:text/html;charset=UTF-8");
+              printStream.println();  // 必须换行
+              printStream.println("<html>");
+              printStream.println("<body>");
+              printStream.println("<h1>Hello World!</h1>");
+              printStream.println("</body>");
+              printStream.println("</html>");
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+
+            try {
+              socket.close();
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+        ```
+
+动态代理：
+
+*   在运行时动态创建接口实现类的技术，允许开发者在不修改源代码的情况下，增强或修改原有对象的功能。
+*   示例：
+
+    ```java
+    public interface UserService {
+      void login(String username, String password) throws Exception;
+      void deleteUsers() throws Exception;
+      String[] selectUsers() throws Exception;
+    }
+    ```
+
+    ```java
+    public class UserServiceImpl implements UserService {
+      @Override
+      public void login(String username, String password) throws Exception {
+        if ("admin".equals(username) && "123456".equals(password)) {
+          System.out.println("Login success!");
+        } else {
+          System.out.println("Login failed!");
+        }
+        Thread.sleep(1000);
+      }
+
+      @Override
+      public void deleteUsers() throws Exception {
+        System.out.println("Delete users...");
+        Thread.sleep(1000);
+      }
+
+      @Override
+      public String[] selectUsers() throws Exception {
+        System.out.println("Select users...");
+        String[] users = {"张三", "李四", "王五", "赵六", "孙七"};
+        Thread.sleep(500);
+        return users;
+      }
+    }
+    ```
+
+    ```java
+    public class ProxyUtil {
+      public static UserService createProxy(UserService userService) {
+        UserService userServiceProxy = (UserService) Proxy.newProxyInstance(
+          ProxyUtil.class.getClassLoader(),
+          new Class[]{UserService.class},
+          new InvocationHandler() {
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+              if (method.getName().equals("login") || method.getName().equals("deleteUsers") || method.getName().equals("selectUsers")) {
+                long startTime = System.currentTimeMillis();
+
+                Object result = method.invoke(userService, args);
+
+                long endTime = System.currentTimeMillis();
+
+                System.out.println(method.getName() + "() takes " + (endTime - startTime) / 1000.0 + "s");
+
+                return result;
+              } else {
+                Object result = method.invoke(userService, args);
+                return result;
+              }
+            }
+          }
+        );
+
+        return userServiceProxy;
+      }
+    }
+    ```
+
+    ```java
+    public class Test {
+      public static void main(String[] args) throws Exception {
+        UserService userService = ProxyUtil.createProxy(new UserServiceImpl());
+
+        userService.login("admin", "123456");
+        userService.deleteUsers();
+        String[] users = userService.selectUsers();
+        System.out.println(Arrays.toString(users));
+      }
+    }
+    ```
+
+特殊文件：
+
+*   Properties属性文件：
+    *   Properties是Map的子类（键值对集合），但是我们一般不会当集合使用。
+    *   核心作用：Properties是用来代表属性文件的，通过Properties可以读写属性文件里的内容。
+
+    ```properties
+    # users.properties 的原始数据
+    张三=18
+    李四=19
+    王五=20
+    赵六=21
+    孙七=22
+    ```
+
+    ```java
+    /**
+     * 读取 Properties 属性文件
+     */
+    public class Main {
+      public static void main(String[] args) {
+        Properties properties = new Properties();
+        System.out.println(properties);
+
+        try (Reader reader = new FileReader("users.properties")) {
+          properties.load(reader);
+          System.out.println(properties);
+
+          System.out.println(properties.getProperty("张三"));
+          System.out.println(properties.getProperty("李四"));
+
+          Set<String> keys = properties.stringPropertyNames();
+          for (String key : keys) {
+            System.out.println(key + "--->" + properties.getProperty(key));
+          }
+
+          properties.forEach((key, value) -> {
+            System.out.println(key + "--->" + value);
+          });
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+    ```
+
+    ```java
+    /**
+     * 写入 Properties 属性文件
+     */
+    public class Main {
+      public static void main(String[] args) {
+        Properties properties = new Properties();
+        properties.setProperty("张三", "18");
+        properties.setProperty("李四", "19");
+        properties.setProperty("王五", "20");
+
+        try (Writer writer = new FileWriter("users.properties")) {
+          properties.store(writer, "users");
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+    ```
+
+*   XML文件：
+    *   XML是可扩展标记语言，本质是一种表示数据的格式，可以用来存储复杂的数据结构。
+    *   XML的特点：
+        *   XML中的`<标签名>`称为一个标签或一个元素，一般是成对出现的。
+        *   XML中的标签名可以自己定义（可扩展），但必须要正确的嵌套。
+        *   XML中只能有一个根标签。
+        *   XML中的标签可以有属性。
+    *   XML的语法规则：
+        *   XML文件的后缀名为xml。
+        *   文档声明必须写在第一行。
+        *   XML中可以定义注解信息：`<!-- 注解 -->`。
+        *   XML中书写`<`、`&`等，可能会出现冲突，导致报错，此时可以用特殊字符进行转义，例如`&lt;`、`&amp;`、`&gt;`、`&quot;`、`&apos;`。
+        *   XML中可以写一个叫CDATA的数据区（`<![CDATA[ ...内容... ]]>`），用于包裹特殊字符或文本的标记，其作用是防止特殊字符（如<、>、&等）被XML解析器误解析为标签或实体。
+    *   XML的应用场景：经常用来做为系统的配置文件，或者作为一种特殊的数据结构，在网络中传输数据。
+    *   约束XML文件的书写：
+        *   通过编写约束文档来限制XML文档的书写格式，例如限制标签、属性应该怎么写。
+        *   约束文档有两种：DTD和Schema。DTD文件可以约束XML文件的编写，不能约束具体的数据类型；Schema既可以约束XML文件的编写，也可以约束XML文件的数据类型。
+    *   推荐使用Dom4j来读取XML文件，使用基础的IO流来写出XML文件。
+
+        ```xml
+        <?xml version="1.0" encoding="UTF-8" ?>
+        <!-- 这里是注释 -->
+        <users>
+          <user id="1">
+            <name>张三</name>
+            <age>18</age>
+          </user>
+          <user id="2">
+            <name>李四</name>
+            <age>19</age>
+          </user>
+          <people>很多人</people>
+          <data>
+            <![CDATA[
+              3 < 4
+            ]]>
+          </data>
+        </users>
+        ```
+
+        ```java
+        /**
+         * 使用 Dom4j 框架来解析 XML 文件
+        */
+        public class Main {
+          public static void main(String[] args) throws DocumentException {
+            // 创建一个 Dom4j 框架提供的解析器对象
+            SAXReader reader = new SAXReader();
+
+            // 使用 SAXReader 对象把需要解析的 XML 文件读成一个 Document 对象
+            Document document = reader.read("users.xml");
+
+            // 从文档对象中解析 XML 的根元素
+            Element rootElement = document.getRootElement();
+            System.out.println(rootElement.getName());
+
+            // 获取根元素下全部一级子元素
+            List<Element> elements = rootElement.elements("user");
+            for (Element element : elements) {
+              System.out.println(element.getName());
+            }
+
+            // 获取根元素下的某个元素
+            Element peopleElement = rootElement.element("people");
+            System.out.println(peopleElement.getText());
+
+            // 如果根元素下有很多个 user 元素，默认获取第一个
+            Element userElement = rootElement.element("user");
+            System.out.println(userElement.elementText("name"));
+
+            // 获取元素的属性信息
+            System.out.println(userElement.attributeValue("id"));
+            Attribute id = userElement.attribute("id");
+            System.out.println(id.getName());
+            System.out.println(id.getValue());
+
+            List<Attribute> attributes = userElement.attributes();
+            for (Attribute attribute : attributes) {
+              System.out.println(attribute.getName() + "=" + attribute.getValue());
+            }
+
+            // 获取全部的文本内容
+            System.out.println(userElement.elementText("name"));
+            System.out.println(userElement.elementText("age"));
+
+            Element dataElement = rootElement.element("data");
+            System.out.println(dataElement.getText());
+            System.out.println(dataElement.getTextTrim());
+          }
+        }
+        ```
+
+        ```java
+        /**
+         * 使用基础 IO 流写出 XML 文件
+        */
+        public class Main {
+          public static void main(String[] args) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\r\n");
+            sb.append("<user>\r\n");
+            sb.append("  <name>张三</name>\r\n");
+            sb.append("  <age>18</age>\r\n");
+            sb.append("</user>");
+
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter("users.xml"))) {
+              bw.write(sb.toString());
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+        ```
+
+日志技术：把程序运行的信息记录到文件中，方便程序员定位bug，并了解程序的执行情况等。
+
+*   日志的好处：可以将系统执行的信息，方便的记录到指定的位置（控制台、文件、数据库等）；可以随时以开关的形式控制日志的启动和停止，无需侵入到源代码中去进行修改。
+*   日志接口：设计日志框架的一套标准，日志框架需要实现这些接口。
+    *   Commons Logging（JCL）。
+    *   Simple Logging Facade for Java（SLF4J）。
+*   日志框架：牛人或者第三方公司已经做好的实现代码，后来者直接可以拿去使用。
+    *   java.util.logging（JUL）：根据Commons Logging（JCL）标准来实现的。
+    *   Log4j：根据SLF4J标准来实现的。
+    *   Logback：根据SLF4J标准来实现的。有三个核心模块：
+        *   logback-core：基础模块，是其他两个模块依赖的基础（必须有）。
+        *   logback-classic：完整实现了SLF4J API的模块（必须有）。
+        *   logback-access：与Tomcat和Jetty等Servlet容器集合，以提供HTTP访问日志的功能（可选）。
+*   推荐使用SLF4J和Logback来记录日志。
+
+单元测试：
+
+*   针对最小的功能单元（方法），编写测试代码对其进行正确性测试。
+*   推荐使用JUnit来编写单元测试代码。
+
+框架：
+
+*   解决某类问题，编写的一套类、接口等，可以理解成一个半成品，大多框架都是第三方研发的。
+*   使用框架的好处：在框架的基础上开发，可以得到优秀的软件架构，并能提高开发效率。
+*   框架的形式：一般是把类、接口等编译成class形式，再压缩成一个.jar结尾的文件发行出去。
+*   常用简易框架：
+    *   commons-io：一个IO框架，封装了Java提供的对文件、数据进行操作的代码，对外提供了更简单的方式来对文件进行操作，对数据进行读写等。
+
+        ```java
+        public class Main {
+          public static void main(String[] args) {
+            try {
+              // 文件复制和删除
+              copyAndDeleteFiles();
+
+              // 读取和写入文件内容
+              readAndWriteFiles();
+
+              // 文件过滤和查找
+              findFiles();
+
+              // 文件名和路径操作
+              filenameOperations();
+
+              // 目录操作
+              directoryOperations();
+
+              // 文件监控
+              monitorFile();
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+
+          private static void copyAndDeleteFiles() throws IOException {
+            File sourceDir = new File("source");
+            File destDir = new File("dest");
+            File sourceFile = new File(sourceDir, "source.txt");
+            File destFile = new File(destDir, "dest.txt");
+
+            // 确保目录存在
+            FileUtils.forceMkdir(sourceDir);
+
+            // 复制目录
+            FileUtils.copyDirectory(sourceDir, destDir);
+
+            // 复制文件
+            FileUtils.copyFile(sourceFile, destFile);
+
+            // 删除文件或目录
+            FileUtils.deleteQuietly(sourceFile);  // 静默删除，不抛出异常
+          }
+
+          private static void readAndWriteFiles() throws IOException {
+            File sourceFile = new File("source/source.txt");
+
+            // 写入文件
+            FileUtils.writeStringToFile(sourceFile, "Hello World\nHello World", StandardCharsets.UTF_8);
+
+            // 追加内容
+            FileUtils.writeStringToFile(sourceFile, "Hello World", StandardCharsets.UTF_8, true);
+
+            // 读取文件内容为字符串
+            String content = FileUtils.readFileToString(sourceFile, StandardCharsets.UTF_8);
+            System.out.println(content);
+
+            // 逐行读取文件内容
+            List<String> lines = FileUtils.readLines(sourceFile, StandardCharsets.UTF_8);
+            System.out.println(lines.size());
+            for (String line : lines) {
+              System.out.println(line);
+            }
+
+            // 使用 IOUtils 处理流
+            try (
+              InputStream is = new FileInputStream(sourceFile);
+              StringWriter sw = new StringWriter()
+            ) {
+              IOUtils.copy(is, sw, StandardCharsets.UTF_8);
+              System.out.println(sw.toString());
+            }
+          }
+
+          private static void findFiles() {
+            File dir = new File(".");
+
+            // 查找所有 .txt 文件
+            String[] extensions = {"txt"};
+            Collection<File> textFiles = FileUtils.listFiles(dir, extensions, true);
+            for (File file : textFiles) {
+              System.out.println("- " + file.getName());
+            }
+
+            // 使用通配符查找文件
+            Collection<File> javaFiles = FileUtils.listFiles(
+              dir,
+              new WildcardFileFilter("*.java"),
+              null  // 不需要目录过滤器
+            );
+            for (File file : javaFiles) {
+              System.out.println("- " + file.getName());
+            }
+          }
+
+          private static void filenameOperations() {
+            String filename = "text.txt";
+
+            // 获取文件扩展名
+            System.out.println(FilenameUtils.getExtension(filename));
+
+            // 获取文件名，不包括扩展名
+            System.out.println(FilenameUtils.getBaseName(filename));
+
+            // 获取完整文件名
+            System.out.println(FilenameUtils.getName(filename));
+
+            // 规范化路径
+            System.out.println(FilenameUtils.normalize(filename));
+
+            // 路径连接
+            System.out.println(FilenameUtils.concat("D:/", filename));
+          }
+
+          private static void directoryOperations() throws IOException {
+            File dir = new File("temp");
+
+            // 创建目录
+            FileUtils.forceMkdir(dir);
+
+            // 计算目录大小
+            System.out.println(FileUtils.sizeOfDirectory(dir) + " bytes");
+
+            // 清空目录
+            FileUtils.cleanDirectory(dir);
+
+            // 删除目录
+            FileUtils.deleteDirectory(dir);
+          }
+
+          private static void monitorFile() {
+            File file = new File("test.txt");
+
+            // 创建 Tailer 监听文件变化
+            Tailer tailer = new Tailer(file, new TailerListenerAdapter() {
+              @Override
+              public void handle(String line) {
+                System.out.println(line);
+              }
+            }, 1000);  // 每秒监听检查一次
+
+            Thread thread = new Thread(tailer);
+            thread.setDaemon(true);
+            thread.start();
+          }
+        }
+
+        class TailerListenerAdapter implements TailerListener {
+          @Override
+          public void init(Tailer tailer) {}
+          
+          @Override
+          public void fileNotFound() {
+            System.out.println("文件未找到");
+          }
+          
+          @Override
+          public void fileRotated() {
+            System.out.println("文件已轮转");
+          }
+          
+          @Override
+          public void handle(String line) {
+            // 在子类中重写
+          }
+          
+          @Override
+          public void handle(Exception ex) {
+            ex.printStackTrace();
+          }
+        }
+        ```
+
+    *   Dom4j：解析XML文件。
+
+        ```xml
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!-- 这里是注释 -->
+        <users>
+          <user id="1">
+            <name>张三</name>
+            <age>18</age>
+          </user>
+          <user id="2">
+            <name>李四</name>
+            <age>19</age>
+          </user>
+          <people>很多人</people>
+          <data>
+            <![CDATA[
+              3 < 4
+            ]]>
+          </data>
+        </users>
+        ```
+
+        ```java
+        public class Main {
+          public static void main(String[] args) throws DocumentException {
+            // 创建一个 Dom4j 框架提供的解析器对象
+            SAXReader reader = new SAXReader();
+
+            // 使用 SAXReader 对象把需要解析的 XML 文件读成一个 Document 对象
+            Document document = reader.read("users.xml");
+
+            // 从文档对象中解析 XML 的根元素
+            Element rootElement = document.getRootElement();
+            System.out.println(rootElement.getName());
+
+            // 获取根元素下全部一级子元素
+            List<Element> elements = rootElement.elements("user");
+            for (Element element : elements) {
+              System.out.println(element.getName());
+            }
+
+            // 获取根元素下的某个元素
+            Element peopleElement = rootElement.element("people");
+            System.out.println(peopleElement.getText());
+
+            // 如果根元素下有很多个 user 元素，默认获取第一个
+            Element userElement = rootElement.element("user");
+            System.out.println(userElement.elementText("name"));
+
+            // 获取元素的属性信息
+            System.out.println(userElement.attributeValue("id"));
+            Attribute id = userElement.attribute("id");
+            System.out.println(id.getName());
+            System.out.println(id.getValue());
+
+            List<Attribute> attributes = userElement.attributes();
+            for (Attribute attribute : attributes) {
+              System.out.println(attribute.getName() + "=" + attribute.getValue());
+            }
+
+            // 获取全部的文本内容
+            System.out.println(userElement.elementText("name"));
+            System.out.println(userElement.elementText("age"));
+
+            Element dataElement = rootElement.element("data");
+            System.out.println(dataElement.getText());
+            System.out.println(dataElement.getTextTrim());
+          }
+        }
+        ```
+
+    *   JUnit：单元测试。
+        *   在测试方法前执行的方法通常用于初始化资源；在测试方法执行完后再执行的方法通常用于释放资源。
+        *   4.x版本：
+            *   @Test：测试类中的方法必须用它修饰才能成为测试方法，才能启动执行。
+            *   @Before：用来修饰一个实例方法，该方法会在每个测试方法执行之前执行一次。
+            *   @After：用来修饰一个实例方法，该方法会在每个测试方法执行之后执行一次。
+            *   @BeforeClass：用来修饰一个静态方法，该方法会在所有测试方法之前只执行一次。
+            *   @AfterClass：用来修饰一个静态方法，该方法会在所有测试方法之后只执行一次。
+
+            ```java
+            public class StringUtils {
+              public static void printLength(String data) {
+                if (data == null) {
+                  System.out.println(0);
+                } else {
+                  System.out.println(data.length());
+                }
+              }
+
+              public static int getMaxIndex(String data) {
+                if (data == null) {
+                  return -1;
+                } else {
+                  return data.length() - 1;
+                }
+              }
+            }
+            ```
+
+            ```java
+            public class StringUtilsTest {
+              @Before
+              public void test1() {
+                System.out.println("test1");
+              }
+
+              @After
+              public void test2() {
+                System.out.println("test2");
+              }
+
+              @BeforeClass
+              public static void test3() {
+                System.out.println("test3");
+              }
+
+              @AfterClass
+              public static void test4() {
+                System.out.println("test4");
+              }
+
+              @Test
+              public void testPrintLength() {
+                StringUtils.printLength("hello world");
+                StringUtils.printLength(null);
+              }
+
+              @Test
+              public void testGetMaxIndex() {
+                int index1 = StringUtils.getMaxIndex("hello world");
+                System.out.println(index1);
+
+                int index2 = StringUtils.getMaxIndex(null);
+                System.out.println(index2);
+
+                // 断言机制
+                // 如果 index1 != 10，则抛出异常并打印 "Error"
+                // 如果 index1 == 10，则什么都不会发生
+                Assert.assertEquals("Error", 10, index1);
+              }
+            }
+            ```
+
+        *   5.x版本：
+            *   @Test：测试类中的方法必须用它修饰才能成为测试方法，才能启动执行。
+            *   @BeforeEach：用来修饰一个实例方法，该方法会在每个测试方法执行之前执行一次。
+            *   @AfterEach：用来修饰一个实例方法，该方法会在每个测试方法执行之后执行一次。
+            *   @BeforeAll：用来修饰一个静态方法，该方法会在所有测试方法之前只执行一次。
+            *   @AfterAll：用来修饰一个静态方法，该方法会在所有测试方法之后只执行一次。
 
 java.lang：
 
@@ -2846,6 +5354,119 @@ java.lang：
             r.exit(0);
           }
         }
+        ```
+
+*   Thread：线程类。
+    *   创建：
+
+        ```java
+        /**
+         * 通过继承 Thread 类实现线程
+         */
+        public class Main {
+          public static void main(String[] args) {
+            Thread t = new MyThread();
+            t.start();
+
+            for (int i = 0; i < 100; i++) {
+              System.out.println("Main Thread: " + i);
+            }
+          }
+        }
+
+        class MyThread extends Thread {
+          @Override
+          public void run() {
+            for (int i = 0; i < 100; i++) {
+              System.out.println("Child Thread: " + i);
+            }
+          }
+        }
+        ```
+
+        ```java
+        /**
+         * 通过实现 Runnable 接口实现线程
+         * 非匿名内部类写法
+         */
+        public class Main {
+          public static void main(String[] args) {
+            Runnable r = new MyRunnable();
+            new Thread(r).start();
+
+            for (int i = 0; i < 100; i++) {
+              System.out.println("Main Thread: " + i);
+            }
+          }
+        }
+
+        class MyRunnable implements Runnable {
+          @Override
+          public void run() {
+            for (int i = 0; i < 100; i++) {
+              System.out.println("Child Thread: " + i);
+            }
+          }
+        }
+        ```
+
+        ```java
+        /**
+         * 通过实现 Callable 接口实现线程
+         */
+        public class Main {
+          public static void main(String[] args) {
+            try {
+              Callable<String> c = new MyCallable(100);
+              FutureTask<String> ft = new FutureTask<>(c);
+              new Thread(ft).start();
+
+              // 如果程序执行到这里，但是线程任务还没有执行完毕，那么程序会阻塞在这里，等待线程任务执行完毕
+              String result = ft.get();
+              System.out.println(result);
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+          }
+        }
+
+        class MyCallable implements Callable<String> {
+          private int n;
+          public MyCallable(int n) {
+            this.n = n;
+          }
+
+          @Override
+          public String call() throws Exception {
+            int sum = 0;
+            for (int i = 1; i <= n; i++) {
+              sum += i;
+            }
+            return "Sum of " + n + " numbers from 1 to " + n + " is " + sum;
+          }
+        }
+        ```
+
+    *   常用方法：
+
+        ```java
+        Thread t1 = new MyThread("MyThread1");
+        // 设置线程名称
+        // t.setName("MyThread1");
+
+        t1.start();
+        // 输出线程名称
+        System.out.println(t1.getName());
+
+        Thread t2 = new MyThread("MyThread2");
+        t2.start();
+        // 主线程调用其他线程的 join 方法时，主线程会暂停执行，直到被调用线程完成其任务
+        t2.join();
+        System.out.println(t2.getName());
+
+        // 获取当前线程对象
+        Thread t3 = Thread.currentThread();
+        System.out.println(t3.getName());
         ```
 
 java.util：
@@ -3528,7 +6149,7 @@ java.io：
         InputStream is1 = new FileInputStream(new File("test.txt"));
         
         // 简化写法
-        InputStream is = new FileInputStream("test.txt");
+        InputStream is2 = new FileInputStream("test.txt");
         ```
 
     *   常用方法：
@@ -3596,9 +6217,7 @@ java.io：
         is.close();
         ```
 
-    *   注意：
-        *   使用FileInputStream读取文件时：如果一次读取一个字节或多个字节，读取性能较差，并且读取汉字输出会出现乱码；如果一次性读取所有字节，读取性能会好一些，并且解决乱码问题，但是如果创建的字节数组过大，可能引起内存溢出的问题。
-        *   FileInputStream适合做数据的转移，如文件复制等操作。读写文本内容还是使用字符流更加合适。
+    *   注意：使用FileInputStream读取文件时：如果一次读取一个字节或多个字节，读取性能较差，并且读取汉字输出会出现乱码；如果一次性读取所有字节，读取性能会好一些，并且解决乱码问题，但是如果创建的字节数组过大，可能引起内存溢出的问题。
 *   FileOutputStream：把内存中的数据以字节的形式写出到磁盘的文件中去。
     *   创建：
 
@@ -3610,7 +6229,419 @@ java.io：
 
         ```java
         OutputStream os = new FileOutputStream("test.txt");
+
+        // 写入一个字节
+        os.write('a');
+        os.write(98);
+
+        os.close();
         ```
+
+        ```java
+        OutputStream os = new FileOutputStream("test.txt", true);
+
+        // 以 Append 模式，写入多个字节
+        byte[] buffer = "hello 世界".getBytes();
+        os.write(buffer);
+
+        // 换行符
+        os.write("\r\n".getBytes());
+
+        os.close();
+        ```
+
+*   FileReader：可以把文件中的数据以字符的形式读入到内存中去。
+    *   创建：
+
+        ```java
+        Reader r = new FileReader("test.txt");
+        ```
+
+    *   常用方法：
+
+        ```java
+        Reader r = new FileReader("test.txt");
+
+        // 每次读取一个字符，使用 while 循环读完文件中的所有字符
+        int c;
+        while ((c = r.read()) != -1) {
+          System.out.print((char) c);
+        }
+
+        r.close();
+        ```
+
+        ```java
+        Reader r = new FileReader("test.txt");
+
+        // 每次读取多个字符，使用 while 循环读完文件中的所有字符
+        char[] buffer = new char[3];
+        int len;
+        while ((len = r.read(buffer)) != -1) {
+          System.out.print(new String(buffer, 0, len));
+        }
+
+        r.close();
+        ```
+
+*   FileWriter：把内存中的数据以字符的形式写出到文件中去。
+    *   创建：
+
+        ```java
+        Writer w = new FileWriter("test.txt");
+        ```
+
+    *   常用方法：
+
+        ```java
+        Writer w = new FileWriter("test.txt");
+
+        // 写入一个字符
+        w.write('a');
+        w.write(98);
+        w.write("\r\n");
+
+        // 写入一个字符串
+        w.write("hello world");
+
+        // 写入字符串的一部分
+        w.write("hello world", 1, 3);
+
+        char[] chars = new char[]{'a', 'b', 'c'};
+
+        // 写入字符数组
+        w.write(chars);
+
+        // 写入字符数组的一部分
+        w.write(chars, 1, 2);
+
+        w.close();
+        ```
+
+        ```java
+        Writer w = new FileWriter("test.txt", true);
+
+        // 追加字符串
+        w.write("hello world");
+
+        w.close();
+        ```
+
+    *   注意：字符输出流写出数据后，必须刷新流（flush）或者关闭流（close），否则数据不会写入文件。
+*   BufferedInputStream：把低级的字节输入流包装成一个高级的缓冲字节输入流，从而提高读数据的性能。
+    *   创建：
+
+        ```java
+        InputStream is = new BufferedInputStream(new FileInputStream("test.txt"));
+        ```
+
+    *   常用方法：
+
+        ```java
+        InputStream is = new BufferedInputStream(new FileInputStream("test.txt"));
+
+        // 每次读取多个字节，使用 while 循环读完文件中的所有字节
+        byte[] buffer = new byte[1024];
+        int len;
+        while ((len = is.read(buffer)) != -1) {
+          System.out.print(new String(buffer, 0, len));
+        }
+
+        is.close();
+        ```
+
+*   BufferedOutputStream：把低级的字节输出流包装成一个高级的缓冲字节输出流，从而提高写数据的性能。
+    *   创建：
+
+        ```java
+        OutputStream os = new BufferedOutputStream(new FileOutputStream("test.txt"));
+        ```
+
+    *   常用方法：
+
+        ```java
+        OutputStream os = new BufferedOutputStream(new FileOutputStream("test.txt"));
+
+        // 写入一个字节 
+        os.write('a');
+        os.write(98);
+
+        os.close();
+        ```
+
+        ```java
+        OutputStream os = new BufferedOutputStream(new FileOutputStream("test.txt"));
+
+        // 以 Append 模式，写入多个字节
+        byte[] buffer = "hello 世界".getBytes();
+        os.write(buffer);
+
+        // 换行符
+        os.write("\r\n".getBytes());
+
+        os.close();
+        ```
+
+*   BufferedReader：把低级的字符输入流包装成一个高级的缓冲字符输入流，从而提高读数据的性能。
+    *   创建：
+
+        ```java
+        Reader r = new BufferedReader(new FileReader("test.txt"));
+        ```
+
+    *   常用方法：
+
+        ```java
+        Reader r = new BufferedReader(new FileReader("test.txt"));
+
+        // 每次读取多个字符，使用 while 循环读完文件中的所有字符
+        char[] buffer = new char[3];
+        int len;
+        while ((len = r.read(buffer)) != -1) {
+          System.out.print(new String(buffer, 0, len));
+        }
+
+        r.close();
+        ```
+
+        ```java
+        BufferedReader r = new BufferedReader(new FileReader("test.txt"));
+
+        // 每次读取一行，使用 while 循环读完文件
+        String line;
+        while ((line = r.readLine()) != null) {
+          System.out.println(line);
+        }
+
+        r.close();
+        ```
+
+*   BufferedWriter：把低级的字符输出流包装成一个高级的缓冲字符输出流，从而提高写数据的性能。
+    *   创建：
+
+        ```java
+        Writer w = new BufferedWriter(new FileWriter("test.txt"));
+        ```
+
+    *   常用方法：
+
+        ```java
+        Writer w = new BufferedWriter(new FileWriter("test.txt"));
+
+        // 写入一个字符
+        w.write('a');
+        w.write(97);
+
+        w.close();
+        ```
+
+        ```java
+        BufferedWriter w = new BufferedWriter(new FileWriter("test.txt", true));
+
+        // 以 Append 模式，写入多个字符
+        w.write("hello 世界");
+        // 换行
+        w.newLine();
+
+        w.close();
+        ```
+
+*   InputStreamReader：
+    *   创建：
+
+        ```java
+        // 默认编码
+        // 可以通过 Charset.defaultCharset().displayName() 获取默认编码
+        // 通常中文环境下 Windows 的默认编码是 GBK，Linux 和 MacOS 默认编码是 UTF-8
+        // 可以通过 -Dfile.encoding=UTF-8 来指定 JVM 的默认编码
+        Reader r1 = new InputStreamReader(new FileInputStream("test.txt"));
+
+        // 指定编码
+        Reader r2 = new InputStreamReader(new FileInputStream("test.txt"), "UTF-8");
+        ```
+
+    *   常用方法：
+
+        ```java
+        Reader r = new InputStreamReader(new FileInputStream("test.txt"), "UTF-8");
+        BufferedReader br = new BufferedReader(r);
+
+        String line;
+        while ((line = br.readLine()) != null) {
+          System.out.println(line);
+        }
+
+        br.close();
+        r.close();
+        ```
+
+*   OutputStreamWriter：
+    *   创建：
+
+        ```java
+        // 默认编码
+        Writer w1 = new OutputStreamWriter(new FileOutputStream("test.txt"));
+
+        // 指定编码
+        Writer w2 = new OutputStreamWriter(new FileOutputStream("test.txt"), "UTF-8");
+        ```
+
+    *   常用方法：
+
+        ```java
+        Writer w = new OutputStreamWriter(new FileOutputStream("test.txt"), "UTF-8");
+        BufferedWriter bw = new BufferedWriter(w);
+
+        bw.write("hello world");
+        bw.newLine();
+        bw.write("hello world");
+
+        bw.close();
+        w.close();
+        ```
+
+*   PrintStream：
+    *   创建：
+
+        ```java
+        // 根据 OutputStream 对象创建
+        PrintStream ps1 = new PrintStream(new FileOutputStream("test.txt"));
+
+        // 根据 File 对象创建
+        PrintStream ps2 = new PrintStream(new File("test.txt"));
+
+        // 根据文件路径创建
+        PrintStream ps3 = new PrintStream("test.txt");
+
+        // 指定编码
+        PrintStream ps4 = new PrintStream("test.txt", "utf-8");
+
+        // 根据 OutputStream 对象创建，设置自动刷新和指定编码
+        PrintStream ps5 = new PrintStream(new FileOutputStream("test.txt"), true, "utf-8");
+        ```
+
+    *   常用方法：
+
+        ```java
+        PrintStream ps = new PrintStream("test.txt");
+
+        ps.println(123);
+        ps.println('a');
+        ps.println(3.14);
+        ps.println("hello 世界");
+        ps.println(true);
+
+        ps.close();
+        ```
+
+*   PrintWriter：构造方法和常用方法和PrintStream一样。
+*   DataInputStream：
+    *   创建：
+
+        ```java
+        DataInputStream dis = new DataInputStream(new FileInputStream("test.txt"));
+        ```
+
+    *   常用方法：
+
+        ```java
+        DataInputStream dis = new DataInputStream(new FileInputStream("test.txt"));
+
+        System.out.println(dis.readInt());
+        System.out.println(dis.readChar());
+        System.out.println(dis.readBoolean());
+        System.out.println(dis.readDouble());
+        System.out.println(dis.readUTF());
+
+        dis.close();
+        ```
+
+*   DataOutputStream：
+    *   创建：
+
+        ```java
+        DataOutputStream dos = new DataOutputStream(new FileOutputStream("test.txt"));
+        ```
+
+    *   常用方法：
+
+        ```java
+        DataOutputStream dos = new DataOutputStream(new FileOutputStream("test.txt"));
+
+        dos.writeInt(100);
+        dos.writeChar('a');
+        dos.writeBoolean(true);
+        dos.writeDouble(3.14);
+        dos.writeUTF("hello world");
+
+        dos.close();
+        ```
+
+*   ObjectInputStream：
+    *   创建：
+
+        ```java
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream("test.txt"));
+        ```
+
+    *   常用方法：
+
+        ```java
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream("test.txt"));
+
+        User u = (User) ois.readObject();
+        System.out.println(u);
+
+        ois.close();
+        ```
+
+*   ObjectOutputStream：
+    *   创建：
+
+        ```java
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("test.txt"));
+        ```
+
+    *   常用方法：
+
+        ```java
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("test.txt"));
+
+        User u = new User("张三", 18, "123456");
+        oos.writeObject(u);
+
+        oos.close();
+        ```
+
+java.net：
+
+*   InetAddress：IP地址。
+    *   创建：
+
+        ```java
+        InetAddress ip = InetAddress.getLocalHost();
+        ```
+
+    *   常用方法：
+
+        ```java
+        // 获取本机 IP 对象
+        InetAddress ip1 = InetAddress.getLocalHost();
+        // 获取 IP 地址对应的主机名
+        System.out.println(ip1.getHostName());
+        // 获取 IP 地址对应的 IP 地址信息
+        System.out.println(ip1.getHostAddress());
+
+        // 通过 IP 地址或域名，获取 IP 对象
+        InetAddress ip2 = InetAddress.getByName("www.baidu.com");
+        System.out.println(ip2.getHostName());
+        System.out.println(ip2.getHostAddress());
+        // 在指定毫秒内，判断主机与该 IP 对应的主机能否连通
+        System.out.println(ip2.isReachable(3000));
+        ```
+
+*   DatagramSocket：UDP通信。
+*   Socket：TCP通信。
 
 java.math：
 
