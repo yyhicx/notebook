@@ -28,4 +28,4 @@ Use flutter with argument in windows: fvm flutter run -d windows --dart-entrypoi
 
 ## Linux
 
-Install: curl -fsSL https://fvm.app/install.sh | bash
+Install: curl -fsSL <https://fvm.app/install.sh> | bash
