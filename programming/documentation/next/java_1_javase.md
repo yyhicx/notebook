@@ -28,7 +28,7 @@ IDEA管理Java程序的结构：Project（项目、工程）、Module（模块�
 注释：
 
 *   写在程序中对代码进行解释说明的文字，方便自己和其他人查看，以便理解程序。
-*   注释不影响程序的执行，因为javac编译的所得到class文件中已经不包含注释。
+*   注释不影响程序的执行，因为javac编译所得到class文件中已经不包含注释。
 *   写注释是一个利人利己的好习惯。
 
 ```java
@@ -96,7 +96,7 @@ IDEA管理Java程序的结构：Project（项目、工程）、Module（模块�
 *   引用数据类型：存储的是对象的地址，而不是对象本身的值。
     *   类（Class）：用于自定义的数据类型，如String、ArrayList、HashMap等。
     *   接口（Interface）：一种特殊的引用类型，完全由方法和常量组成，如Runnable、Comparable、Serializable等。
-    *   数组（Array）：用于存储固定大小的同类型元素序列，如int[]、String[]、double[]等。
+    *   数组（Array）：用于存储固定大小的同类型元素序列，如int[]、double[]、String[]等。
 
 类型转换：
 
@@ -141,8 +141,6 @@ IDEA管理Java程序的结构：Project（项目、工程）、Module（模块�
 获取键盘输入：
 
 ```java
-import java.util.Scanner;
-
 public class Main {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
@@ -163,11 +161,11 @@ public class Main {
     *   `if`分支：
 
         ```java
-        if (condition) {
+        if (condition1) {
           // do something
-        } else if (condition) {
+        } else if (condition2) {
           // do something
-        } else if (condition) {
+        } else if (condition3) {
           // do something
         } else {
           // do something
@@ -228,8 +226,6 @@ public class Main {
 生成随机数：
 
 ```java
-import java.util.Random;
-
 public class Main {
   public static void main(String[] args) {
     Random random = new Random();
@@ -415,7 +411,7 @@ public class Main {
 
               @Override
               public String toString() {
-                return "Student{" + "name='" + name + "', age=" + age + '}';
+                return "Student{" + "name='" + name + "', age=" + age + "}";
               }
             }
             ```
@@ -466,7 +462,7 @@ public class Main {
 
               @Override
               public String toString() {
-                return "Student{" + "name='" + name + "', age=" + age + '}';
+                return "Student{" + "name='" + name + "', age=" + age + "}";
               }
             }
             ```
@@ -574,7 +570,7 @@ JVM中包含方法区、栈内存和堆内存三个内存区域：
     ```
 
 *   方法的使用注意：
-    *   方法定义时，需要按照方法解决的实际业务需求，来设计合理的方法形式解决问题。
+    *   方法定义时，需要按照待解决的实际业务需求，来设计合理的方法形式解决问题。
     *   方法在类中位置放前放后无所谓，但一个方法不能定义在另一个方法里面。
     *   如果方法不需要返回数据，返回值类型必须声明为void（无返回值声明），此时方法内部不可以使用return返回数据，但是可以使用return提前退出方法。如果方法的返回值类型写了具体类型，方法内部则必须使用return返回对应类型的数据。
     *   return语句的下面，不能编写代码，属于无效的代码，不能执行到。
@@ -4970,9 +4966,6 @@ java.lang：
     *   常用方法：
 
         ```java
-        import java.util.Arrays;
-        import java.util.Objects;
-
         public class Student implements Cloneable {
           private String name;
           private int age;
@@ -5475,8 +5468,6 @@ java.util：
     *   常用方法：
 
         ```java
-        import java.util.Objects;
-
         public class Main {
           public static void main(String[] args) {
             String s1 = null;

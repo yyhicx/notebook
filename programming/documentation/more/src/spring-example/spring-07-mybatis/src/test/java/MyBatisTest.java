@@ -18,7 +18,7 @@ public class MyBatisTest {
 
   private SqlSession session;
 
-  // junit 会在每个 @Test 方法之间执行 @BeforeEach
+  // junit 会在每个 @Test 方法之前执行 @BeforeEach
   @BeforeEach
   public void init() throws IOException {
     // 1. 声明 Mybatis 全局配置文件的路径

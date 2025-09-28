@@ -13,12 +13,13 @@
     1.  SpringCloud
     2.  Dubbo
     3.  ZooKeeper
-    4.  RabbitMQ
-    5.  RocketMQ
-    6.  Docker
-    7.  Redis
-    8.  MongoDB
-    9.  ElasticSearch
+    4.  Kafka
+    5.  RabbitMQ
+    6.  RocketMQ
+    7.  Docker
+    8.  Redis
+    9.  MongoDB
+    10.  ElasticSearch
 6.  企业级项目实战
     1.  传智健康
     2.  万信金融

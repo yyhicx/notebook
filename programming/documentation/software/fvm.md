@@ -22,6 +22,8 @@ Use flutter command: fvm flutter command_name
 
 Use flutter with verbose output in windows: fvm flutter run -d windows -v
 
+Use flutter with verbose output in android: fvm flutter run -d emulator-xxxx -v (emulator-xxxx is the id of the android emulator)
+
 Use flutter with argument in windows: fvm flutter run -d windows --dart-entrypoint-args --argument (Defining arguments using the args package)
 
 ## Linux
