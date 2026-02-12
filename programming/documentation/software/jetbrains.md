@@ -18,12 +18,14 @@ Shortcut keys:
 *   Find in files: ctrl + shift + f
 *   Show fields and methods of current class: ctrl + f12
 *   Surround selection: ctrl + alt + t
+*   Nagivate to previous/next: ctrl + alt + left/right
 
-Extensions:
+IDEA Extensions:
 
 *   CMD Support
 *   Fitten Code
 *   JBLJavaToWeb
+*   JRebel and XRebel
 *   Lombok Builder Helper
 *   MybatisX
 

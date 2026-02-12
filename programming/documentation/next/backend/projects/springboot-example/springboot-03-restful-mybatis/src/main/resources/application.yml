@@ -1,0 +1,31 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/springboot_example?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&useSSL=true&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
+    username: root
+    password: 123456
+
+mybatis:
+  mapper-locations: classpath*:com/example/mapper/*.xml
+  type-aliases-package: com.example.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    com.example.mapper: DEBUG
+

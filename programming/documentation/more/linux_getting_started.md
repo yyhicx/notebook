@@ -133,6 +133,8 @@ command -options parameters
 |          | [three num] | chmod 764 file.sh              | 直接指定文件的权限                                                                                                  |
 | chown    |             | chown user:group file.txt      | 修改文件的所属用户和组                                                                                              |
 |          | R           | chown -R user:group file.txt   | 修改目录下所有文件及其子目录的所属用户和组                                                                          |
+| ip       | addr        | ip addr                        | 查看IP地址                                                                                                          |
+| ss       | t，u，l，n  | ss -tuln                       | 显示端口占用情况                                                                                                    |
 
 ## Linux系统常用快捷键及符号命令
 

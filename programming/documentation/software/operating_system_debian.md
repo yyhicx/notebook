@@ -2,8 +2,6 @@
 
 1.  [Create Folders](#create-folders)
 2.  [Install Software](#install-software)
-3.  [Configuration Of Apache Server](#configuration-of-apache-server)
-4.  [Configuration Of Nginx Server](#configuration-of-nginx-server)
 
 ## Create Folders
 
@@ -33,7 +31,6 @@ Tree: apt install tree
 
 Python3:
 
-*   debian10 has python3.7.3 installed
 *   apt install python3-dev
 *   pip
 
@@ -118,99 +115,20 @@ ufw allow 5000
 wget -N https://gitlab.com/fscarmen/warp/-/raw/main/menu.sh && bash menu.sh
 ```
 
-## Configuration Of Apache Server
+SSH:
 
-`/etc/apache2/apache2.conf`
+*   如果系统运行在虚拟机中，通过`ip addr`查看IP地址然后`ping`IP地址。如果可以ping通，则说明虚拟机网络配置正确；如果不能ping通，则调整虚拟机网络模式为`桥接模式`（Vmware）并`复制物理网络连接状态`，然后重启虚拟机。
+*   apt install openssh-server
+*   systemctl start sshd
+*   编辑`/etc/ssh/sshd_config`：
 
-```txt
-ServerRoot "/etc/apache2"
-ServerName localhost:8000
+    ```bash
+    # 启用端口
+    Port 22
+    # 允许密码登录
+    PasswordAuthentication yes
+    # 允许 root 登录
+    PermitRootLogin yes
+    ```
 
-<Directory />
-    Options FollowSymLinks
-    AllowOverride None
-    Require all denied
-</Directory>
-
-<Directory /usr/share>
-    AllowOverride None
-    Require all granted
-</Directory>
-
-<Directory /var/www/>
-    Options Indexes FollowSymLinks
-    AllowOverride None
-    Require all granted
-</Directory>
-
-<Directory /var/www/html>
-    Options Indexes FollowSymLinks
-    AllowOverride None
-    Require all granted
-</Directory>
-```
-
-`/etc/apache2/mods-available/mod_wsgi.load`
-
-```txt
-LoadModule wsgi_module /usr/lib/apache2/modules/mod_wsgi.so
-```
-
-`/etc/apache2/ports.conf`
-
-```txt
-Listen 8000
-```
-
-`/etc/apache2/sites-available/000-default.conf`
-
-```txt
-<VirtualHost *:8000>
-    ServerAdmin webmaster@localhost
-    DocumentRoot /site/backend
-    # ServerName localhost:8000
-    ServerAlias *.chnxish.com
-
-    Alias /static /site/backend/static
-    <Directory /site/backend/static>
-        Require all granted
-    </Directory>
-
-    Alias /media /site/backend/media
-    <Directory /site/backend/media>
-        Require all granted
-    </Directory>
-
-    <Directory /site/backend/backend>
-        <Files wsgi.py>
-            Require all granted
-        </Files>
-    </Directory>
-
-    <Directory /site/backend>
-        Options -Indexes +FollowSymLinks
-        AllowOverride All
-        Require all granted
-    </Directory>
-
-    # WSGIDaemonProcess backend python-home=/root/virtualenvs/website python-path=/site/backend
-    # WSGIProcessGroup backend 
-    WSGIScriptAlias / /site/backend/backend/wsgi.py
-
-    ErrorLog ${APACHE_LOG_DIR}/error.log
-    CustomLog ${APACHE_LOG_DIR}/access.log combined
-</VirtualHost>
-```
-
-## Configuration Of Nginx Server
-
-`/etc/nginx/sites-enabled/default`
-
-```txt
-server {
-  listen 80 default_server;
-  listen [::]:80 default_server;
-
-  root /var/www/html;
-}
-```
+*   重启 sshd 服务：`systemctl restart sshd`。

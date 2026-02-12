@@ -11,6 +11,7 @@ Init project: npm init
 Install package:
 
 *   default: npm install package_name
+*   set version: npm install package_name@version
 *   development dependencies: npm install package_name --save-dev
 *   production dependencies: npm install package_name --save
 *   global: npm install package_name --global

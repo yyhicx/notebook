@@ -90,6 +90,15 @@ SQL语法：
 
             # 查看当前正在使用的数据库
             select database();
+
+            # 在 MySQL 8.0 中，推荐使用 utf8mb4_0900_ai_ci 排序规则
+            create database database_name character set utf8mb4 collate utf8mb4_0900_ai_ci;
+
+            # 在 MySQL 5.7 中，使用 utf8mb4_general_ci 排序规则，性能较快，但准确性较差
+            create database database_name character set utf8mb4 collate utf8mb4_general_ci;
+
+            # 在 MySQL 5.7 中，使用 utf8mb4_unicode_ci 排序规则，性能较慢，但准确性较高
+            create database database_name character set utf8mb4 collate utf8mb4_unicode_ci;
             ```
 
         *   表的相关操作：

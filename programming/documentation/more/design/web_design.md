@@ -105,10 +105,13 @@
 资源网站：
 
 *   [Shutterstock](https://shutterstock.com)
+*   [NoHat](https://nohat.cc)
+*   [unDraw](https://undraw.co)
 *   [Pexels](https://pexels.com)
 *   [Unsplash](https://unsplash.com)
 *   [iconfinder](https://iconfinder.com)
 *   [iconfont](https://iconfont.cn)
+*   [icomoon](https://icomoon.io)
 *   [nounproject](https://thenounproject.com)
 *   [tinypng](https://tinypng.com)
 

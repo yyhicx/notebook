@@ -4,11 +4,7 @@
     <div class="left">
       <!-- 所有头条分类 -->
       <ul>
-        <li
-          v-for="(item, index) in headlineTypeList"
-          :key="item.tid"
-          @click="highlightHandler(index)"
-        >
+        <li v-for="(item, index) in headlineTypeList" :key="item.tid" @click="highlightHandler(index)">
           <a :class="{ active: item.isHihlight }" href="javascript:void(0)">
             {{ item.tname }}
           </a>
@@ -27,10 +23,7 @@
       <!-- 用户信息和用户登录 -->
       <div class="btn-dropdown">
         <!-- 用户登录后的展示 -->
-        <div
-          v-if="nickName"
-          style="display: flex; justify-content: center; align-items: center"
-        >
+        <div v-if="nickName" style="display: flex; justify-content: center; align-items: center">
           <el-dropdown>
             <el-button type="primary">
               您好：{{ nickName }}
@@ -38,9 +31,7 @@
             </el-button>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item @click="toAddOrModifyHeadline"
-                  >发布新闻</el-dropdown-item
-                >
+                <el-dropdown-item @click="toAddOrModifyHeadline">发布新闻</el-dropdown-item>
                 <el-dropdown-item>个人中心</el-dropdown-item>
                 <el-dropdown-item>浏览记录</el-dropdown-item>
                 <el-dropdown-item @click="toLogout">退出登录</el-dropdown-item>
@@ -50,18 +41,8 @@
         </div>
         <!-- 用户没有登录时的展示 -->
         <div v-else class="container-button">
-          <el-button
-            size="small"
-            style="background: #212529; color: #aea7a2"
-            @click="toLogin"
-            >登录</el-button
-          >
-          <el-button
-            size="small"
-            style="background: #ffc107; color: #684802"
-            @click="toRegister"
-            >注册</el-button
-          >
+          <el-button size="small" style="background: #212529; color: #aea7a2" @click="toLogin">登录</el-button>
+          <el-button size="small" style="background: #ffc107; color: #684802" @click="toRegister">注册</el-button>
         </div>
       </div>
     </div>
@@ -178,12 +159,15 @@ const toAddOrModifyHeadline = async () => {
   .left {
     ul {
       display: flex;
+
       li {
         list-style: none;
         margin-left: 20px;
+
         a:-webkit-any-link {
           text-decoration: none;
           color: #59646b;
+
           &.active {
             color: #c0adab;
           }
@@ -200,6 +184,7 @@ const toAddOrModifyHeadline = async () => {
     .right-input {
       display: flex;
       align-items: center;
+
       :deep(.el-input__inner) {
         height: 30px;
         width: 150px;
@@ -230,7 +215,7 @@ const toAddOrModifyHeadline = async () => {
   width: 100px;
 }
 
-.el-dropdown + .el-dropdown {
+.el-dropdown+.el-dropdown {
   margin-left: 15px;
 }
 
@@ -238,7 +223,7 @@ const toAddOrModifyHeadline = async () => {
   font-size: 12px;
 }
 
-.example-showcase .el-dropdown + .el-dropdown {
+.example-showcase .el-dropdown+.el-dropdown {
   margin-left: 15px;
 }
 

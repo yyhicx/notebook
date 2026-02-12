@@ -21,7 +21,7 @@ Java程序开发的步骤：
     1.  编写代码：编写Main.java文件。
     2.  编译代码：使用`javac Main.java`编译得到Main.class文件。
     3.  运行代码：使用`java Main`运行Main.class文件。
-*   注意：从JDK11开始使用`java Main.java`可以直接编译和运行Java程序。
+*   注意：从JDK11开始使用`java Main.java`可以直接编译并运行Java程序。
 
 IDEA管理Java程序的结构：Project（项目、工程）、Module（模块）、Package（包）、Class（类）。
 
@@ -100,7 +100,7 @@ IDEA管理Java程序的结构：Project（项目、工程）、Module（模块�
 
 类型转换：
 
-*   类型转换发生的情况：
+*   类型转换发生的条件：
     1.  存在某种类型的变量赋值给另一种类型的变量。
     2.  存在不同类型的数据一起运算。
 *   类型转换的形式：
@@ -2795,6 +2795,10 @@ JDK中时间相关的API：
         *   TreeMap（实现类）：按照大小默认升序排序、不重复、无索引。
             *   TreeMap基于红黑树实现，只能对键进行排序。
             *   TreeMap跟TreeSet的底层原理是一摸一样的。
+        *   ConcurrentHashMap（实现类）：无序、不重复、无索引。
+            *   在JDK7以及之前，使用分段锁和CAS算法实现；从JDK8开始，基于synchronized实现。
+            *   对于单线程读写，性能比HashMap要慢一些；对于多线程读写，ConcurrentHashMap线程安全，支持并发访问，但是HashMap线程不安全。
+            *   ConcurrentHashMap中的键或值不允许有null值，但是HashMap中的键或值允许其中一个赋null值。
         *   注意：
             *   Map中的每个元素称为一个键值对或Entry对象。
             *   Map中的所有键不允许重复，但值可以重复，键和值是一一对应的，每一个键只能找到自己对应的值。
@@ -5976,6 +5980,85 @@ java.util：
         *   虽然创建Calendar对象是通过getInstance方法创建，但是Calendar并不是单例，而是多例的。
         *   Calendar对象是可变对象，一旦修改后其对象本身表示的时间将发生变化。
 *   stream.Stream：流处理类。
+*   Optional：是一个可能包含非空值的容器对象，或者根本不包含任何值（表示值为空），主要用于解决NullPointerException问题。
+    *   创建：
+
+        ```java
+        // 包含非空值
+        Optional<String> optional = Optional.of("hello");
+
+        // 可能为空的值
+        Optional<String> optional = Optional.ofNullable(maybeNullString);
+
+        // 空 Optional
+        Optional<String> optional = Optional.empty();
+        ```
+
+    *   常用方法：
+
+        ```java
+        Optional<String> optional = Optional.of("Hello World");
+
+        // 检查是否有值
+        if (optional.isPresent()) {
+          System.out.println(optional.get());
+        }
+
+        // 如果有值则执行操作
+        optional.ifPresent(value -> System.out.println(value));
+
+        // 链式操作
+        optional.map(String::toUpperCase)
+          .filter(s -> s.length() > 5)
+          .ifPresent(System.out::println);
+
+        // 如果为空返回默认值
+        String defaultValue = optional.orElse("Default Value");
+
+        // 如果为空生成默认值
+        String defaultValue = optional.orElseGet(() -> {
+          // do something to generate default value
+          String s = "Do" + " " + "Something";
+          return s;
+        });
+
+        // 如果为空抛出异常
+        optional.orElseThrow(() -> new RuntimeException("Value is empty"));
+        ```
+
+    *   注意：
+
+        ```java
+        // 推荐：作为返回值明确表示可能为空
+        public Optional<Data> findData() {
+          // do something
+        }
+
+        // 推荐：使用函数式风格处理
+        option.isPresent(value -> process(value));
+        String result = optional.orElse("default");
+
+        // 推荐：链式转换
+        optional.map(Data::process)
+          .filter(Processed:isValid)
+          .ifPresent(System.out::println);
+
+        // 不推荐：直接操作 value，失去了 Optional 的意义
+        if (optional.isPresent()) {
+          String value = optional.get();
+          // 直接操作 value
+        }
+
+        // 不推荐：作为参数使用，会让代码更复杂
+        public void process(Optional<Data> optional) {
+          // do something
+        }
+
+        // 不推荐：作为类属性使用，会让代码更复杂
+        class MyClass {
+          private Optional<Data> optional;
+        }
+        ```
 
 java.io：
 
