@@ -1,7 +1,9 @@
 # Frontend
 
-0.  javscript
-1.  typescript
-2.  vue
-3.  uniapp
-4.  electron
+0.  HTML
+1.  CSS
+2.  JavScript
+3.  TypeScript
+4.  Vue
+5.  Uniapp
+6.  Electron

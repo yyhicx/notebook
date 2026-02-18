@@ -75,6 +75,7 @@ return new MyClass() {
         something();
       } catch (ProblemException e) {
         recover();
+      }
     } else if (otherCondition()) {
       somethingElse();
     } else {
@@ -241,7 +242,7 @@ int result = longExpression1 + longExpression2
         public protected private abstract default static final transient volatile synchronized native strictfp
         ```
 
-    *   数值字面量：长整型字面量使用大写的`L`作为前缀，而不推荐使用小写的`l`，避免与`1`混淆。
+    *   数值字面量：长整型字面量使用大写的`L`作为后缀，而不推荐使用小写的`l`，避免与`1`混淆。
 
 ## 命名
 
